@@ -135,5 +135,10 @@ public class CalcTest {
         assertEquals(-226.23, actual, 0.01);
     }
 
+    @Test
+    public void doubleTest() {
+        Double calc = c.calc("5.2 + 0.2");
+        assertEquals(5.4, calc, 0.1);
+    }
 
 }
