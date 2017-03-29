@@ -173,6 +173,26 @@
                 android:text="." />
 
             <Button
+                android:id="@+id/btn_cs"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/digit_btn_height"
+                android:layout_weight="1"
+                android:text="(" />
+
+            <Button
+                android:id="@+id/btn_os"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/digit_btn_height"
+                android:layout_weight="1"
+                android:text=")" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
                 android:id="@+id/btn_clear"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/digit_btn_height"

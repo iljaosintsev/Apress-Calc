@@ -56,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
             //
             R.id.btn_0,
             R.id.btn_dot,
+            R.id.btn_cs,
+            R.id.btn_os,
+            //
             R.id.btn_clear,
             R.id.btn_enter
     })
@@ -111,6 +114,13 @@ public class MainActivity extends AppCompatActivity {
             case R.id.btn_dot:
                 append(".");
                 break;
+            case R.id.btn_cs:
+                append("( ");
+                break;
+            case R.id.btn_os:
+                append(" )");
+                break;
+            //
             case R.id.btn_clear:
                 clearOne();
                 break;
