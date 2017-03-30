@@ -30,6 +30,8 @@ class Calc {
         String[] tokens = input.split(" ");
         boolean isLastOperator = true; // flag for detect unar minus
 
+        boolean haveAssociativeOperation = false; // flag for detect associative op
+
         for (String token : tokens) {
             boolean isNumber = mPattern.matcher(token).find();
             if (isNumber) { // операнд
@@ -73,10 +75,12 @@ class Calc {
                         if (!p &&  (prev.priority() > current.priority())) {
                             operators.pop(); // компенсируем elementAt
                             operate(numbers, prev);
+                            haveAssociativeOperation = true;
                         } else if (prev.priority() == current.priority()) {
                             if (prev.associate()) {
                                 operators.pop(); // аналогично
                                 operate(numbers, prev);
+                                haveAssociativeOperation = true;
                             }
                         }
                     }
@@ -96,9 +100,27 @@ class Calc {
             throw new RuntimeException("Неправильно расставлены скобки");
         }
 
-        while (!operators.isEmpty()) { // 2 + 3
-           Operator current = operators.pop();
-           operateFirst(current, numbers);
+        // если одинаковое количество операндов и операторов
+        // значит какого-то операнда не хватает
+        if (numbers.size() == operators.size()) {
+            if (haveAssociativeOperation) {
+                if (operators.size() >= 2) {
+                    operators.pop();
+                } else {
+                    return numbers.pop();
+                }
+            } else {
+                if (operators.size() >= 2) {
+                    operators.pop();
+                } else {
+                    throw new ArithmeticException("Неверное выражение");
+                }
+            }
+        }
+
+        while (!operators.isEmpty()) { // окончательное вычисление выражения
+            Operator current = operators.pop();
+            operateFirst(current, numbers);
         }
 
         return numbers.pop();

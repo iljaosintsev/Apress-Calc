@@ -3,7 +3,7 @@ package com.turlir.abakcalc;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 
 public class CalcTest {
@@ -102,6 +102,30 @@ public class CalcTest {
     @Test(expected = ArithmeticException.class)
     public void threeDivisionByZeroTest() {
         c.calc("( 5 - 4 ) / ( 3 - 3 )");
+    }
+
+    @Test
+    public void operandExpectedCorrectionTest() {
+        double actual = c.calc("2 + 3 *");
+        assertEquals(5.0, actual, 0.1);
+
+        actual = c.calc("2 * 3 +");
+        assertEquals(6.0, actual, 0.1);
+    }
+
+    @Test(expected = ArithmeticException.class)
+    public void invalidExpressionTest() {
+        c.calc("2 + ");
+    }
+
+    @Test(expected = ArithmeticException.class)
+    public void invalidPriorityExpressionTest() {
+        c.calc("2 * ");
+    }
+
+    @Test(expected = ArithmeticException.class)
+    public void invalidAssociativeExpressionTest() {
+        c.calc("2 - ");
     }
 
     @Test
