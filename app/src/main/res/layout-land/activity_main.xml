@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="@dimen/activity_vertical_margin"
     android:layout_marginLeft="@dimen/activity_horizontal_margin"
     android:layout_marginRight="@dimen/activity_horizontal_margin"
-    android:layout_marginTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
@@ -14,67 +12,56 @@
         android:id="@+id/edit_text"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="4dp"
+        android:layout_toLeftOf="@+id/btn_clear"
         android:enabled="false"
         android:gravity="right"
         android:inputType="numberDecimal"
         android:textColor="@android:color/white"
         tools:text="2 + 2" />
 
+    <Button
+        android:id="@+id/btn_clear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/edit_text"
+        android:layout_alignBottom="@+id/edit_text"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:text="@string/cl" />
+
+    <Button
+        android:id="@+id/btn_enter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tv_result"
+        android:layout_alignBottom="@+id/tv_result"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:text="@string/en" />
+
     <TextView
         android:id="@+id/tv_result"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/edit_text"
+        android:layout_toLeftOf="@+id/btn_enter"
+        android:layout_toStartOf="@+id/btn_enter"
         android:enabled="false"
         android:gravity="right"
         android:textColor="@android:color/white"
         android:textSize="18sp"
         tools:text="= 4" />
 
+
     <LinearLayout
-        android:id="@+id/keyboard"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/tv_result"
+        android:layout_marginTop="16dp"
         android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btn_add"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="+" />
-
-            <Button
-                android:id="@+id/btn_minus"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="-" />
-
-
-            <Button
-                android:id="@+id/btn_multi"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="*" />
-
-            <Button
-                android:id="@+id/btn_div"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="/" />
-
-
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -102,6 +89,27 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="9" />
+
+            <Button
+                android:id="@+id/btn_0"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="0" />
+
+            <Button
+                android:id="@+id/btn_div"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="/" />
+
+            <Button
+                android:id="@+id/btn_cs"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="(" />
 
         </LinearLayout>
 
@@ -131,6 +139,26 @@
                 android:layout_weight="1"
                 android:text="6" />
 
+            <Button
+                android:id="@+id/btn_add"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="+" />
+
+            <Button
+                android:id="@+id/btn_multi"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="*" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -159,19 +187,12 @@
                 android:layout_weight="1"
                 android:text="3" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
             <Button
-                android:id="@+id/btn_0"
+                android:id="@+id/btn_minus"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="0" />
+                android:text="-" />
 
             <Button
                 android:id="@+id/btn_dot"
@@ -179,13 +200,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="." />
-
-            <Button
-                android:id="@+id/btn_cs"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="(" />
 
             <Button
                 android:id="@+id/btn_os"
@@ -196,27 +210,6 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <Button
-                android:id="@+id/btn_clear"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@string/cl" />
-
-            <Button
-                android:id="@+id/btn_enter"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@string/en" />
-
-        </LinearLayout>
-
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">AbakCalc</string>
+    <string name="cl">CL</string>
+    <string name="en">EN</string>
 </resources>
