@@ -2,4 +2,5 @@
     <string name="app_name">AbakCalc</string>
     <string name="cl">CL</string>
     <string name="en">EN</string>
+    <string name="result" formatted="false">= %s</string>
 </resources>

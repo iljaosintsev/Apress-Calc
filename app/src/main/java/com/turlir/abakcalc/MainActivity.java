@@ -145,10 +145,17 @@ public class MainActivity extends AppCompatActivity {
     private void clearOne() {
         Editable origin = editText.getText();
         if (origin.length() > 0) {
-            CharSequence n = origin.subSequence(0, origin.length() - 1);
+            int del; // удаляем 1 или 2 элемента по очереди
+            if (origin.length() % 2 != 0) {
+                del = 1;
+            } else {
+                del = 2;
+            }
+            CharSequence n = origin.subSequence(0, origin.length() - del);
             editText.setText(n);
-        } else {
-            result.setText("");
+            if (n.length() == 0) {
+                result.setText("");
+            }
         }
     }
 
@@ -158,17 +165,13 @@ public class MainActivity extends AppCompatActivity {
             try {
                 Double calc = mCalc.calc(str);
                 Log.d(TAG, "Результат " + calc);
-                result.setText(convertToFormat(calc));
+                String strRes = getString(R.string.result, DF.format(calc));
+                result.setText(strRes);
             } catch (Exception e) {
                 Log.e(TAG, "Ошибка при вычислении", e);
                 result.setText(e.getMessage());
             }
         }
     }
-
-    private static String convertToFormat(double value){
-        return "= " + DF.format(value);
-    }
-
 
 }
