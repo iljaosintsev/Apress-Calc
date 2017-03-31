@@ -99,7 +99,11 @@ public class MainActivity extends AppCompatActivity {
                 append(" + ");
                 break;
             case R.id.btn_minus:
-                append(" - ");
+                if (isLastOperator()) {
+                    append("- "); // унарный минус
+                } else {
+                    append(" - ");
+                }
                 break;
             case R.id.btn_multi:
                 append(" * ");
@@ -198,6 +202,14 @@ public class MainActivity extends AppCompatActivity {
                 result.setText(e.getMessage());
             }
         }
+    }
+
+    private boolean isLastOperator() {
+        String lastInput = mInputQueue.peek();
+        return lastInput.equals(" + ")
+                || lastInput.equals(" - ")
+                || lastInput.equals(" * ")
+                || lastInput.equals(" / ");
     }
 
 }

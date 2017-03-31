@@ -134,7 +134,7 @@ public class CalcTest {
     }
 
     @Test
-    public void unarMinusTest() {
+    public void unaryMinusTest() {
         Double actual;
 
         actual = c.calc("5 * - 3");
