@@ -2,6 +2,7 @@ package com.turlir.abakcalc;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.util.Log;
 import android.view.View;
@@ -9,6 +10,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Stack;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,7 +25,8 @@ import butterknife.OnLongClick;
 public class MainActivity extends Activity {
 
     private static final String TAG = "MainActivity";
-    private static final DecimalFormat DF = new DecimalFormat("#.###"); // result format
+    private static final DecimalFormat DF = new DecimalFormat("#.###"); // формат результата
+    private static final String BUNDLE_QUEUE = "BUNDLE_QUEUE";
 
     @BindView(R.id.edit_text)
     EditText editText;
@@ -27,13 +35,40 @@ public class MainActivity extends Activity {
     TextView result;
 
     private Calc mCalc;
+    private LinkedList<String> mInputQueue; // очередь вставок для удаления
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle save) {
+        super.onCreate(save);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         mCalc = new Calc();
+        // восстановление состояния
+        if (save != null) {
+            restore(save);
+        } else {
+            mInputQueue = new LinkedList<>();
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        String[] array = mInputQueue.toArray(new String[mInputQueue.size()]);
+        outState.putStringArray(BUNDLE_QUEUE, array);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle saved) {
+        super.onRestoreInstanceState(saved);
+        restore(saved);
+    }
+
+    private void restore(Bundle save) {
+        String[] array = save.getStringArray(BUNDLE_QUEUE);
+        if (array != null) {
+            mInputQueue = new LinkedList<>(Arrays.asList(array));
+        }
     }
 
     @OnClick({
@@ -130,6 +165,18 @@ public class MainActivity extends Activity {
         }
     }
 
+    private void clearOne() {
+        int l = editText.length();
+        if (l > 0) {
+            String lastInput = mInputQueue.pop();
+            int del = lastInput.length();
+            Editable origin = editText.getText();
+            CharSequence n = origin.subSequence(0, l - del);
+            editText.setText(n);
+            result.setText(""); // сбрасываем результата
+        }
+    }
+
     @OnLongClick(R.id.btn_clear)
     public boolean clearAll() {
         editText.setText("");
@@ -140,23 +187,7 @@ public class MainActivity extends Activity {
     private void append(String s) {
         String n = editText.getText() + s;
         editText.setText(n);
-    }
-
-    private void clearOne() {
-        Editable origin = editText.getText();
-        if (origin.length() > 0) {
-            int del; // удаляем 1 или 2 элемента по очереди
-            if (origin.length() % 2 != 0) {
-                del = 1;
-            } else {
-                del = 2;
-            }
-            CharSequence n = origin.subSequence(0, origin.length() - del);
-            editText.setText(n);
-            if (n.length() == 0) {
-                result.setText("");
-            }
-        }
+        mInputQueue.push(s);
     }
 
     private void enter() {
