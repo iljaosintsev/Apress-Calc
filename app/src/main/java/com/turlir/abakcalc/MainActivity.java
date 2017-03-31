@@ -160,18 +160,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void clearOne() {
-        int l = editText.length();
-        if (l > 0) {
-            String lastInput = mInputQueue.pop();
-            int del = lastInput.length();
-            Editable origin = editText.getText();
-            CharSequence n = origin.subSequence(0, l - del);
-            editText.setText(n);
-            result.setText(""); // сбрасываем результата
-        }
-    }
-
     @OnLongClick(R.id.btn_clear)
     public boolean clearAll() {
         editText.setText("");
@@ -183,6 +171,18 @@ public class MainActivity extends AppCompatActivity {
         String n = editText.getText() + s;
         editText.setText(n);
         mInputQueue.push(s);
+    }
+
+    private void clearOne() {
+        int l = editText.length();
+        if (l > 0) {
+            String lastInput = mInputQueue.pop();
+            int del = lastInput.length();
+            Editable origin = editText.getText();
+            CharSequence n = origin.subSequence(0, l - del);
+            editText.setText(n);
+            result.setText(""); // сбрасываем результата
+        }
     }
 
     private void enter() {
