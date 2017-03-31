@@ -1,8 +1,7 @@
 package com.turlir.abakcalc;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.os.Parcelable;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.util.Log;
 import android.view.View;
@@ -10,19 +9,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Stack;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private static final DecimalFormat DF = new DecimalFormat("#.###"); // формат результата
