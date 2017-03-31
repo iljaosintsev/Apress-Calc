@@ -14,7 +14,7 @@ class Calc {
     private final Pattern mPattern;
 
     Calc() {
-        mPattern = Pattern.compile("[0-9]+"); // only digit
+        mPattern = Pattern.compile("\\d+(.?)\\d*"); // only digit
     }
 
     /**
@@ -33,9 +33,15 @@ class Calc {
         boolean haveAssociativeOperation = false; // flag for detect associative op
 
         for (String token : tokens) {
-            boolean isNumber = mPattern.matcher(token).find();
+            boolean isNumber = mPattern.matcher(token).matches();
             if (isNumber) { // операнд
-                numbers.push(Double.parseDouble(token));
+                double digit;
+                try {
+                    digit = Double.parseDouble(token);
+                } catch (NumberFormatException e) {
+                    throw new ArithmeticException("Неверное выражение");
+                }
+                numbers.push(digit);
                 isLastOperator = false;
 
             } else if (token.equals("(")) { // открыв. скобка
@@ -92,6 +98,8 @@ class Calc {
                         operators.push(current);
                         isLastOperator = true;
                     }
+                } else {
+                    throw new ArithmeticException("Неверное выражение");
                 }
             }
         }

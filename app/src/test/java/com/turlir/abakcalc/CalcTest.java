@@ -90,6 +90,11 @@ public class CalcTest {
     }
 
     @Test(expected = ArithmeticException.class)
+    public void digitBracketWithoutOperationTest() {
+        c.calc("2( ");
+    }
+
+    @Test(expected = ArithmeticException.class)
     public void divisionByZeroTest() {
         c.calc("3 / ( 4 - 4 )");
     }
