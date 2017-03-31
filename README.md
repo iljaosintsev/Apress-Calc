@@ -23,4 +23,6 @@
 
 Unit-тестами покрыта логика вычисления результата.
 
-![Демонстрация](/art/main-screen.png)
+![Демонстрация](/art/main-screen-portrait.png)
+
+![Демонстрация](/art/main-screen-landscape.png)
