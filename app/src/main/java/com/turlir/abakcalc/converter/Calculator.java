@@ -8,7 +8,7 @@ import com.turlir.abakcalc.converter.abs.NotationInterpreter;
 import java.util.Queue;
 
 /**
- * Простой класс для организации взаимодействия между {@link PolishConverter} и {@link NotationInterpreter}
+ * Простой класс для организации взаимодействия между {@link NotationConverter} и {@link NotationInterpreter}
  */
 public class Calculator {
 

@@ -90,7 +90,7 @@ enum Operator implements Item {
 
         @Override
         public void operate(NotationInterpreter visitor) {
-
+            //
         }
     };
 
