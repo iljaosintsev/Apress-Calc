@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.btn_minus:
                 if (isLastOperator()) {
-                    append("- "); // унарный минус
+                    append("-"); // унарный минус
                 } else {
                     append(" - ");
                 }
@@ -214,12 +214,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // унарный минус может стоять в следующих позициях
     private boolean isLastOperator() {
         String lastInput = mInputQueue.peek();
-        return lastInput.equals(" + ")
+        return lastInput == null // в начале выражения
+                || lastInput.equals(" + ") // операции
                 || lastInput.equals(" - ")
                 || lastInput.equals(" * ")
-                || lastInput.equals(" / ");
+                || lastInput.equals(" / ")
+                || lastInput.equals("( "); // открывающаяся скобка
     }
 
 }

@@ -19,10 +19,12 @@ public class PolishConverterTest {
     private static final Item two = new Operand(2.0);
     private static final Item three = new Operand(3.0);
     private static final Item four = new Operand(4.0);
+
     private static final Item add = Operator.ADD;
     private static final Item remove = Operator.REMOVE;
     private static final Item multi = Operator.MULTIPLY;
     private static final Item div = Operator.DIVIDE;
+
     private NotationConverter nc;
 
     private void check(Queue<Item> actual, Item... expected) {
@@ -144,6 +146,33 @@ public class PolishConverterTest {
     public void halfExpressionTest() {
         Queue<Item> calc = nc.convert("2 + ");
         check(calc, two, add);
+    }
+
+    @Test
+    public void unaryMinusTest() {
+        Queue<Item> actual;
+
+        Item th = new Operand(-3.0);
+
+        actual = nc.convert("4 * -3");
+        check(actual, four, th, multi);
+
+        actual = nc.convert("-3 * 4");
+        check(actual, th, four, multi);
+
+        actual = nc.convert("-3 * ( 4 + 4 )");
+        check(actual, th, four, four, add, multi);
+
+        actual = nc.convert("( 4 + 4 ) * -3");
+        check(actual, four, four, add, th, multi);
+    }
+
+    @Test
+    public void hardTest() {
+        Queue<Item> actual;
+
+        actual = nc.convert("1 + 4 - 3 / 2");
+        check(actual, one, four, add, three, two, div, remove);
     }
 
 }

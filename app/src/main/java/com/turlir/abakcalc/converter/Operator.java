@@ -33,7 +33,7 @@ enum Operator implements Item {
         public void operate(NotationInterpreter visitor) {
             Double one = visitor.poolDigit();
             Double two = visitor.poolDigit();
-            visitor.pushDigit(one / two);
+            visitor.pushDigit(two / one);
         }
     },
 
@@ -66,7 +66,7 @@ enum Operator implements Item {
         public void operate(NotationInterpreter visitor) {
             Double one = visitor.poolDigit();
             Double two = visitor.poolDigit();
-            visitor.pushDigit(one - two);
+            visitor.pushDigit(two - one);
         }
     },
 

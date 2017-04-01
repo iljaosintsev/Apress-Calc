@@ -17,7 +17,7 @@ public class PolishConverter implements NotationConverter {
     private final Queue<Item> mConverted;
 
     public PolishConverter() {
-        mPattern = Pattern.compile("\\d+(.?)\\d*"); // только цифры
+        mPattern = Pattern.compile("-?\\d+(.?)\\d*"); // только цифры
         mConverted = new LinkedList<>();
     }
 
@@ -122,13 +122,8 @@ public class PolishConverter implements NotationConverter {
             }
         }
 
-        if (current == Operator.REMOVE && isLastOperator) { // унарный минус
-            //operators.push(Operator.MULTIPLY); //
-            //numbers.push(-1.0); // TODO
-            //mConverted.add(current);
-        } else { // обычный оператор
-            operators.push(current);
-        }
+        // унарный минус поддерживается на уровне Double#parseDouble(String)
+        operators.push(current);
     }
 
 
