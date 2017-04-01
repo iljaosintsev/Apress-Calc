@@ -69,13 +69,6 @@ public class MainActivity extends AppCompatActivity {
         restore(saved);
     }
 
-    private void restore(Bundle save) {
-        String[] array = save.getStringArray(BUNDLE_QUEUE);
-        if (array != null) {
-            mInputQueue = new LinkedList<>(Arrays.asList(array));
-        }
-    }
-
     @OnClick({
             R.id.btn_add,
             R.id.btn_minus,
@@ -102,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
             R.id.btn_clear,
             R.id.btn_enter
     })
-    public void clickAdd(View view) {
+    public void keyboardButtonClick(View view) {
         int id = view.getId();
         switch (id) {
             case R.id.btn_add:
@@ -179,6 +172,13 @@ public class MainActivity extends AppCompatActivity {
         editText.setText("");
         result.setText("");
         return true;
+    }
+
+    private void restore(Bundle save) {
+        String[] array = save.getStringArray(BUNDLE_QUEUE);
+        if (array != null) {
+            mInputQueue = new LinkedList<>(Arrays.asList(array));
+        }
     }
 
     private void append(String s) {
