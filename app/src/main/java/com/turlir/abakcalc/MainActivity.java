@@ -8,6 +8,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.turlir.abakcalc.converter.Calculator;
+import com.turlir.abakcalc.converter.PolishConverter;
+import com.turlir.abakcalc.converter.PolishInterpreter;
+import com.turlir.abakcalc.converter.abs.NotationConverter;
+import com.turlir.abakcalc.converter.abs.NotationInterpreter;
+
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -29,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.tv_result)
     TextView result;
 
-    private Calc mCalc;
+    private Calculator mCalc;
     private LinkedList<String> mInputQueue; // очередь вставок для удаления
 
     @Override
@@ -37,7 +43,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(save);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        mCalc = new Calc();
+
+        NotationConverter conv = new PolishConverter();
+        NotationInterpreter inter = new PolishInterpreter();
+        mCalc = new Calculator(conv, inter);
+
         // восстановление состояния
         if (save != null) {
             restore(save);
@@ -57,13 +67,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(Bundle saved) {
         super.onRestoreInstanceState(saved);
         restore(saved);
-    }
-
-    private void restore(Bundle save) {
-        String[] array = save.getStringArray(BUNDLE_QUEUE);
-        if (array != null) {
-            mInputQueue = new LinkedList<>(Arrays.asList(array));
-        }
     }
 
     @OnClick({
@@ -92,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
             R.id.btn_clear,
             R.id.btn_enter
     })
-    public void clickAdd(View view) {
+    public void keyboardButtonClick(View view) {
         int id = view.getId();
         switch (id) {
             case R.id.btn_add:
@@ -100,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.btn_minus:
                 if (isLastOperator()) {
-                    append("- "); // унарный минус
+                    append("-"); // унарный минус
                 } else {
                     append(" - ");
                 }
@@ -171,6 +174,13 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    private void restore(Bundle save) {
+        String[] array = save.getStringArray(BUNDLE_QUEUE);
+        if (array != null) {
+            mInputQueue = new LinkedList<>(Arrays.asList(array));
+        }
+    }
+
     private void append(String s) {
         String n = editText.getText() + s;
         editText.setText(n);
@@ -204,12 +214,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // унарный минус может стоять в следующих позициях
     private boolean isLastOperator() {
         String lastInput = mInputQueue.peek();
-        return lastInput.equals(" + ")
+        return lastInput == null // в начале выражения
+                || lastInput.equals(" + ") // операции
                 || lastInput.equals(" - ")
                 || lastInput.equals(" * ")
-                || lastInput.equals(" / ");
+                || lastInput.equals(" / ")
+                || lastInput.equals("( "); // открывающаяся скобка
     }
 
 }
