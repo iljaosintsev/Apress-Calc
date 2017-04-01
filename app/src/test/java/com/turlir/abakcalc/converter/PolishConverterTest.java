@@ -1,4 +1,8 @@
-package com.turlir.abakcalc;
+package com.turlir.abakcalc.converter;
+
+
+import com.turlir.abakcalc.converter.abs.Item;
+import com.turlir.abakcalc.converter.abs.NotationConverter;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -7,30 +11,28 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-public class NotationConverterTest {
-
-    private NotationConverter nc;
-
-    @Before
-    public void setUp() {
-        nc = new NotationConverter();
-    }
+public class PolishConverterTest {
 
     private static final Item one = new Operand(1.0);
     private static final Item two = new Operand(2.0);
     private static final Item three = new Operand(3.0);
     private static final Item four = new Operand(4.0);
-
     private static final Item add = Operator.ADD;
     private static final Item remove = Operator.REMOVE;
     private static final Item multi = Operator.MULTIPLY;
     private static final Item div = Operator.DIVIDE;
+    private NotationConverter nc;
 
-    private void check(Queue<Item> actual, Item... expected ) {
+    private void check(Queue<Item> actual, Item... expected) {
         Queue<Item> items = new LinkedList<>(Arrays.asList(expected));
         assertEquals(items, actual);
+    }
+
+    @Before
+    public void setUp() {
+        nc = new PolishConverter();
     }
 
     @Test
@@ -41,7 +43,7 @@ public class NotationConverterTest {
 
     @Test
     public void simpleBracketTest() {
-        Queue<Item>  calc = nc.convert("( 2 + 3 )");
+        Queue<Item> calc = nc.convert("( 2 + 3 )");
         check(calc, two, three, add);
     }
 

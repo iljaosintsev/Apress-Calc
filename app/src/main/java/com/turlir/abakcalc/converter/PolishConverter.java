@@ -1,4 +1,7 @@
-package com.turlir.abakcalc;
+package com.turlir.abakcalc.converter;
+
+import com.turlir.abakcalc.converter.abs.Item;
+import com.turlir.abakcalc.converter.abs.NotationConverter;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -8,12 +11,12 @@ import java.util.regex.Pattern;
 /**
  * Конвертер математическх варажений
  */
-class NotationConverter {
+class PolishConverter implements NotationConverter {
 
     private final Pattern mPattern;
     private final Queue<Item> mConverted;
 
-    NotationConverter() {
+    PolishConverter() {
         mPattern = Pattern.compile("\\d+(.?)\\d*"); // только цифры
         mConverted = new LinkedList<>();
     }
@@ -24,7 +27,8 @@ class NotationConverter {
      * @return обратная польская нотация в прямом порядке
      * @exception RuntimeException в случае ошибки
      */
-    Queue<Item> convert(String input) throws RuntimeException {
+    @Override
+    public Queue<Item> convert(String input) throws RuntimeException {
         Stack<Operator> operators = new Stack<>();
         mConverted.clear();
 

@@ -1,5 +1,8 @@
-package com.turlir.abakcalc;
+package com.turlir.abakcalc.converter;
 
+
+import com.turlir.abakcalc.converter.abs.Item;
+import com.turlir.abakcalc.converter.abs.NotationInterpreter;
 
 class Operand implements Item {
 
@@ -10,10 +13,14 @@ class Operand implements Item {
     }
 
     @Override
+    public void operate(NotationInterpreter visitor) {
+        visitor.pushDigit(mValue);
+    }
+
+    @Override
     public String toString() {
         return mValue.toString();
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -24,11 +31,6 @@ class Operand implements Item {
 
         return mValue != null ? mValue.equals(operand.mValue) : operand.mValue == null;
 
-    }
-
-    @Override
-    public int hashCode() {
-        return mValue != null ? mValue.hashCode() : 0;
     }
 
 }

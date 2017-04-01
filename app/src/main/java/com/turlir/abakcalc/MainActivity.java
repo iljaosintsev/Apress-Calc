@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.tv_result)
     TextView result;
 
-    private Calc mCalc;
     private LinkedList<String> mInputQueue; // очередь вставок для удаления
 
     @Override
@@ -37,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(save);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        mCalc = new Calc();
+
         // восстановление состояния
         if (save != null) {
             restore(save);
@@ -193,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
         String str = editText.getText().toString();
         if (str.length() > 2) {
             try {
-                Double calc = mCalc.calc(str);
+                Double calc = 0.0; // TODO
                 Log.d(TAG, "Результат " + calc);
                 String strRes = getString(R.string.result, DF.format(calc));
                 result.setText(strRes);

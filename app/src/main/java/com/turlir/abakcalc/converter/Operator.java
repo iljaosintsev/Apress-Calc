@@ -1,5 +1,8 @@
-package com.turlir.abakcalc;
+package com.turlir.abakcalc.converter;
 
+
+import com.turlir.abakcalc.converter.abs.Item;
+import com.turlir.abakcalc.converter.abs.NotationInterpreter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,8 +16,10 @@ enum Operator implements Item {
         }
 
         @Override
-        public Double apply(Double left, Double right) {
-            return left * right;
+        public void operate(NotationInterpreter visitor) {
+            Double one = visitor.poolDigit();
+            Double two = visitor.poolDigit();
+            visitor.pushDigit(one * two);
         }
     },
 
@@ -25,11 +30,10 @@ enum Operator implements Item {
         }
 
         @Override
-        public Double apply(Double left, Double right) {
-            if (right == 0) {
-                throw new ArithmeticException("Деление на ноль");
-            }
-            return left / right;
+        public void operate(NotationInterpreter visitor) {
+            Double one = visitor.poolDigit();
+            Double two = visitor.poolDigit();
+            visitor.pushDigit(one / two);
         }
     },
 
@@ -40,8 +44,10 @@ enum Operator implements Item {
         }
 
         @Override
-        public Double apply(Double left, Double right) {
-            return left + right;
+        public void operate(NotationInterpreter visitor) {
+            Double one = visitor.poolDigit();
+            Double two = visitor.poolDigit();
+            visitor.pushDigit(one + two);
         }
     },
 
@@ -52,13 +58,15 @@ enum Operator implements Item {
         }
 
         @Override
-        public Double apply(Double left, Double right) {
-            return left - right;
+        public boolean associate() {
+            return true;
         }
 
         @Override
-        public boolean associate() {
-            return true;
+        public void operate(NotationInterpreter visitor) {
+            Double one = visitor.poolDigit();
+            Double two = visitor.poolDigit();
+            visitor.pushDigit(one - two);
         }
     },
 
@@ -69,8 +77,8 @@ enum Operator implements Item {
         }
 
         @Override
-        public Double apply(Double left, Double right) {
-            return null;
+        public void operate(NotationInterpreter visitor) {
+            //
         }
     },
 
@@ -81,8 +89,8 @@ enum Operator implements Item {
         }
 
         @Override
-        public Double apply(Double left, Double right) {
-            return null;
+        public void operate(NotationInterpreter visitor) {
+
         }
     };
 
@@ -106,8 +114,6 @@ enum Operator implements Item {
     }
 
     public abstract int priority();
-
-    public abstract Double apply(Double left, Double right);
 
     public boolean associate() {
         return false;
