@@ -11,12 +11,12 @@ import java.util.regex.Pattern;
 /**
  * Конвертер математическх варажений
  */
-class PolishConverter implements NotationConverter {
+public class PolishConverter implements NotationConverter {
 
     private final Pattern mPattern;
     private final Queue<Item> mConverted;
 
-    PolishConverter() {
+    public PolishConverter() {
         mPattern = Pattern.compile("\\d+(.?)\\d*"); // только цифры
         mConverted = new LinkedList<>();
     }

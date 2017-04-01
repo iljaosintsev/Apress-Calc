@@ -8,6 +8,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.turlir.abakcalc.converter.Calculator;
+import com.turlir.abakcalc.converter.PolishConverter;
+import com.turlir.abakcalc.converter.PolishInterpreter;
+import com.turlir.abakcalc.converter.abs.NotationConverter;
+import com.turlir.abakcalc.converter.abs.NotationInterpreter;
+
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -29,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.tv_result)
     TextView result;
 
+    private Calculator mCalc;
     private LinkedList<String> mInputQueue; // очередь вставок для удаления
 
     @Override
@@ -36,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(save);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        NotationConverter conv = new PolishConverter();
+        NotationInterpreter inter = new PolishInterpreter();
+        mCalc = new Calculator(conv, inter);
 
         // восстановление состояния
         if (save != null) {
@@ -192,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
         String str = editText.getText().toString();
         if (str.length() > 2) {
             try {
-                Double calc = 0.0; // TODO
+                Double calc = mCalc.calc(str);
                 Log.d(TAG, "Результат " + calc);
                 String strRes = getString(R.string.result, DF.format(calc));
                 result.setText(strRes);
