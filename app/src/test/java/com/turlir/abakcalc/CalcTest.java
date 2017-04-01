@@ -86,7 +86,7 @@ public class CalcTest {
     @Test(expected = RuntimeException.class)
     public void bracketFailTest() {
         c.calc("( 1 + 2 ");
-        // assertEquals(3, calc, 0.1);
+        // assertEquals(3, convert, 0.1);
     }
 
     @Test(expected = ArithmeticException.class)

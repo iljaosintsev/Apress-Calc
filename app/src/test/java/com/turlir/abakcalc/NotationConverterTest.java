@@ -35,32 +35,31 @@ public class NotationConverterTest {
 
     @Test
     public void simpleTest() {
-        Queue<Item> calc = nc.calc("2 + 3");
+        Queue<Item> calc = nc.convert("2 + 3");
         check(calc, two, three, add);
     }
 
-
     @Test
     public void simpleBracketTest() {
-        Queue<Item>  calc = nc.calc("( 2 + 3 )");
+        Queue<Item>  calc = nc.convert("( 2 + 3 )");
         check(calc, two, three, add);
     }
 
     @Test
     public void sideEffectAfterBracketTest() {
-        Queue<Item> calc = nc.calc("( 2 + 3 ) - 3");
+        Queue<Item> calc = nc.convert("( 2 + 3 ) - 3");
         check(calc, two, three, add, three, remove);
 
-        calc = nc.calc("3 * ( 2 + 3 )");
+        calc = nc.convert("3 * ( 2 + 3 )");
         check(calc, three, two, three, add, multi);
     }
 
     @Test
     public void simpleQueueTest() {
-        Queue<Item> calc = nc.calc("3 + 4 * 2");
+        Queue<Item> calc = nc.convert("3 + 4 * 2");
         check(calc, three, four, two, multi, add);
 
-        calc = nc.calc("2 + 3 * 4");
+        calc = nc.convert("2 + 3 * 4");
         check(calc, two, three, four, multi, add);
     }
 
@@ -68,80 +67,80 @@ public class NotationConverterTest {
     public void associativeQueueTest() {
         Queue<Item> calc;
 
-        calc = nc.calc("1 + 4 * 2 + 3");
+        calc = nc.convert("1 + 4 * 2 + 3");
         check(calc, one, four, two, multi, add, three, add);
 
-        calc = nc.calc("1 * 4 + 2 + 3");
+        calc = nc.convert("1 * 4 + 2 + 3");
         check(calc, one, four, multi, two, add, three, add);
 
-        calc = nc.calc("4 - 1 * 2 + 3");
+        calc = nc.convert("4 - 1 * 2 + 3");
         check(calc, four, one, two, multi, remove, three, add);
 
-        calc = nc.calc("1 + 4 - 2 + 3");
+        calc = nc.convert("1 + 4 - 2 + 3");
         check(calc, one, four, add, two, remove, three, add);
 
-        calc = nc.calc("4 - 3 - 1 - 2");
+        calc = nc.convert("4 - 3 - 1 - 2");
         check(calc, four, three, remove, one, remove, two, remove);
     }
 
     @Test
     public void queueAndBracketTest() {
-        Queue<Item> calc = nc.calc("( 1 + 2 ) * 4 + 3");
+        Queue<Item> calc = nc.convert("( 1 + 2 ) * 4 + 3");
         check(calc, one, two, add, four, multi, three, add);
 
-        calc = nc.calc("4 * ( 1 + 2 ) + 3");
+        calc = nc.convert("4 * ( 1 + 2 ) + 3");
         check(calc, four, one, two, add, multi, three, add);
 
-        calc = nc.calc("3 + ( 1 + 2 ) * 4");
+        calc = nc.convert("3 + ( 1 + 2 ) * 4");
         check(calc, three, one, two, add, four, multi, add);
     }
 
     @Test
     public void associativeQueueBracketTest() {
-        Queue<Item> calc = nc.calc("( 1 + 4 ) - 2 + 3");
+        Queue<Item> calc = nc.convert("( 1 + 4 ) - 2 + 3");
         check(calc, one, four, add, two, remove, three, add);
     }
 
     @Test(expected = RuntimeException.class)
     public void bracketFailTest() {
-        nc.calc("( 1 + 2 ");
+        nc.convert("( 1 + 2 ");
     }
 
     @Test(expected = ArithmeticException.class)
     public void digitBracketWithoutOperationTest() {
-        nc.calc("2( ");
+        nc.convert("2( ");
     }
 
     @Test
     public void divisionByZeroTest() {
-        Queue<Item> calc = nc.calc("3 / ( 4 - 4 )");
+        Queue<Item> calc = nc.convert("3 / ( 4 - 4 )");
         check(calc, three, four, four, remove, div);
     }
 
     @Test
     public void twoDivisionByZeroTest() {
-        Queue<Item> calc = nc.calc("( 3 - 4 ) / 2");
+        Queue<Item> calc = nc.convert("( 3 - 4 ) / 2");
         check(calc, three, four, remove, two, div);
     }
 
     @Test
     public void threeDivisionByZeroTest() {
-        Queue<Item> calc = nc.calc("( 3 - 2 ) / ( 4 - 1 )");
+        Queue<Item> calc = nc.convert("( 3 - 2 ) / ( 4 - 1 )");
         check(calc, three, two, remove, four, one, remove, div);
     }
 
     @Test
     public void operandExpectedCorrectionTest() {
-        Queue<Item> actual = nc.calc("2 + 3 *");
+        Queue<Item> actual = nc.convert("2 + 3 *");
         check(actual, two, three, multi, add);
 
-        actual = nc.calc("2 * 3 +");
+        actual = nc.convert("2 * 3 +");
         check(actual, two, three, multi, add);
     }
 
     @Test
     public void halfExpressionTest() {
-        Queue<Item> calc = nc.calc("2 + ");
+        Queue<Item> calc = nc.convert("2 + ");
         check(calc, two, add);
     }
 
