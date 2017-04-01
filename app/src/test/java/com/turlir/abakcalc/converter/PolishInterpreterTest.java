@@ -36,7 +36,8 @@ public class PolishInterpreterTest {
             mInter.pushDigit(digit);
         }
 
-        for (double digit : array) {
+        for (int i = 0; i < array.length; i++) {
+            double digit = array[array.length - i - 1];
             Double actual = mInter.poolDigit();
             Double expected = digit;
             assertEquals(expected, actual, 0.1);

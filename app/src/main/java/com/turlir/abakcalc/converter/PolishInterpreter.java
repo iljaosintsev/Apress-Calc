@@ -3,25 +3,24 @@ package com.turlir.abakcalc.converter;
 
 import com.turlir.abakcalc.converter.abs.NotationInterpreter;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.Stack;
 
-class PolishInterpreter implements NotationInterpreter {
+public class PolishInterpreter implements NotationInterpreter {
 
-    private final Queue<Double> mQueue;
+    private final Stack<Double> mQueue;
 
-    PolishInterpreter() {
-        mQueue = new LinkedList<>();
+    public PolishInterpreter() {
+        mQueue = new Stack<>();
     }
 
     @Override
     public Double poolDigit() {
-        return mQueue.poll();
+        return mQueue.pop();
     }
 
     @Override
     public void pushDigit(Double value) {
-        mQueue.add(value);
+        mQueue.push(value);
     }
 
 }
