@@ -6,25 +6,27 @@ import com.turlir.abakcalc.converter.abs.NotationInterpreter;
 
 import java.util.Queue;
 
+/**
+ * Простой класс для организации взаимодействия между {@link PolishConverter} и {@link NotationInterpreter}
+ */
 public class Calculator {
 
-    private PolishConverter mConverter;
+    private final PolishConverter mConverter;
     private final NotationInterpreter mInter;
 
     public Calculator(PolishConverter converter, NotationInterpreter inter) {
         mConverter = converter;
-        this.mInter = inter;
+        mInter = inter;
     }
 
-    Double calc(String exp) {
+    public Double calc(String exp) {
         Queue<Item> queue = mConverter.convert(exp);
 
         for (Item current : queue) {
             current.operate(mInter);
         }
 
-        Double result = mInter.poolDigit();
-        return result;
+        return mInter.poolDigit();
     }
 
 }
