@@ -171,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean clearAll() {
         editText.setText("");
         result.setText("");
+        mInputQueue.clear();
         return true;
     }
 
