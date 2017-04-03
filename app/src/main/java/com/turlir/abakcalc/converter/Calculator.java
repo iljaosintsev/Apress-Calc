@@ -24,15 +24,13 @@ public class Calculator {
      * Вычисляет значение математического выражения
      * @param exp выражение
      * @return значение
-     * @throws RuntimeException в случае ошибки разбора или интерпретации выражения
+     * @throws Exception в случае ошибки разбора или интерпретации выражения
      */
-    public Double calc(String exp) throws RuntimeException{
+    public Double calc(String exp) throws Exception {
         Queue<Item> queue = mConverter.convert(exp);
-
         for (Item current : queue) {
             current.operate(mInter);
         }
-
         return mInter.poolDigit();
     }
 

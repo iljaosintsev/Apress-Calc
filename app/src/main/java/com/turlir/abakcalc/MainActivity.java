@@ -16,6 +16,7 @@ import com.turlir.abakcalc.converter.abs.NotationInterpreter;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
+import java.util.EmptyStackException;
 import java.util.LinkedList;
 
 import butterknife.BindView;
@@ -196,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
             Editable origin = editText.getText();
             CharSequence n = origin.subSequence(0, l - del);
             editText.setText(n);
-            result.setText(""); // сбрасываем результата
+            result.setText(""); // сбрасываем результат
         }
     }
 
@@ -208,6 +209,9 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "Результат " + calc);
                 String strRes = getString(R.string.result, DF.format(calc));
                 result.setText(strRes);
+            } catch (EmptyStackException e) {
+                Log.e(TAG, "EmptyStackException при вычислении", e);
+                result.setText(R.string.error);
             } catch (Exception e) {
                 Log.e(TAG, "Ошибка при вычислении", e);
                 result.setText(e.getMessage());
