@@ -4,7 +4,7 @@ git:
   depth: 3
 
 jdk:
-  - oraclejdk7
+  - oraclejdk8
 
 android:
   components:

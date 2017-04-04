@@ -5,6 +5,10 @@
 и невозможность использовать **appCompat**, что ведет к использованию стилей платформы по-умолчанию.
 Неприятный дизайн Android 2.2 Froyo портит впечатления от выполенной работы.
 
+## Build status ##
+
+[![Build Status](https://travis-ci.org/turlir/Apress-Calculator.svg?branch=master)](https://travis-ci.org/turlir/Apress-Calculator)
+
 # Логика работы
 
 В текстовое поле вводится выражение
