@@ -64,12 +64,6 @@ public class MainActivity extends AppCompatActivity {
         outState.putStringArray(BUNDLE_QUEUE, array);
     }
 
-    @Override
-    protected void onRestoreInstanceState(Bundle saved) {
-        super.onRestoreInstanceState(saved);
-        restore(saved);
-    }
-
     @OnClick({
             R.id.btn_add,
             R.id.btn_minus,
