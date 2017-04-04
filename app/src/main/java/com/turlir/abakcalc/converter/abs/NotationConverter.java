@@ -5,6 +5,6 @@ import java.util.Queue;
 
 public interface NotationConverter {
 
-    Queue<Item> convert(String input) throws Exception;
+    Queue<Item> convert(String input) throws RuntimeException;
 
 }

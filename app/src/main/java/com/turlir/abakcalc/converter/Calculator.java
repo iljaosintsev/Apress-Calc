@@ -24,9 +24,9 @@ public class Calculator {
      * Вычисляет значение математического выражения
      * @param exp выражение
      * @return значение
-     * @throws Exception в случае ошибки разбора или интерпретации выражения
+     * @throws RuntimeException в случае ошибки разбора или интерпретации выражения
      */
-    public Double calc(String exp) throws Exception {
+    public Double calc(String exp) throws RuntimeException {
         Queue<Item> queue = mConverter.convert(exp);
         for (Item current : queue) {
             current.operate(mInter);
