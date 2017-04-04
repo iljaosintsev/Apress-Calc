@@ -17,6 +17,17 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            signingConfig signingConfigs.debug
+        }
+    }
+    signingConfigs {
+        debug {
+            keyAlias "debug"
+            keyPassword "android"
+            storeFile file("keystore/debug-keystore.jks")
+            storePassword "android"
+        }
     }
 }
 
