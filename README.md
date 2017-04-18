@@ -7,7 +7,7 @@
 
 ## Build status ##
 
-[![Build Status](https://travis-ci.org/iljaosintsev/Apress-Calc.svg?branch=master)](https://travis-ci.org/iljaosintsev/Apress-Calculator)
+[![Build Status](https://travis-ci.org/iljaosintsev/Apress-Calc.svg?branch=master)](https://travis-ci.org/iljaosintsev/Apress-Calc)
 
 # Логика работы
 
