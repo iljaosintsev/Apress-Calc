@@ -3,14 +3,15 @@ package com.turlir.abakcalc.converter;
 
 import com.turlir.abakcalc.converter.abs.NotationInterpreter;
 
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class PolishInterpreter implements NotationInterpreter {
 
-    private final Stack<Double> mQueue;
+    private final Deque<Double> mQueue;
 
     public PolishInterpreter() {
-        mQueue = new Stack<>();
+        mQueue = new ArrayDeque<>();
     }
 
     @Override
