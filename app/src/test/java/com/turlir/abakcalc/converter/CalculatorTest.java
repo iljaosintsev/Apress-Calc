@@ -57,7 +57,34 @@ public class CalculatorTest {
     }
 
     @Test
-    public void hardTest() {
+    public void plusMinusTest() {
+        PolishConverter cov = new PolishConverter();
+        NotationInterpreter inter = new PolishInterpreter();
+        Calculator calc = new Calculator(cov, inter);
+        Double res = calc.calc("8 - 2 + 1");
+        assertEquals(7, res, 0.1);
+    }
+
+    @Test
+    public void multiplyDivideTest() {
+        PolishConverter cov = new PolishConverter();
+        NotationInterpreter inter = new PolishInterpreter();
+        Calculator calc = new Calculator(cov, inter);
+        Double res = calc.calc("4 * 4 / 8");
+        assertEquals(2, res, 0.1);
+    }
+
+    @Test
+    public void priorityTest() {
+        PolishConverter cov = new PolishConverter();
+        NotationInterpreter inter = new PolishInterpreter();
+        Calculator calc = new Calculator(cov, inter);
+        Double res = calc.calc("2 + 2 * 2");
+        assertEquals(6, res, 0.1);
+    }
+
+    @Test
+    public void complexTest() {
         PolishConverter cov = new PolishConverter();
         NotationInterpreter inter = new PolishInterpreter();
         Calculator calc = new Calculator(cov, inter);

@@ -58,11 +58,6 @@ enum Operator implements Item {
         }
 
         @Override
-        public boolean associate() {
-            return true;
-        }
-
-        @Override
         public void operate(NotationInterpreter visitor) {
             Double one = visitor.poolDigit();
             Double two = visitor.poolDigit();
@@ -113,10 +108,14 @@ enum Operator implements Item {
         mOperator = op;
     }
 
-    public abstract int priority();
+    abstract int priority();
 
-    public boolean associate() {
-        return false;
+    public static class Comparator implements java.util.Comparator<Operator> {
+
+        @Override
+        public int compare(Operator o1, Operator o2) {
+            return o1.priority() - o2.priority();
+        }
     }
 
 }

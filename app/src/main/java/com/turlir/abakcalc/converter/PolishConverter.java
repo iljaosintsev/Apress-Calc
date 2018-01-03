@@ -3,9 +3,11 @@ package com.turlir.abakcalc.converter;
 import com.turlir.abakcalc.converter.abs.Item;
 import com.turlir.abakcalc.converter.abs.NotationConverter;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Stack;
 import java.util.regex.Pattern;
 
 /**
@@ -14,11 +16,11 @@ import java.util.regex.Pattern;
 public class PolishConverter implements NotationConverter {
 
     private final Pattern mPattern;
-    private final Queue<Item> mConverted;
+    private final Operator.Comparator mComparator;
 
     public PolishConverter() {
         mPattern = Pattern.compile("-?\\d+(.?)\\d*"); // только цифры
-        mConverted = new LinkedList<>();
+        mComparator = new Operator.Comparator();
     }
 
     /**
@@ -29,32 +31,29 @@ public class PolishConverter implements NotationConverter {
      */
     @Override
     public Queue<Item> convert(String input) throws RuntimeException {
-        Stack<Operator> operators = new Stack<>();
-        mConverted.clear();
+        Deque<Operator> operators = new ArrayDeque<>();
+        Queue<Item> converted = new LinkedList<>();
 
         String[] tokens = input.split(" ");
-        boolean isLastOperator = true; // флаг для определеня унарного минуса
 
         for (String token : tokens) {
             boolean isNumber = mPattern.matcher(token).matches();
 
             if (isNumber) { // операнд
-                number(token);
-                isLastOperator = false;
+                Operand operand = number(token);
+                converted.add(operand);
 
             } else if (token.equals("(")) { // открыв. скобка
-                operators.push(Operator.CS);
-                isLastOperator = true;
+                operators.addLast(Operator.CS);
 
             } else if(token.equals(")")) { // закрывающаяся скобка - окончательный расчет
-                closedBracket(operators);
-                isLastOperator = false;
+                closedBracket(operators.descendingIterator(), converted);
 
             } else { // оператор
                 Operator current = Operator.find(token);
                 if (current != null) {
-                    operator(operators, isLastOperator, current);
-                    isLastOperator = true;
+                    operator(current, operators.descendingIterator(), converted);
+                    operators.addLast(current);
                 } else {
                     throw new ArithmeticException("Неверное выражение");
                 }
@@ -66,65 +65,45 @@ public class PolishConverter implements NotationConverter {
         }
 
         while (!operators.isEmpty()) { // дописываем остатки операторов
-            Operator op = operators.pop();
-            mConverted.add(op);
+            Operator op = operators.pollLast();
+            converted.add(op);
         }
 
-        return mConverted;
+        return converted;
     }
 
-    private void number(String token) {
+    private void operator(Operator current, Iterator<Operator> iter, Queue<Item> converted) {
+        while (iter.hasNext()) {
+            Operator prev = iter.next();
+            if (prev == Operator.CS) { // 4 * ( 1 + 2 )
+                break;
+            } else if (mComparator.compare(current, prev) < 1) {
+                // для всех операторов из стека, приоритет которых больше текущего оператора
+                iter.remove();
+                converted.add(prev);
+            }
+        }
+    }
+
+    private Operand number(String token) {
         try {
             double digit = Double.parseDouble(token);
-            mConverted.add(new Operand(digit));
+            return new Operand(digit);
         } catch (NumberFormatException e) {
             throw new ArithmeticException("Неверное выражение");
         }
     }
 
-    private void closedBracket(Stack<Operator> operators) {
-        Operator tmp = null;
-        while (!operators.isEmpty()) {
-            tmp = operators.pop();
+    private void closedBracket(Iterator<Operator> iter, Queue<Item> converted) {
+        while (iter.hasNext()) {
+            Operator tmp = iter.next();
+            iter.remove(); // poolLast() analog
             if (tmp != Operator.CS) {
-                mConverted.add(tmp);
+                converted.add(tmp);
             } else {
                 break;
             }
         }
-        if (tmp == null || tmp != Operator.CS) { // last
-            throw new RuntimeException("Неправильно расставлены скобки");
-        }
     }
-
-    private void operator(Stack<Operator> operators, boolean isLastOperator, Operator current) {
-        for (int i = operators.size() - 1; i >= 0 ; i--) { // идем с конца стека
-            Operator prev = operators.elementAt(i); // смотрим элемент
-            if (prev == Operator.CS) { // 4 * ( 1 + 2 )
-                break;
-            }
-
-            // для отличия минуса от унарного
-            boolean p = isLastOperator && (current == Operator.REMOVE);
-            // если приоритет prev в стеке выше приоритета current текущего
-            // и текущий оператор минус или предыдущий токен - операнд
-            if (!p &&  (prev.priority() > current.priority())) {
-                operators.pop(); // компенсируем elementAt
-                mConverted.add(prev);
-            } else if (prev.priority() == current.priority()) {
-                if (prev.associate()) {
-                    operators.pop(); // аналогично
-                    mConverted.add(prev);
-                } else {
-                    operators.pop();
-                    mConverted.add(prev);
-                }
-            }
-        }
-
-        // унарный минус поддерживается на уровне Double#parseDouble(String)
-        operators.push(current);
-    }
-
 
 }
