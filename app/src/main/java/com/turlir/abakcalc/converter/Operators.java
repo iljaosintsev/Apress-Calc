@@ -1,10 +1,13 @@
 package com.turlir.abakcalc.converter;
 
+import android.support.annotation.NonNull;
+
 import com.turlir.abakcalc.converter.abs.NotationInterpreter;
 import com.turlir.abakcalc.converter.abs.Operator;
 
 abstract class Operators {
 
+    @NonNull
     static Operator find(String sign) {
         switch (sign) {
             case "*":

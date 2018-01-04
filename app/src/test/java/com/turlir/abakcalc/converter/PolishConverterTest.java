@@ -106,8 +106,13 @@ public class PolishConverterTest {
     }
 
     @Test(expected = RuntimeException.class)
-    public void bracketFailTest() {
+    public void openBracketFailTest() {
         nc.convert("( 1 + 2 ");
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void closedBracketFailTest() {
+        nc.convert("1 + 2 )");
     }
 
     @Test(expected = ArithmeticException.class)

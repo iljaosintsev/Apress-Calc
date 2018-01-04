@@ -50,12 +50,8 @@ public class PolishConverter implements NotationConverter {
 
             } else { // оператор
                 Operator current = Operators.find(token);
-                if (current != null) {
-                    operator(current, operators.descendingIterator(), converted);
-                    operators.addLast(current);
-                } else {
-                    throw new ArithmeticException("Неверное выражение");
-                }
+                operator(current, operators.descendingIterator(), converted);
+                operators.addLast(current);
             }
         }
 
@@ -100,9 +96,11 @@ public class PolishConverter implements NotationConverter {
             if (tmp != Operators.CS) {
                 converted.add(tmp);
             } else {
-                break;
+                return;
             }
         }
+        // не нашлось ни одной закрывающейся скобки
+        throw new RuntimeException("Неправильно расставлены скобки");
     }
 
 }
