@@ -8,7 +8,7 @@ import org.junit.Test;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -21,7 +21,7 @@ public class CalculatorTest {
         Queue<Item> queue = new LinkedList<>();
         queue.add(new Operand(2.0));
         queue.add(new Operand(2.0));
-        queue.add(Operator.ADD);
+        queue.add(Operators.PLUS);
 
         when(converter.convert("2 + 2")).thenReturn(queue);
         //
@@ -42,7 +42,7 @@ public class CalculatorTest {
         Queue<Item> queue = new LinkedList<>();
         queue.add(new Operand(4.0));
         queue.add(new Operand(-3.0));
-        queue.add(Operator.MULTIPLY);
+        queue.add(Operators.MULTIPLY);
 
         when(converter.convert("4 * -3")).thenReturn(queue);
         //

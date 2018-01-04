@@ -20,10 +20,10 @@ public class PolishConverterTest {
     private static final Item three = new Operand(3.0);
     private static final Item four = new Operand(4.0);
 
-    private static final Item add = Operator.ADD;
-    private static final Item remove = Operator.REMOVE;
-    private static final Item multi = Operator.MULTIPLY;
-    private static final Item div = Operator.DIVIDE;
+    private static final Item add = Operators.PLUS;
+    private static final Item remove = Operators.MINUS;
+    private static final Item multi = Operators.MULTIPLY;
+    private static final Item div = Operators.DIVIDE;
 
     private NotationConverter nc;
 

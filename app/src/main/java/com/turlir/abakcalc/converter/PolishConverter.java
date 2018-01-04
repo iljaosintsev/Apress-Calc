@@ -2,6 +2,7 @@ package com.turlir.abakcalc.converter;
 
 import com.turlir.abakcalc.converter.abs.Item;
 import com.turlir.abakcalc.converter.abs.NotationConverter;
+import com.turlir.abakcalc.converter.abs.Operator;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -16,11 +17,9 @@ import java.util.regex.Pattern;
 public class PolishConverter implements NotationConverter {
 
     private final Pattern mPattern;
-    private final Operator.Comparator mComparator;
 
     public PolishConverter() {
         mPattern = Pattern.compile("-?\\d+(.?)\\d*"); // только цифры
-        mComparator = new Operator.Comparator();
     }
 
     /**
@@ -44,13 +43,13 @@ public class PolishConverter implements NotationConverter {
                 converted.add(operand);
 
             } else if (token.equals("(")) { // открыв. скобка
-                operators.addLast(Operator.CS);
+                operators.addLast(Operators.CS);
 
             } else if(token.equals(")")) { // закрывающаяся скобка - окончательный расчет
                 closedBracket(operators.descendingIterator(), converted);
 
             } else { // оператор
-                Operator current = Operator.find(token);
+                Operator current = Operators.find(token);
                 if (current != null) {
                     operator(current, operators.descendingIterator(), converted);
                     operators.addLast(current);
@@ -60,7 +59,7 @@ public class PolishConverter implements NotationConverter {
             }
         }
 
-        if (operators.contains(Operator.CS)) {
+        if (operators.contains(Operators.CS)) {
             throw new RuntimeException("Неправильно расставлены скобки");
         }
 
@@ -75,9 +74,9 @@ public class PolishConverter implements NotationConverter {
     private void operator(Operator current, Iterator<Operator> iter, Queue<Item> converted) {
         while (iter.hasNext()) {
             Operator prev = iter.next();
-            if (prev == Operator.CS) { // 4 * ( 1 + 2 )
+            if (prev == Operators.CS) { // 4 * ( 1 + 2 )
                 break;
-            } else if (mComparator.compare(current, prev) < 1) {
+            } else if (current.compareTo(prev) < 1) {
                 // для всех операторов из стека, приоритет которых больше текущего оператора
                 iter.remove();
                 converted.add(prev);
@@ -98,7 +97,7 @@ public class PolishConverter implements NotationConverter {
         while (iter.hasNext()) {
             Operator tmp = iter.next();
             iter.remove(); // poolLast() analog
-            if (tmp != Operator.CS) {
+            if (tmp != Operators.CS) {
                 converted.add(tmp);
             } else {
                 break;
