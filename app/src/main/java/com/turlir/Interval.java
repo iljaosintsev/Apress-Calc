@@ -13,8 +13,39 @@ class Interval {
         this.type = operand;
     }
 
+    Interval(String origin, int index) {
+        boolean l;
+        char c = origin.charAt(index);
+        boolean f = digit(c);
+        if (!f && operator(c)) {
+            type = false;
+            value = origin.substring(index, index + 1);
+            return;
+        }
+        int offset = 0;
+        do {
+            offset++;
+            if (index + offset < origin.length()) {
+                c = origin.charAt(index + offset);
+                l = digit(c);
+            } else {
+                break;
+            }
+        } while (f == l);
+        type = f;
+        value = origin.substring(index, index + offset);
+    }
+
     boolean operand() {
         return type;
+    }
+
+    private static boolean digit(char c) {
+        return Character.isDigit(c) || c == '.' /*|| c == ','*/;
+    }
+
+    private static boolean operator(char c) {
+        return c == '+' || c == '-' || c == '*' || c == '/';
     }
 
     @Override

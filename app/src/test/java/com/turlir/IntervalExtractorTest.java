@@ -53,7 +53,7 @@ public class IntervalExtractorTest {
     @Test
     public void bracketExtractTest() {
         Iterator<Interval> extractor = new MultiOperatorExtractor(
-                new FastIntervalExtractor("-2*(3+(16-9))")
+                new ExpressionPartExtractor("-2*(3+(16-9))")
         );
 
         assertTrue(extractor.hasNext());
