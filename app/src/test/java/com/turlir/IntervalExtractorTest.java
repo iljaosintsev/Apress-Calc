@@ -29,7 +29,7 @@ public class IntervalExtractorTest {
     @Test
     public void extractComplexOperatorTest() {
         Iterator<Interval> extractor = new MultiOperatorExtractor(
-                new FastIntervalExtractor("5*sin(2)") // IntervalExtractor
+                new FastIntervalExtractor("5*sin(2+cos(6))") // IntervalExtractor
         );
 
         assertTrue(extractor.hasNext());
@@ -43,6 +43,18 @@ public class IntervalExtractorTest {
 
         assertTrue(extractor.hasNext());
         assertEquals(extractor.next(), and("2"));
+
+        assertTrue(extractor.hasNext());
+        assertEquals(extractor.next(), or("+"));
+
+        assertTrue(extractor.hasNext());
+        assertEquals(extractor.next(), or("cos("));
+
+        assertTrue(extractor.hasNext());
+        assertEquals(extractor.next(), and("6"));
+
+        assertTrue(extractor.hasNext());
+        assertEquals(extractor.next(), or(")"));
 
         assertTrue(extractor.hasNext());
         assertEquals(extractor.next(), or(")"));
