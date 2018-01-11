@@ -14,14 +14,11 @@ public class IntervalExtractorTest {
     public void simpleExtractTest() {
         Iterator<Interval> extractor = new IntervalExtractor("23.54+45.67");
 
-        assertTrue(extractor.hasNext());
-        assertEquals(extractor.next(), and("23.54"));
+        and(extractor, "23.54");
 
-        assertTrue(extractor.hasNext());
-        assertEquals(extractor.next(), or("+"));
+        or(extractor, "+");
 
-        assertTrue(extractor.hasNext());
-        assertEquals(extractor.next(), and("45.67"));
+        and(extractor, "45.67");
 
         assertFalse(extractor.hasNext());
     }
@@ -32,32 +29,23 @@ public class IntervalExtractorTest {
                 new FastIntervalExtractor("5*sin(2+cos(6))") // IntervalExtractor
         );
 
-        assertTrue(extractor.hasNext());
-        assertEquals(extractor.next(), and("5"));
+        and(extractor, "5");
 
-        assertTrue(extractor.hasNext());
-        assertEquals(extractor.next(), or("*"));
+        or(extractor, "*");
 
-        assertTrue(extractor.hasNext());
-        assertEquals(extractor.next(), or("sin("));
+        or(extractor, "sin(");
 
-        assertTrue(extractor.hasNext());
-        assertEquals(extractor.next(), and("2"));
+        and(extractor, "2");
 
-        assertTrue(extractor.hasNext());
-        assertEquals(extractor.next(), or("+"));
+        or(extractor, "+");
 
-        assertTrue(extractor.hasNext());
-        assertEquals(extractor.next(), or("cos("));
+        or(extractor, "cos(");
 
-        assertTrue(extractor.hasNext());
-        assertEquals(extractor.next(), and("6"));
+        and(extractor, "6");
 
-        assertTrue(extractor.hasNext());
-        assertEquals(extractor.next(), or(")"));
+        or(extractor, ")");
 
-        assertTrue(extractor.hasNext());
-        assertEquals(extractor.next(), or(")"));
+        or(extractor, ")");
 
         assertFalse(extractor.hasNext());
     }
@@ -68,43 +56,41 @@ public class IntervalExtractorTest {
                 new ExpressionPartExtractor("-2*(3+(16-9))")
         );
 
-        assertTrue(extractor.hasNext());
-        assertEquals(extractor.next(), or("-"));
+        or(extractor, "-");
 
-        assertTrue(extractor.hasNext());
-        assertEquals(extractor.next(), and("2"));
+        and(extractor, "2");
 
-        assertTrue(extractor.hasNext());
-        assertEquals(extractor.next(), or("*"));
+        or(extractor, "*");
 
-        assertTrue(extractor.hasNext());
-        assertEquals(extractor.next(), or("("));
+        or(extractor, "(");
 
-        assertTrue(extractor.hasNext());
-        assertEquals(extractor.next(), and("3"));
+        and(extractor, "3");
 
-        assertTrue(extractor.hasNext());
-        assertEquals(extractor.next(), or("+"));
+        or(extractor, "+");
 
-        assertTrue(extractor.hasNext());
-        assertEquals(extractor.next(), or("("));
+        or(extractor, "(");
 
-        assertTrue(extractor.hasNext());
-        assertEquals(extractor.next(), and("16"));
+        and(extractor, "16");
 
-        assertTrue(extractor.hasNext());
-        assertEquals(extractor.next(), or("-"));
+        or(extractor, "-");
 
-        assertTrue(extractor.hasNext());
-        assertEquals(extractor.next(), and("9"));
+        and(extractor, "9");
 
-        assertTrue(extractor.hasNext());
-        assertEquals(extractor.next(), or(")"));
+        or(extractor, ")");
 
-        assertTrue(extractor.hasNext());
-        assertEquals(extractor.next(), or(")"));
+        or(extractor, ")");
 
         assertFalse(extractor.hasNext());
+    }
+
+    private static void and(Iterator<Interval> it, String value) {
+        assertTrue(it.hasNext());
+        assertEquals(it.next(), and(value));
+    }
+
+    private static void or(Iterator<Interval> it, String value) {
+        assertTrue(it.hasNext());
+        assertEquals(it.next(), or(value));
     }
 
     private static Interval or(String value) {
