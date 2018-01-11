@@ -17,7 +17,7 @@ public class FastIntervalExtractor implements Iterator<Interval> {
     @Override
     public Interval next() {
         boolean l;
-        char c = str.charAt(r.index);
+        char c = r.begin(str);
         boolean f = digit(c);
         if (!f && operator(c)) {
             Interval i = new Interval(false, r.nextSubstring(str));
@@ -27,7 +27,7 @@ public class FastIntervalExtractor implements Iterator<Interval> {
         do {
             r.captureNext();
             if (r.exact(length)) {
-                c = str.charAt(r.sum());
+                c = r.capture(str);
                 l = digit(c);
             } else {
                 break;

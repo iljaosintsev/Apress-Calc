@@ -22,12 +22,12 @@ public class IntervalExtractor implements Iterator<Interval> {
     @Override
     public Interval next() {
         boolean l;
-        char c = str.charAt(r.index);
+        char c = r.begin(str);
         boolean f = digit(c);
         do {
             r.captureNext();
             if (r.exact(length)) {
-                c = str.charAt(r.sum());
+                c = r.capture(str);
                 l = digit(c);
             } else {
                 break;

@@ -2,7 +2,7 @@ package com.turlir;
 
 class Range {
 
-    int index;
+    private int index;
     private int offset;
 
     Range(int low, int up) {
@@ -14,16 +14,20 @@ class Range {
         offset++;
     }
 
+    char capture(String str) {
+        return str.charAt(index + offset);
+    }
+
+    char begin(String str) {
+        return str.charAt(index);
+    }
+
     boolean exact(int l) {
         return index + offset < l;
     }
 
     boolean exactWithoutOffset(int l) {
         return index < l;
-    }
-
-    int sum() {
-        return index + offset;
     }
 
     Range cycle() {
