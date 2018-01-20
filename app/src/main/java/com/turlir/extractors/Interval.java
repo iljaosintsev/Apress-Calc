@@ -2,10 +2,10 @@ package com.turlir.extractors;
 
 import android.support.annotation.NonNull;
 
-class Interval {
+public class Interval {
 
     @NonNull
-    final String value;
+    public final String value;
     private final boolean type;
 
     Interval(boolean operand, @NonNull String value) {
@@ -36,7 +36,7 @@ class Interval {
         value = origin.substring(index, index + offset);
     }
 
-    boolean operand() {
+    public boolean operand() {
         return type;
     }
 
