@@ -1,4 +1,4 @@
-package com.turlir;
+package com.turlir.extractors;
 
 import android.support.annotation.NonNull;
 

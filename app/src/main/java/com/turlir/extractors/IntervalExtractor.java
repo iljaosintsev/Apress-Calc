@@ -1,17 +1,22 @@
-package com.turlir;
+package com.turlir.extractors;
 
 import java.util.Iterator;
 
-public class FastIntervalExtractor implements Iterator<Interval> {
+public class IntervalExtractor implements Iterator<Interval> {
 
     private final String str;
     private final int length;
     private Range r;
 
-    FastIntervalExtractor(final String str) {
+    IntervalExtractor(final String str) {
         this.str = str.trim();
         this.length = str.length();
         this.r = new Range(0, 0);
+    }
+
+    @Override
+    public boolean hasNext() {
+        return r.exactWithoutOffset(length);
     }
 
     @Override
@@ -19,11 +24,6 @@ public class FastIntervalExtractor implements Iterator<Interval> {
         boolean l;
         char c = r.begin(str);
         boolean f = digit(c);
-        if (!f && operator(c)) {
-            Interval i = new Interval(false, r.nextSubstring(str));
-            r = r.cycle();
-            return i;
-        }
         do {
             r.captureNext();
             if (r.exact(length)) {
@@ -38,17 +38,7 @@ public class FastIntervalExtractor implements Iterator<Interval> {
         return i;
     }
 
-    @Override
-    public boolean hasNext() {
-        return r.exactWithoutOffset(length);
-    }
-
     private static boolean digit(char c) {
         return Character.isDigit(c) || c == '.' /*|| c == ','*/;
     }
-
-    private static boolean operator(char c) {
-        return c == '+' || c == '-' || c == '*' || c == '/';
-    }
-
 }
