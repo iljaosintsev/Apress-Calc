@@ -1,5 +1,7 @@
 package com.turlir.converter;
 
+import android.support.annotation.Nullable;
+
 import com.turlir.extractors.Interval;
 
 import java.util.Iterator;
@@ -7,6 +9,8 @@ import java.util.Iterator;
 public class MemberConverter implements Iterator<Member> {
 
     private final Iterator<Interval> mParent;
+    @Nullable
+    private Interval mPrev;
 
     public MemberConverter(Iterator<Interval> parent) {
         mParent = parent;
@@ -20,11 +24,18 @@ public class MemberConverter implements Iterator<Member> {
     @Override
     public Member next() {
         Interval now = mParent.next();
+        Member res;
         if (now.operand()) {
-            return new Value(Double.parseDouble(now.value));
+            res = new Value(Double.parseDouble(now.value));
         } else {
             String token = now.value;
-            return Parts.find(token);
+            if (token.equals("-") && (mPrev == null || !mPrev.operand())) {
+                res = Parts.UNARY_MINUS;
+            } else {
+                res = Parts.find(token);
+            }
         }
+        mPrev = now;
+        return res;
     }
 }

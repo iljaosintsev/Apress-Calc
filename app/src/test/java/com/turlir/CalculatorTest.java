@@ -41,7 +41,19 @@ public class CalculatorTest {
 
     @Test
     public void complexTest() {
-        Double res = calc.calc("1 + 25 - 5 / 22 + ( 45 + 34 ) * -3");
+        Double res = calc.calc("1 + 25 - 5 / 22");
+        assertEquals(25.8, res, 0.1);
+
+        res = calc.calc("1 + 25 - 5 / 22 + ( 45 + 34 )");
+        assertEquals(104.8, res, 0.1);
+
+        res = calc.calc("104.8 * -3");
+        assertEquals(-314.4, res, 0.1);
+
+        res = calc.calc("( 45 + 34 ) * -3");
+        assertEquals(-237, res, 0.1);
+
+        res = calc.calc("1 + 25 - 5 / 22 + ( 45 + 34 ) * -3");
         assertEquals(-211.23, res, 0.1);
     }
 

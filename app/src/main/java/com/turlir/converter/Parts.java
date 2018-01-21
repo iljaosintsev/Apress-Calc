@@ -54,6 +54,14 @@ public abstract class Parts {
         }
     };
 
+    static final Member UNARY_MINUS = new Part("-", 4) {
+        @Override
+        public void process(NotationInterpreter interpreter) {
+            double a = interpreter.poolDigit();
+            interpreter.pushDigit(-a);
+        }
+    };
+
     static Member find(String token) {
         switch (token) {
             case "*":

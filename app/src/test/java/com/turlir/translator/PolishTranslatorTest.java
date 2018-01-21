@@ -32,6 +32,8 @@ public class PolishTranslatorTest {
 
     private static final Member DIV = new StubPart("/", 3);
 
+    private static final Member UNARY = new StubPart("-", 4);
+
     private NotationTranslator sor;
 
     @Before
@@ -62,6 +64,20 @@ public class PolishTranslatorTest {
         sequence = seq(new Value(2), PLUS, OS, new Value(6), MINUS, new Value(4), CS, MULTI, new Value(3));
         lst = sor.translate(sequence);
         check(lst, new Value(2), new Value(6),  new Value(4), MINUS, new Value(3), MULTI, PLUS);
+    }
+
+    @Test
+    public void unaryMinus() {
+        Iterator<Member> sequence = seq(UNARY, new Value(4), PLUS, new Value(2));
+        Queue<Member> lst = sor.translate(sequence);
+        check(lst, new Value(4), UNARY, new Value(2), PLUS);
+    }
+
+    @Test
+    public void unaryMinusInsideExp() {
+        Iterator<Member> sequence = seq(new Value(4), PLUS, new Value(2), MULTI, UNARY, new Value(1));
+        Queue<Member> lst = sor.translate(sequence);
+        check(lst, new Value(4), new Value(2), MULTI, PLUS, new Value(1), UNARY);
     }
 
     private static void check(Queue<Member> actual, Member... exp) {
