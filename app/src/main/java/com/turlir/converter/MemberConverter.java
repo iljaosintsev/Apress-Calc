@@ -24,14 +24,7 @@ public class MemberConverter implements Iterator<Member> {
             return new Value(Double.parseDouble(now.value));
         } else {
             String token = now.value;
-            switch (token) {
-                case "(":
-                    return Parts.OS;
-                case ")":
-                    return Parts.CS;
-                default:
-                    return Parts.find(token);
-            }
+            return Parts.find(token);
         }
     }
 }
