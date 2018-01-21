@@ -8,11 +8,11 @@ abstract class Parts {
 
     static final Member PLUS = new Part("+", 2);
 
-    private static final Member MINUS = new Part("-", 2);
+    static final Member MINUS = new Part("-", 2);
 
-    private static final Member MULTI = new Part("*", 3);
+    static final Member MULTI = new Part("*", 3);
 
-    private static final Member DIV = new Part("/", 3);
+    static final Member DIV = new Part("/", 3);
 
     static Member find(String token) {
         switch (token) {
