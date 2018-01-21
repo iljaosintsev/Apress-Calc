@@ -86,6 +86,10 @@ public class PolishTranslatorTest {
         Iterator<Member> sequence = seq(new Value(2), PLUS, OS, new Value(6), MINUS, new Value(5), CS);
         Queue<Member> lst = sor.translate(sequence);
         check(lst, new Value(2), new Value(6),  new Value(5), MINUS, PLUS);
+
+        sequence = seq(new Value(2), PLUS, OS, new Value(6), MINUS, new Value(4), CS, MULTI, new Value(3));
+        lst = sor.translate(sequence);
+        check(lst, new Value(2), new Value(6),  new Value(4), MINUS, new Value(3), MULTI, PLUS);
     }
 
     private static void check(Queue<Member> actual, Member... exp) {

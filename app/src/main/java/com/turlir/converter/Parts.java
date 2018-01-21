@@ -32,7 +32,7 @@ public abstract class Parts {
         public void process(NotationInterpreter interpreter) {
             Double a = interpreter.poolDigit();
             Double b = interpreter.poolDigit();
-            interpreter.pushDigit(a - b);
+            interpreter.pushDigit(b - a);
         }
     };
 
@@ -50,7 +50,7 @@ public abstract class Parts {
         public void process(NotationInterpreter interpreter) {
             Double a = interpreter.poolDigit();
             Double b = interpreter.poolDigit();
-            interpreter.pushDigit(a / b);
+            interpreter.pushDigit(b / a);
         }
     };
 
