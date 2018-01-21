@@ -1,12 +1,12 @@
 package com.turlir.converter;
 
-import com.turlir.abakcalc.converter.abs.NotationInterpreter;
+import com.turlir.interpreter.NotationInterpreter;
 
-class Value implements Member {
+public class Value implements Member {
 
     private final double mValue;
 
-    Value(double value) {
+    public Value(double value) {
         mValue = value;
     }
 

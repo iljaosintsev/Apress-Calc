@@ -1,6 +1,6 @@
 package com.turlir.converter;
 
-import com.turlir.abakcalc.converter.abs.NotationInterpreter;
+import com.turlir.interpreter.NotationInterpreter;
 
 public interface Member {
 

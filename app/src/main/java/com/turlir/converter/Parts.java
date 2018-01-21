@@ -1,17 +1,17 @@
 package com.turlir.converter;
 
-import com.turlir.abakcalc.converter.abs.NotationInterpreter;
+import com.turlir.interpreter.NotationInterpreter;
 
-abstract class Parts {
+public abstract class Parts {
 
-    static final Member OS = new Part("(", 1) {
+    public static final Member OS = new Part("(", 1) {
         @Override
         public void process(NotationInterpreter interpreter) {
             //
         }
     };
 
-    static final Part CS = new Part(")", 1) {
+    public static final Part CS = new Part(")", 1) {
         @Override
         public void process(NotationInterpreter interpreter) {
             //

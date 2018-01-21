@@ -1,4 +1,4 @@
-package com.turlir.abakcalc.converter.abs;
+package com.turlir.interpreter;
 
 
 public interface NotationInterpreter {

@@ -1,20 +1,8 @@
-package com.turlir.abakcalc.converter;
-
-import com.turlir.abakcalc.converter.abs.Item;
-import com.turlir.abakcalc.converter.abs.NotationInterpreter;
-
-import org.junit.Test;
-
-import java.util.LinkedList;
-import java.util.Queue;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+package com.turlir;
 
 public class CalculatorTest {
 
-    @Test
+    /*@Test
     public void calc() throws Exception {
         PolishConverter converter = mock(PolishConverter.class);
 
@@ -90,6 +78,6 @@ public class CalculatorTest {
         Calculator calc = new Calculator(cov, inter);
         Double res = calc.calc("1 + 25 - 5 / 22 + ( 45 + 34 ) * -3");
         assertEquals(-211.23, res, 0.1);
-    }
+    }*/
 
 }

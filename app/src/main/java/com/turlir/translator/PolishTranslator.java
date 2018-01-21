@@ -1,4 +1,8 @@
-package com.turlir.converter;
+package com.turlir.translator;
+
+import com.turlir.converter.Member;
+import com.turlir.converter.Part;
+import com.turlir.converter.Parts;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -6,7 +10,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
-class PolishTranslator implements NotationTranslator {
+public class PolishTranslator implements NotationTranslator {
 
     @Override
     public Queue<Member> translate(Iterator<Member> parent) {

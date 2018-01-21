@@ -7,7 +7,7 @@ public abstract class Part implements Member, Comparable<Part> {
     private final String mToken;
     private final int mPriority;
 
-    Part(String token, int priority) {
+    protected Part(String token, int priority) {
         mToken = token;
         mPriority = priority;
     }

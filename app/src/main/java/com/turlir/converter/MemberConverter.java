@@ -8,7 +8,7 @@ public class MemberConverter implements Iterator<Member> {
 
     private final Iterator<Interval> mParent;
 
-    MemberConverter(Iterator<Interval> parent) {
+    public MemberConverter(Iterator<Interval> parent) {
         mParent = parent;
     }
 

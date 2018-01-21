@@ -8,11 +8,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.turlir.abakcalc.converter.Calculator;
-import com.turlir.abakcalc.converter.PolishConverter;
-import com.turlir.abakcalc.converter.PolishInterpreter;
-import com.turlir.abakcalc.converter.abs.NotationConverter;
-import com.turlir.abakcalc.converter.abs.NotationInterpreter;
+import com.turlir.Calculator;
+import com.turlir.interpreter.PolishInterpreter;
+import com.turlir.interpreter.NotationInterpreter;
+import com.turlir.translator.NotationTranslator;
+import com.turlir.translator.PolishTranslator;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        NotationConverter conv = new PolishConverter();
+        NotationTranslator conv = new PolishTranslator();
         NotationInterpreter inter = new PolishInterpreter();
         mCalc = new Calculator(conv, inter);
 

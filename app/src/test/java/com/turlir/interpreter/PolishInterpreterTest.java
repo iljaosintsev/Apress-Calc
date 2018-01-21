@@ -1,6 +1,4 @@
-package com.turlir.abakcalc.converter;
-
-import com.turlir.abakcalc.converter.abs.NotationInterpreter;
+package com.turlir.interpreter;
 
 import org.junit.Before;
 import org.junit.Test;
