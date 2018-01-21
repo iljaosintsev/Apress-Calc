@@ -9,7 +9,7 @@ public class FastIntervalExtractor implements Iterator<Interval> {
     private Range r;
 
     FastIntervalExtractor(final String str) {
-        this.str = str.trim();
+        this.str = str.replaceAll(" ", "");
         this.length = str.length();
         this.r = new Range(0, 0);
     }

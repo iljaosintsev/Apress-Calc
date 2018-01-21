@@ -7,8 +7,8 @@ public class ExpressionPartExtractor implements Iterator<Interval> {
     private final String str;
     private int length;
 
-    ExpressionPartExtractor(final String str) {
-        this.str = str.trim();
+    public ExpressionPartExtractor(final String str) {
+        this.str = str.replaceAll(" ", "");
         length = 0;
     }
 

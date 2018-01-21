@@ -13,7 +13,7 @@ public class MultiOperatorExtractor implements Iterator<Interval> {
 
     private Queue<Interval> mSplit;
 
-    MultiOperatorExtractor(Iterator<Interval> parent) {
+    public MultiOperatorExtractor(Iterator<Interval> parent) {
         mParent = parent;
         mSplit = new LinkedList<>();
     }
@@ -47,7 +47,7 @@ public class MultiOperatorExtractor implements Iterator<Interval> {
             } while (matcher.find());
             return arr;
         } else {
-            throw new IllegalArgumentException("неизвестный оператор");
+            throw new IllegalArgumentException("неизвестный оператор " + o);
         }
     }
 }
