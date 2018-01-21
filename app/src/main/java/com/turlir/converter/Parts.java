@@ -21,8 +21,8 @@ public abstract class Parts {
     static final Member PLUS = new Part("+", 2) {
         @Override
         public void process(NotationInterpreter interpreter) {
-            Double a = interpreter.poolDigit();
-            Double b = interpreter.poolDigit();
+            double a = interpreter.poolDigit();
+            double b = interpreter.poolDigit();
             interpreter.pushDigit(a + b);
         }
     };
@@ -30,8 +30,8 @@ public abstract class Parts {
     static final Member MINUS = new Part("-", 2) {
         @Override
         public void process(NotationInterpreter interpreter) {
-            Double a = interpreter.poolDigit();
-            Double b = interpreter.poolDigit();
+            double a = interpreter.poolDigit();
+            double b = interpreter.poolDigit();
             interpreter.pushDigit(b - a);
         }
     };
@@ -39,8 +39,8 @@ public abstract class Parts {
     static final Member MULTI = new Part("*", 3) {
         @Override
         public void process(NotationInterpreter interpreter) {
-            Double a = interpreter.poolDigit();
-            Double b = interpreter.poolDigit();
+            double a = interpreter.poolDigit();
+            double b = interpreter.poolDigit();
             interpreter.pushDigit(a * b);
         }
     };
@@ -48,8 +48,8 @@ public abstract class Parts {
     static final Member DIV = new Part("/", 3) {
         @Override
         public void process(NotationInterpreter interpreter) {
-            Double a = interpreter.poolDigit();
-            Double b = interpreter.poolDigit();
+            double a = interpreter.poolDigit();
+            double b = interpreter.poolDigit();
             interpreter.pushDigit(b / a);
         }
     };

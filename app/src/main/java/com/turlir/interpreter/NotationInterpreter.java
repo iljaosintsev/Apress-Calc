@@ -3,8 +3,8 @@ package com.turlir.interpreter;
 
 public interface NotationInterpreter {
 
-    Double poolDigit();
+    double poolDigit();
 
-    void pushDigit(Double value);
+    void pushDigit(double value);
 
 }

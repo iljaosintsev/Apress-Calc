@@ -13,12 +13,12 @@ public class PolishInterpreter implements NotationInterpreter {
     }
 
     @Override
-    public Double poolDigit() {
+    public double poolDigit() {
         return mQueue.pop();
     }
 
     @Override
-    public void pushDigit(Double value) {
+    public void pushDigit(double value) {
         mQueue.push(value);
     }
 
