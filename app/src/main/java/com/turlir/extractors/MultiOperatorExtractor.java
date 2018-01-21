@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 public class MultiOperatorExtractor implements Iterator<Interval> {
 
-    private final Pattern mOperators = Pattern.compile("sin\\(|cos\\(|tag\\(|[(]|[)]|\\*|-|/|\\+");
+    private static final Pattern OPERATORS = Pattern.compile("sin\\(|cos\\(|tag\\(|[(]|[)]|\\*|-|/|\\+");
     private final Iterator<Interval> mParent;
 
     private Queue<Interval> mSplit;
@@ -39,7 +39,7 @@ public class MultiOperatorExtractor implements Iterator<Interval> {
     }
 
     private Queue<Interval> split(String o) {
-        Matcher matcher = mOperators.matcher(o);
+        Matcher matcher = OPERATORS.matcher(o);
         if (matcher.find()) {
             Queue<Interval> arr = new LinkedList<>();
             do {
