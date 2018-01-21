@@ -4,11 +4,9 @@ import org.junit.Test;
 
 import java.util.Iterator;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
-public class IntervalExtractorTest {
+public class IntervalExtractorTest extends CommonTest {
 
     @Test
     public void simpleExtractTest() {
@@ -81,24 +79,6 @@ public class IntervalExtractorTest {
         or(extractor, ")");
 
         assertFalse(extractor.hasNext());
-    }
-
-    private static void and(Iterator<Interval> it, String value) {
-        assertTrue(it.hasNext());
-        assertEquals(it.next(), and(value));
-    }
-
-    private static void or(Iterator<Interval> it, String value) {
-        assertTrue(it.hasNext());
-        assertEquals(it.next(), or(value));
-    }
-
-    private static Interval or(String value) {
-        return new Interval(false, value);
-    }
-
-    private static Interval and(String value) {
-        return new Interval(true, value);
     }
 
 }
