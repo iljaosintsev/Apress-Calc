@@ -24,41 +24,13 @@ public class PolishTranslatorTest {
 
     private static final Part CS = Parts.CS;
 
-    private static final Member PLUS = new Part("+", 2) {
-        @Override
-        public void process(NotationInterpreter interpreter) {
-            Double a = interpreter.poolDigit();
-            Double b = interpreter.poolDigit();
-            interpreter.pushDigit(a + b);
-        }
-    };
+    private static final Member PLUS = new StubPart("+", 2);
 
-    private static final Member MINUS = new Part("-", 2) {
-        @Override
-        public void process(NotationInterpreter interpreter) {
-            Double a = interpreter.poolDigit();
-            Double b = interpreter.poolDigit();
-            interpreter.pushDigit(a - b);
-        }
-    };
+    private static final Member MINUS = new StubPart("-", 2);
 
-    private static final Member MULTI = new Part("*", 3) {
-        @Override
-        public void process(NotationInterpreter interpreter) {
-            Double a = interpreter.poolDigit();
-            Double b = interpreter.poolDigit();
-            interpreter.pushDigit(a * b);
-        }
-    };
+    private static final Member MULTI = new StubPart("*", 3);
 
-    private static final Member DIV = new Part("/", 3) {
-        @Override
-        public void process(NotationInterpreter interpreter) {
-            Double a = interpreter.poolDigit();
-            Double b = interpreter.poolDigit();
-            interpreter.pushDigit(a / b);
-        }
-    };
+    private static final Member DIV = new StubPart("/", 3);
 
     private NotationTranslator sor;
 
@@ -100,6 +72,18 @@ public class PolishTranslatorTest {
 
     private static Iterator<Member> seq(Member... member) {
         return Arrays.asList(member).iterator();
+    }
+
+    private static class StubPart extends Part {
+
+        private StubPart(String token, int priority) {
+            super(token, priority);
+        }
+
+        @Override
+        public void process(NotationInterpreter interpreter) {
+            throw new IllegalStateException();
+        }
     }
 
 }
