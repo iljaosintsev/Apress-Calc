@@ -2,7 +2,7 @@ package com.turlir.converter;
 
 import android.support.annotation.NonNull;
 
-public /*abstract*/ class Part implements Member, Comparable<Part> {
+public abstract class Part implements Member, Comparable<Part> {
 
     private final String mToken;
     private final int mPriority;

@@ -1,18 +1,58 @@
 package com.turlir.converter;
 
+import com.turlir.abakcalc.converter.abs.NotationInterpreter;
+
 abstract class Parts {
 
-    static final Member OS = new Part("(", 1);
+    static final Member OS = new Part("(", 1) {
+        @Override
+        public void process(NotationInterpreter interpreter) {
+            //
+        }
+    };
 
-    static final Part CS = new Part(")", 1);
+    static final Part CS = new Part(")", 1) {
+        @Override
+        public void process(NotationInterpreter interpreter) {
+            //
+        }
+    };
 
-    static final Member PLUS = new Part("+", 2);
+    static final Member PLUS = new Part("+", 2) {
+        @Override
+        public void process(NotationInterpreter interpreter) {
+            Double a = interpreter.poolDigit();
+            Double b = interpreter.poolDigit();
+            interpreter.pushDigit(a + b);
+        }
+    };
 
-    static final Member MINUS = new Part("-", 2);
+    static final Member MINUS = new Part("-", 2) {
+        @Override
+        public void process(NotationInterpreter interpreter) {
+            Double a = interpreter.poolDigit();
+            Double b = interpreter.poolDigit();
+            interpreter.pushDigit(a - b);
+        }
+    };
 
-    static final Member MULTI = new Part("*", 3);
+    static final Member MULTI = new Part("*", 3) {
+        @Override
+        public void process(NotationInterpreter interpreter) {
+            Double a = interpreter.poolDigit();
+            Double b = interpreter.poolDigit();
+            interpreter.pushDigit(a * b);
+        }
+    };
 
-    static final Member DIV = new Part("/", 3);
+    static final Member DIV = new Part("/", 3) {
+        @Override
+        public void process(NotationInterpreter interpreter) {
+            Double a = interpreter.poolDigit();
+            Double b = interpreter.poolDigit();
+            interpreter.pushDigit(a / b);
+        }
+    };
 
     static Member find(String token) {
         switch (token) {

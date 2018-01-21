@@ -1,5 +1,7 @@
 package com.turlir.converter;
 
+import com.turlir.abakcalc.converter.abs.NotationInterpreter;
+
 class Value implements Member {
 
     private final double mValue;
@@ -11,6 +13,11 @@ class Value implements Member {
     @Override
     public boolean operand() {
         return true;
+    }
+
+    @Override
+    public void process(NotationInterpreter interpreter) {
+        interpreter.pushDigit(mValue);
     }
 
     @Override
