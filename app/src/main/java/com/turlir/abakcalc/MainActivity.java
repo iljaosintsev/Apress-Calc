@@ -8,6 +8,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.turlir.Calculator;
+import com.turlir.converter.MemberConverter;
+import com.turlir.extractors.ExpressionPartExtractor;
+import com.turlir.extractors.MultiOperatorExtractor;
 import com.turlir.interpreter.NotationInterpreter;
 import com.turlir.interpreter.PolishInterpreter;
 import com.turlir.translator.NotationTranslator;
@@ -41,7 +44,11 @@ public class MainActivity extends AppCompatActivity {
 
         NotationTranslator conv = new PolishTranslator();
         NotationInterpreter inter = new PolishInterpreter();
-        mCalc = new Calculator(conv, inter);
+        mCalc = new Calculator(new MemberConverter(
+                new MultiOperatorExtractor(
+                        new ExpressionPartExtractor()
+                )
+        ), conv, inter);
     }
 
     @Override

@@ -2,8 +2,10 @@ package com.turlir.converter;
 
 import com.turlir.extractors.CommonTest;
 import com.turlir.extractors.Interval;
+import com.turlir.extractors.IntervalExtractor;
 
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -22,7 +24,9 @@ public class MemberConverterTest extends CommonTest {
                 and("3"),
                 or("-")
         ).iterator();
-        Iterator<Member> conv = new MemberConverter(seq);
+        IntervalExtractor mock = Mockito.mock(IntervalExtractor.class);
+        Mockito.when(mock.iterator(Mockito.anyString())).thenReturn(seq);
+        Iterator<Member> conv = new MemberConverter(mock).iterator("");
         or(conv, Parts.PLUS);
         or(conv, Parts.UNARY_MINUS);
         or(conv, Parts.MULTI);
@@ -42,7 +46,9 @@ public class MemberConverterTest extends CommonTest {
                 or("+"),
                 and("2")
         ).iterator();
-        Iterator<Member> conv = new MemberConverter(seq);
+        IntervalExtractor mock = Mockito.mock(IntervalExtractor.class);
+        Mockito.when(mock.iterator(Mockito.anyString())).thenReturn(seq);
+        Iterator<Member> conv = new MemberConverter(mock).iterator("");
         or(conv, Parts.UNARY_MINUS);
         and(conv, new Value(4));
         or(conv, Parts.PLUS);
@@ -60,7 +66,9 @@ public class MemberConverterTest extends CommonTest {
                 or("-"),
                 and("1")
         ).iterator();
-        Iterator<Member> conv = new MemberConverter(seq);
+        IntervalExtractor mock = Mockito.mock(IntervalExtractor.class);
+        Mockito.when(mock.iterator(Mockito.anyString())).thenReturn(seq);
+        Iterator<Member> conv = new MemberConverter(mock).iterator("");
         and(conv, new Value(4));
         or(conv, Parts.PLUS);
         and(conv, new Value(2));
@@ -69,6 +77,5 @@ public class MemberConverterTest extends CommonTest {
         and(conv, new Value(1));
         org.junit.Assert.assertFalse(conv.hasNext());
     }
-
 
 }

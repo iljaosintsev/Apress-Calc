@@ -3,39 +3,56 @@ package com.turlir.converter;
 import android.support.annotation.Nullable;
 
 import com.turlir.extractors.Interval;
+import com.turlir.extractors.IntervalExtractor;
 
 import java.util.Iterator;
 
-public class MemberConverter implements Iterator<Member> {
+public class MemberConverter implements ExpressionExtractor {
 
-    private final Iterator<Interval> mParent;
-    @Nullable
-    private Interval mPrev;
+    private final IntervalExtractor mExtractor;
 
-    public MemberConverter(Iterator<Interval> parent) {
-        mParent = parent;
+    public MemberConverter(IntervalExtractor parent) {
+        mExtractor = parent;
     }
 
     @Override
-    public boolean hasNext() {
-        return mParent.hasNext();
+    public Iterator<Member> iterator(String value) {
+        return new MemberIterator(mExtractor.iterator(value));
     }
 
-    @Override
-    public Member next() {
-        Interval now = mParent.next();
-        Member res;
-        if (now.operand()) {
-            res = new Value(Double.parseDouble(now.value));
-        } else {
-            String token = now.value;
-            if (token.equals("-") && (mPrev == null || !mPrev.operand())) {
-                res = Parts.UNARY_MINUS;
-            } else {
-                res = Parts.find(token);
-            }
+    private static class MemberIterator implements Iterator<Member> {
+
+        private final Iterator<Interval> mIntervals;
+
+        @Nullable
+        private Interval mPrev;
+
+        private MemberIterator(Iterator<Interval> intervals) {
+            mIntervals = intervals;
         }
-        mPrev = now;
-        return res;
+
+        @Override
+        public boolean hasNext() {
+            return mIntervals.hasNext();
+        }
+
+        @Override
+        public Member next() {
+            Interval now = mIntervals.next();
+            Member res;
+            if (now.operand()) {
+                res = new Value(Double.parseDouble(now.value));
+            } else {
+                String token = now.value;
+                if (token.equals("-") && (mPrev == null || !mPrev.operand())) {
+                    res = Parts.UNARY_MINUS;
+                } else {
+                    res = Parts.find(token);
+                }
+            }
+            mPrev = now;
+            return res;
+        }
+
     }
 }

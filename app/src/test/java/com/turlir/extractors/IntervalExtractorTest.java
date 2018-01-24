@@ -11,8 +11,8 @@ public class IntervalExtractorTest extends CommonTest {
     @Test
     public void bracketExtractTest() {
         Iterator<Interval> extractor = new MultiOperatorExtractor(
-                new ExpressionPartExtractor("-2*(3+(16-9))")
-        );
+                new ExpressionPartExtractor()
+        ).iterator("-2*(3+(16-9))");
 
         or(extractor, "-");
 
@@ -44,8 +44,8 @@ public class IntervalExtractorTest extends CommonTest {
     @Test
     public void unaryMinus() {
         Iterator<Interval> extractor = new MultiOperatorExtractor(
-                new ExpressionPartExtractor("-4 + 2")
-        );
+                new ExpressionPartExtractor()
+        ).iterator("-4 + 2");
         or(extractor, "-");
         and(extractor, "4");
         or(extractor, "+");
@@ -55,8 +55,8 @@ public class IntervalExtractorTest extends CommonTest {
     @Test
     public void unaryMinusInsideExp() {
         Iterator<Interval> extractor = new MultiOperatorExtractor(
-                new ExpressionPartExtractor("4 + 2 * -1")
-        );
+                new ExpressionPartExtractor()
+        ).iterator("4 + 2 * -1");
         and(extractor, "4");
         or(extractor, "+");
         and(extractor, "2");
@@ -68,8 +68,8 @@ public class IntervalExtractorTest extends CommonTest {
     @Test
     public void bracketMultiplyUnaryValue() {
         Iterator<Interval> extractor = new MultiOperatorExtractor(
-                new ExpressionPartExtractor("( 2 + 4) * -3")
-        );
+                new ExpressionPartExtractor()
+        ).iterator("( 2 + 4) * -3");
         or(extractor, "(");
         and(extractor, "2");
         or(extractor, "+");

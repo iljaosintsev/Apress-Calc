@@ -1,5 +1,9 @@
 package com.turlir;
 
+import com.turlir.converter.MemberConverter;
+import com.turlir.converter.ExpressionExtractor;
+import com.turlir.extractors.ExpressionPartExtractor;
+import com.turlir.extractors.MultiOperatorExtractor;
 import com.turlir.interpreter.NotationInterpreter;
 import com.turlir.interpreter.PolishInterpreter;
 import com.turlir.translator.NotationTranslator;
@@ -16,9 +20,14 @@ public class CalculatorTest {
 
     @Before
     public void setup() {
-        NotationTranslator cov = new PolishTranslator();
+        ExpressionExtractor conv = new MemberConverter(
+                new MultiOperatorExtractor(
+                        new ExpressionPartExtractor()
+                )
+        );
+        NotationTranslator trans = new PolishTranslator();
         NotationInterpreter inter = new PolishInterpreter();
-        calc = new Calculator(cov, inter);
+        calc = new Calculator(conv, trans, inter);
     }
 
     @Test

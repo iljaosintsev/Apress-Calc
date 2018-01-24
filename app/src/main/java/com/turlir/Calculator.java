@@ -1,12 +1,10 @@
 package com.turlir;
 
 
-import com.turlir.interpreter.NotationInterpreter;
 import com.turlir.converter.Member;
-import com.turlir.converter.MemberConverter;
+import com.turlir.converter.ExpressionExtractor;
+import com.turlir.interpreter.NotationInterpreter;
 import com.turlir.translator.NotationTranslator;
-import com.turlir.extractors.ExpressionPartExtractor;
-import com.turlir.extractors.MultiOperatorExtractor;
 
 import java.util.Queue;
 
@@ -15,11 +13,13 @@ import java.util.Queue;
  */
 public class Calculator {
 
-    private final NotationTranslator mConverter;
+    private final ExpressionExtractor mConverter;
+    private final NotationTranslator mTranslator;
     private final NotationInterpreter mInter;
 
-    public Calculator(NotationTranslator translator, NotationInterpreter inter) {
-        mConverter = translator;
+    public Calculator(ExpressionExtractor converter, NotationTranslator translator, NotationInterpreter inter) {
+        mConverter = converter;
+        mTranslator = translator;
         mInter = inter;
     }
 
@@ -30,12 +30,8 @@ public class Calculator {
      * @throws RuntimeException в случае ошибки разбора или интерпретации выражения
      */
     public Double calc(String exp) throws RuntimeException {
-        Queue<Member> queue = mConverter.translate(
-                new MemberConverter(
-                        new MultiOperatorExtractor(
-                                new ExpressionPartExtractor(exp)
-                        )
-                )
+        Queue<Member> queue = mTranslator.translate(
+                mConverter.iterator(exp)
         );
         for (Member current : queue) {
             current.process(mInter);

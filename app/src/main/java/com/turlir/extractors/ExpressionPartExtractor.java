@@ -2,25 +2,33 @@ package com.turlir.extractors;
 
 import java.util.Iterator;
 
-public class ExpressionPartExtractor implements Iterator<Interval> {
-
-    private final String str;
-    private int length;
-
-    public ExpressionPartExtractor(final String str) {
-        this.str = str.replaceAll(" ", "");
-        length = 0;
-    }
+public class ExpressionPartExtractor implements IntervalExtractor {
 
     @Override
-    public Interval next() {
-        Interval part = new Interval(str, length);
-        length += part.value.length();
-        return part;
+    public Iterator<Interval> iterator(String value) {
+        return new IntervalIterator(value);
     }
 
-    @Override
-    public boolean hasNext() {
-        return length < str.length();
+    private static class IntervalIterator implements Iterator<Interval> {
+
+        private final String mStr;
+        private int mLength;
+
+        private IntervalIterator(String str) {
+            mStr = str.replaceAll(" ", "");
+        }
+
+        @Override
+        public Interval next() {
+            Interval part = new Interval(mStr, mLength);
+            mLength += part.value.length();
+            return part;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return mLength < mStr.length();
+        }
+
     }
 }
