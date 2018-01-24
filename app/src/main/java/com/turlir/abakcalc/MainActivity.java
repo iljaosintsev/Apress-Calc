@@ -2,33 +2,28 @@ package com.turlir.abakcalc;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.turlir.Calculator;
-import com.turlir.interpreter.PolishInterpreter;
 import com.turlir.interpreter.NotationInterpreter;
+import com.turlir.interpreter.PolishInterpreter;
 import com.turlir.translator.NotationTranslator;
 import com.turlir.translator.PolishTranslator;
 
 import java.text.DecimalFormat;
-import java.util.Arrays;
 import java.util.EmptyStackException;
-import java.util.LinkedList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnLongClick;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private static final DecimalFormat DF = new DecimalFormat("#.###"); // формат результата
-    private static final String BUNDLE_QUEUE = "BUNDLE_QUEUE";
 
     @BindView(R.id.edit_text)
     EditText editText;
@@ -37,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
     TextView result;
 
     private Calculator mCalc;
-    private LinkedList<String> mInputQueue; // очередь вставок для удаления
 
     @Override
     protected void onCreate(Bundle save) {
@@ -48,20 +42,13 @@ public class MainActivity extends AppCompatActivity {
         NotationTranslator conv = new PolishTranslator();
         NotationInterpreter inter = new PolishInterpreter();
         mCalc = new Calculator(conv, inter);
-
-        // восстановление состояния
-        if (save != null) {
-            restore(save);
-        } else {
-            mInputQueue = new LinkedList<>();
-        }
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        String[] array = mInputQueue.toArray(new String[mInputQueue.size()]);
-        outState.putStringArray(BUNDLE_QUEUE, array);
+    protected void onResume() {
+        super.onResume();
+        editText.setText("");
+        result.setText("");
     }
 
     @OnClick({
@@ -87,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
             R.id.btn_cs,
             R.id.btn_os,
             //
-            R.id.btn_clear,
             R.id.btn_enter
     })
     public void keyboardButtonClick(View view) {
@@ -153,46 +139,15 @@ public class MainActivity extends AppCompatActivity {
                 append(" )");
                 break;
             //
-            case R.id.btn_clear:
-                clearOne();
-                break;
             case R.id.btn_enter:
                 enter();
                 break;
         }
     }
 
-    @OnLongClick(R.id.btn_clear)
-    public boolean clearAll() {
-        editText.setText("");
-        result.setText("");
-        mInputQueue.clear();
-        return true;
-    }
-
-    private void restore(Bundle save) {
-        String[] array = save.getStringArray(BUNDLE_QUEUE);
-        if (array != null) {
-            mInputQueue = new LinkedList<>(Arrays.asList(array));
-        }
-    }
-
     private void append(String s) {
         String n = editText.getText() + s;
         editText.setText(n);
-        mInputQueue.push(s);
-    }
-
-    private void clearOne() {
-        int l = editText.length();
-        if (l > 0) {
-            String lastInput = mInputQueue.pop();
-            int del = lastInput.length();
-            Editable origin = editText.getText();
-            CharSequence n = origin.subSequence(0, l - del);
-            editText.setText(n);
-            result.setText(""); // сбрасываем результат
-        }
     }
 
     private void enter() {
@@ -215,13 +170,7 @@ public class MainActivity extends AppCompatActivity {
 
     // унарный минус может стоять в следующих позициях
     private boolean isLastOperator() {
-        String lastInput = mInputQueue.peek();
-        return lastInput == null // в начале выражения
-                || lastInput.equals(" + ") // операции
-                || lastInput.equals(" - ")
-                || lastInput.equals(" * ")
-                || lastInput.equals(" / ")
-                || lastInput.equals("( "); // открывающаяся скобка
+        return false;
     }
 
 }
