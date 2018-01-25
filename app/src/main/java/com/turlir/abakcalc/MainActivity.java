@@ -16,7 +16,6 @@ import com.turlir.interpreter.PolishInterpreter;
 import com.turlir.translator.NotationTranslator;
 import com.turlir.translator.PolishTranslator;
 
-import java.text.DecimalFormat;
 import java.util.EmptyStackException;
 
 import butterknife.BindView;
@@ -26,7 +25,6 @@ import butterknife.OnClick;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-    private static final DecimalFormat DF = new DecimalFormat("#.###"); // формат результата
 
     @BindView(R.id.edit_text)
     EditText editText;
@@ -155,15 +153,31 @@ public class MainActivity extends AppCompatActivity {
     private void append(String s) {
         String n = editText.getText() + s;
         editText.setText(n);
+        recalculate();
+    }
+
+    private void recalculate() {
+        String str = editText.getText().toString();
+        if (str.length() > 2) {
+            try {
+                Calculator.Box opt = mCalc.calc(str);
+                String res = opt.print();
+                String strRes = getString(R.string.result, res);
+                result.setText(strRes);
+            } catch (Exception e) {
+                Log.w(TAG, "Ошибка при перерасчете " + e);
+            }
+        }
     }
 
     private void enter() {
         String str = editText.getText().toString();
         if (str.length() > 2) {
             try {
-                Double calc = mCalc.calc(str);
-                Log.d(TAG, "Результат " + calc);
-                String strRes = getString(R.string.result, DF.format(calc));
+                Calculator.Box opt = mCalc.calc(str);
+                String res = opt.print();
+                Log.d(TAG, "Результат " + res);
+                String strRes = getString(R.string.result, res);
                 result.setText(strRes);
             } catch (EmptyStackException e) {
                 Log.e(TAG, "EmptyStackException при вычислении", e);
