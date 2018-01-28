@@ -62,4 +62,12 @@ public class Calculator {
         return DF.format(mInter.poolDigit());
     }
 
+    double calc(String exp) throws Exception {
+        Queue<Member> queue = mTranslator.translate(analyze(exp).second);
+        for (Member current : queue) {
+            current.process(mInter);
+        }
+        return mInter.poolDigit();
+    }
+
 }

@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Queue;
 
 public class MemberConverterTest extends CommonTest {
 
@@ -26,7 +27,7 @@ public class MemberConverterTest extends CommonTest {
         ).iterator();
         IntervalExtractor mock = Mockito.mock(IntervalExtractor.class);
         Mockito.when(mock.iterator(Mockito.anyString())).thenReturn(seq);
-        Iterator<Member> conv = new MemberConverter(mock).iterator("");
+        Queue<Member> conv = new MemberConverter(mock).iterator("");
         or(conv, Parts.PLUS);
         or(conv, Parts.UNARY_MINUS);
         or(conv, Parts.MULTI);
@@ -35,7 +36,7 @@ public class MemberConverterTest extends CommonTest {
         or(conv, Parts.CS);
         and(conv, new Value(3.0));
         or(conv, Parts.MINUS);
-        org.junit.Assert.assertFalse(conv.hasNext());
+        org.junit.Assert.assertTrue(conv.isEmpty());
     }
 
     @Test
@@ -48,12 +49,12 @@ public class MemberConverterTest extends CommonTest {
         ).iterator();
         IntervalExtractor mock = Mockito.mock(IntervalExtractor.class);
         Mockito.when(mock.iterator(Mockito.anyString())).thenReturn(seq);
-        Iterator<Member> conv = new MemberConverter(mock).iterator("");
+        Queue<Member> conv = new MemberConverter(mock).iterator("");
         or(conv, Parts.UNARY_MINUS);
         and(conv, new Value(4));
         or(conv, Parts.PLUS);
         and(conv, new Value(2));
-        org.junit.Assert.assertFalse(conv.hasNext());
+        org.junit.Assert.assertTrue(conv.isEmpty());
     }
 
     @Test
@@ -68,14 +69,14 @@ public class MemberConverterTest extends CommonTest {
         ).iterator();
         IntervalExtractor mock = Mockito.mock(IntervalExtractor.class);
         Mockito.when(mock.iterator(Mockito.anyString())).thenReturn(seq);
-        Iterator<Member> conv = new MemberConverter(mock).iterator("");
+        Queue<Member> conv = new MemberConverter(mock).iterator("");
         and(conv, new Value(4));
         or(conv, Parts.PLUS);
         and(conv, new Value(2));
         or(conv, Parts.MULTI);
         or(conv, Parts.UNARY_MINUS);
         and(conv, new Value(1));
-        org.junit.Assert.assertFalse(conv.hasNext());
+        org.junit.Assert.assertTrue(conv.isEmpty());
     }
 
 }
