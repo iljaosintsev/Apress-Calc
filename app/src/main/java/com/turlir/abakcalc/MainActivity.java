@@ -79,26 +79,23 @@ public class MainActivity extends AppCompatActivity {
             R.id.btn_cs,
             R.id.btn_os,
             //
+            R.id.btn_clear,
             R.id.btn_enter
     })
     public void keyboardButtonClick(View view) {
         int id = view.getId();
         switch (id) {
             case R.id.btn_add:
-                append(" + ");
+                append("+");
                 break;
             case R.id.btn_minus:
-                if (isLastOperator()) {
-                    append("-"); // унарный минус
-                } else {
-                    append(" - ");
-                }
+                append("-"); // унарный минус
                 break;
             case R.id.btn_multi:
-                append(" * ");
+                append("*");
                 break;
             case R.id.btn_div:
-                append(" / ");
+                append("/");
                 break;
             //
             case R.id.btn_7:
@@ -138,12 +135,15 @@ public class MainActivity extends AppCompatActivity {
                 append(".");
                 break;
             case R.id.btn_cs:
-                append("( ");
+                append("(");
                 break;
             case R.id.btn_os:
-                append(" )");
+                append(")");
                 break;
             //
+            case R.id.btn_clear:
+                clear();
+                break;
             case R.id.btn_enter:
                 enter();
                 break;
@@ -151,23 +151,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void append(String s) {
-        String n = editText.getText() + s;
-        editText.setText(n);
-        recalculate();
-    }
-
-    private void recalculate() {
-        String str = editText.getText().toString();
-        if (str.length() > 2) {
-            try {
-                Calculator.Box opt = mCalc.calc(str);
-                String res = opt.print();
-                String strRes = getString(R.string.result, res);
-                result.setText(strRes);
-            } catch (Exception e) {
-                Log.w(TAG, "Ошибка при перерасчете " + e);
-            }
-        }
+        int start = editText.getSelectionStart();
+        int end = editText.getSelectionEnd();
+        if (start != end) throw new RuntimeException();
+        String now = editText.getText().insert(start, s).toString();
+        recalculate(now);
     }
 
     private void enter() {
@@ -189,9 +177,23 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // унарный минус может стоять в следующих позициях
-    private boolean isLastOperator() {
-        return false;
+    private void clear() {
+        int start = editText.getSelectionStart();
+        int end = editText.getSelectionEnd();
+        if (start != end) throw new RuntimeException();
+        String str = editText.getText().replace(start - 1, start, "").toString();
+        recalculate(str);
+    }
+
+    private void recalculate(String str) {
+        try {
+            Calculator.Box opt = mCalc.calc(str);
+            String res = opt.print();
+            String strRes = getString(R.string.result, res);
+            result.setText(strRes);
+        } catch (Exception e) {
+            Log.w(TAG, "Ошибка при перерасчете " + e);
+        }
     }
 
 }
