@@ -14,7 +14,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class CalculatorTest {
+public class IntegrationTest {
 
     private Calculator calc;
     private Analyzer mAnalyzer;
