@@ -1,13 +1,13 @@
 package com.turlir.abakcalc;
 
 import android.os.Bundle;
-import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.turlir.Analyzer;
 import com.turlir.Calculator;
 import com.turlir.converter.Member;
 import com.turlir.converter.MemberConverter;
@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     TextView result;
 
     private Calculator mCalc;
+    private Analyzer mAnalyze;
 
     @Override
     protected void onCreate(Bundle save) {
@@ -45,11 +46,14 @@ public class MainActivity extends AppCompatActivity {
 
         NotationTranslator conv = new PolishTranslator();
         NotationInterpreter inter = new PolishInterpreter();
-        mCalc = new Calculator(new MemberConverter(
-                new MultiOperatorExtractor(
-                        new ExpressionPartExtractor()
+        mCalc = new Calculator(conv, inter);
+        mAnalyze = new Analyzer(
+                new MemberConverter(
+                        new MultiOperatorExtractor(
+                                new ExpressionPartExtractor()
+                        )
                 )
-        ), conv, inter);
+        );
     }
 
     @Override
@@ -191,13 +195,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void calculate(String str) throws Exception {
-        Pair<String, Queue<Member>> opt = mCalc.analyze(str);
+        Queue<Member> q = mAnalyze.analyze(str);
 
-        String input = opt.first;
+        String input = mAnalyze.print();
         editText.setText(input);
         editText.setSelection(input.length());
 
-        String res = mCalc.calc(opt.second);
+        String res = mCalc.represent(q);
         Log.d(TAG, "Результат " + res);
         String strRes = getString(R.string.result, res);
         result.setText(strRes);
