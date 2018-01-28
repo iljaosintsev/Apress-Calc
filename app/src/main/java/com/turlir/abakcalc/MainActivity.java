@@ -1,6 +1,7 @@
 package com.turlir.abakcalc;
 
 import android.os.Bundle;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.turlir.Calculator;
+import com.turlir.converter.Member;
 import com.turlir.converter.MemberConverter;
 import com.turlir.extractors.ExpressionPartExtractor;
 import com.turlir.extractors.MultiOperatorExtractor;
@@ -17,6 +19,7 @@ import com.turlir.translator.NotationTranslator;
 import com.turlir.translator.PolishTranslator;
 
 import java.util.EmptyStackException;
+import java.util.Queue;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -160,20 +163,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void enter() {
         String str = editText.getText().toString();
-        if (str.length() > 2) {
-            try {
-                Calculator.Box opt = mCalc.calc(str);
-                String res = opt.print();
-                Log.d(TAG, "Результат " + res);
-                String strRes = getString(R.string.result, res);
-                result.setText(strRes);
-            } catch (EmptyStackException e) {
-                Log.e(TAG, "EmptyStackException при вычислении", e);
-                result.setText(R.string.error);
-            } catch (Exception e) {
-                Log.e(TAG, "Ошибка при вычислении", e);
-                result.setText(e.getMessage());
-            }
+        try {
+            calculate(str);
+        } catch (EmptyStackException e) {
+            Log.e(TAG, "EmptyStackException при вычислении", e);
+            result.setText(R.string.error);
+        } catch (Exception e) {
+            Log.e(TAG, "Ошибка при вычислении", e);
+            result.setText(e.getMessage());
         }
     }
 
@@ -187,13 +184,23 @@ public class MainActivity extends AppCompatActivity {
 
     private void recalculate(String str) {
         try {
-            Calculator.Box opt = mCalc.calc(str);
-            String res = opt.print();
-            String strRes = getString(R.string.result, res);
-            result.setText(strRes);
+            calculate(str);
         } catch (Exception e) {
             Log.w(TAG, "Ошибка при перерасчете " + e);
         }
+    }
+
+    private void calculate(String str) throws Exception {
+        Pair<String, Queue<Member>> opt = mCalc.analyze(str);
+
+        String input = opt.first;
+        editText.setText(input);
+        editText.setSelection(input.length());
+
+        String res = mCalc.calc(opt.second);
+        Log.d(TAG, "Результат " + res);
+        String strRes = getString(R.string.result, res);
+        result.setText(strRes);
     }
 
 }

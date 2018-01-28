@@ -9,12 +9,20 @@ public abstract class Parts {
         public void process(NotationInterpreter interpreter) {
             //
         }
+        @Override
+        public void print(StringBuilder chain) {
+            chain.append("(");
+        }
     };
 
     public static final Part CS = new Part(")", 1) {
         @Override
         public void process(NotationInterpreter interpreter) {
             //
+        }
+        @Override
+        public void print(StringBuilder chain) {
+            chain.append(")");
         }
     };
 
@@ -25,6 +33,10 @@ public abstract class Parts {
             double b = interpreter.poolDigit();
             interpreter.pushDigit(a + b);
         }
+        @Override
+        public void print(StringBuilder chain) {
+            chain.append(" + ");
+        }
     };
 
     static final Member MINUS = new Part("-", 2) {
@@ -33,6 +45,10 @@ public abstract class Parts {
             double a = interpreter.poolDigit();
             double b = interpreter.poolDigit();
             interpreter.pushDigit(b - a);
+        }
+        @Override
+        public void print(StringBuilder chain) {
+            chain.append(" - ");
         }
     };
 
@@ -43,6 +59,10 @@ public abstract class Parts {
             double b = interpreter.poolDigit();
             interpreter.pushDigit(a * b);
         }
+        @Override
+        public void print(StringBuilder chain) {
+            chain.append(" * ");
+        }
     };
 
     static final Member DIV = new Part("/", 3) {
@@ -52,6 +72,10 @@ public abstract class Parts {
             double b = interpreter.poolDigit();
             interpreter.pushDigit(b / a);
         }
+        @Override
+        public void print(StringBuilder chain) {
+            chain.append(" / ");
+        }
     };
 
     static final Member UNARY_MINUS = new Part("-", 4) {
@@ -59,6 +83,10 @@ public abstract class Parts {
         public void process(NotationInterpreter interpreter) {
             double a = interpreter.poolDigit();
             interpreter.pushDigit(-a);
+        }
+        @Override
+        public void print(StringBuilder chain) {
+            chain.append("-");
         }
     };
 

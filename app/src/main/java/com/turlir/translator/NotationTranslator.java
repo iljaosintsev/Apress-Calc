@@ -10,6 +10,6 @@ import java.util.Queue;
  */
 public interface NotationTranslator {
 
-    Queue<Member> translate(Iterator<Member> parent);
+    Queue<Member> translate(Queue<Member> parent);
 
 }

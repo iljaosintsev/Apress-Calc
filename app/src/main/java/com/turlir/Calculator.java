@@ -1,13 +1,14 @@
 package com.turlir;
 
 
+import android.support.v4.util.Pair;
+
 import com.turlir.converter.ExpressionExtractor;
 import com.turlir.converter.Member;
 import com.turlir.interpreter.NotationInterpreter;
 import com.turlir.translator.NotationTranslator;
 
 import java.text.DecimalFormat;
-import java.util.Iterator;
 import java.util.Queue;
 
 /**
@@ -16,50 +17,49 @@ import java.util.Queue;
  */
 public class Calculator {
 
+    private static final DecimalFormat DF = new DecimalFormat("#.###"); // формат результата
+
     private final ExpressionExtractor mConverter;
     private final NotationTranslator mTranslator;
     private final NotationInterpreter mInter;
 
-    private final Box mBox;
+    private final StringBuilder mPrinter;
 
     public Calculator(ExpressionExtractor converter, NotationTranslator translator, NotationInterpreter inter) {
         mConverter = converter;
         mTranslator = translator;
         mInter = inter;
 
-        mBox = new Box();
+        mPrinter = new StringBuilder();
     }
 
     /**
-     * Вычисляет значение математического выражения. Гарантирует наличие результата
+     * Анализирует математическое выражение. Предоставляет результат анализа и его строковое представление
      * @param exp выражение
-     * @return абстракция с результатом расчета выражения
-     * @throws RuntimeException в случае ошибки разбора или интерпретации выражения
+     * @return пара, строковое представление - разобранное выражение
+     * @throws RuntimeException в случае ошибки разбора
      */
-    public Box calc(String exp) throws Exception {
-        Iterator<Member> iterator = mConverter.iterator(exp);
-        Queue<Member> queue = mTranslator.translate(iterator);
+    public Pair<String, Queue<Member>> analyze(String exp) throws Exception {
+        mPrinter.delete(0, mPrinter.length());
+        Queue<Member> natural = mConverter.iterator(exp);
+        for (Member current : natural) {
+            current.print(mPrinter);
+        }
+        return new Pair<>(mPrinter.toString(), natural);
+    }
+
+    /**
+     * Вычисляет значение математического выражения
+     * @param natural результат анализв функцией {@link #analyze(String)} выражения
+     * @return строковое представления числа - результата выражения
+     * @throws RuntimeException в случае ошибки интерпретации
+     */
+    public String calc(Queue<Member> natural) throws Exception {
+        Queue<Member> queue = mTranslator.translate(natural);
         for (Member current : queue) {
             current.process(mInter);
         }
-        double a = mInter.poolDigit();
-        return mBox.box(a);
-    }
-
-    public static class Box {
-
-        private static final DecimalFormat DF = new DecimalFormat("#.###"); // формат результата
-
-        double value;
-
-        public String print() {
-            return DF.format(value);
-        }
-
-        private Box box(double value) {
-            this.value = value;
-            return this;
-        }
+        return DF.format(mInter.poolDigit());
     }
 
 }

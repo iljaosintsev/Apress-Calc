@@ -100,6 +100,11 @@ public class PolishTranslatorTest {
         public void process(NotationInterpreter interpreter) {
             throw new IllegalStateException();
         }
+
+        @Override
+        public void print(StringBuilder chain) {
+            throw new RuntimeException();
+        }
     }
 
 }

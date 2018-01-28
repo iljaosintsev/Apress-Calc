@@ -8,4 +8,6 @@ public interface Member {
 
     void process(NotationInterpreter interpreter);
 
+    void print(StringBuilder chain);
+
 }

@@ -1,12 +1,12 @@
 package com.turlir.converter;
 
-import java.util.Iterator;
+import java.util.Queue;
 
 /**
  * Выделяет участки выражения {@link Member} из строки
  */
 public interface ExpressionExtractor {
 
-    Iterator<Member> iterator(String value);
+    Queue<Member> iterator(String value);
 
 }

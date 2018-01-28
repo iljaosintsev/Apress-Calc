@@ -13,12 +13,11 @@ import java.util.Queue;
 public class PolishTranslator implements NotationTranslator {
 
     @Override
-    public Queue<Member> translate(Iterator<Member> parent) {
+    public Queue<Member> translate(Queue<Member> parent) {
         Deque<Part> operators = new ArrayDeque<>();
         Queue<Member> converted = new LinkedList<>();
 
-        while (parent.hasNext()) {
-            Member now = parent.next();
+        for (Member now : parent) {
             boolean isNumber = now.operand();
             if (isNumber) {
                 converted.add(now);

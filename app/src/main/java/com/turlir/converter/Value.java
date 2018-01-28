@@ -2,7 +2,11 @@ package com.turlir.converter;
 
 import com.turlir.interpreter.NotationInterpreter;
 
+import java.text.DecimalFormat;
+
 public class Value implements Member {
+
+    private static final DecimalFormat DF = new DecimalFormat("#.###"); // формат результата
 
     private final double mValue;
 
@@ -18,6 +22,11 @@ public class Value implements Member {
     @Override
     public void process(NotationInterpreter interpreter) {
         interpreter.pushDigit(mValue);
+    }
+
+    @Override
+    public void print(StringBuilder chain) {
+        chain.append(DF.format(mValue));
     }
 
     @Override
