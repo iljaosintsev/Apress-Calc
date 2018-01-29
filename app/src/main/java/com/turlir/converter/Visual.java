@@ -1,7 +1,12 @@
 package com.turlir.converter;
 
-interface Visual {
+import android.widget.EditText;
 
-    void print(StringBuilder chain);
+public interface Visual {
 
+    void print(Printer chain);
+
+    boolean selectionConstraint(int selEnd);
+
+    void interceptSelection(EditText editor);
 }

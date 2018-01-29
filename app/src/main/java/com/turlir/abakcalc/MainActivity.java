@@ -4,13 +4,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.turlir.Analyzer;
 import com.turlir.Calculator;
 import com.turlir.converter.Member;
 import com.turlir.converter.MemberConverter;
+import com.turlir.converter.Visual;
 import com.turlir.extractors.ExpressionPartExtractor;
 import com.turlir.extractors.MultiOperatorExtractor;
 import com.turlir.interpreter.NotationInterpreter;
@@ -19,6 +19,7 @@ import com.turlir.translator.NotationTranslator;
 import com.turlir.translator.PolishTranslator;
 
 import java.util.EmptyStackException;
+import java.util.List;
 import java.util.Queue;
 
 import butterknife.BindView;
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     @BindView(R.id.edit_text)
-    EditText editText;
+    Editor editText;
 
     @BindView(R.id.tv_result)
     TextView result;
@@ -197,9 +198,8 @@ public class MainActivity extends AppCompatActivity {
     private void calculate(String str) throws Exception {
         Queue<Member> q = mAnalyze.analyze(str);
 
-        String input = mAnalyze.print();
-        editText.setText(input);
-        editText.setSelection(input.length());
+        List<Visual> v = mAnalyze.display();
+        editText.setRepresentation(v);
 
         String res = mCalc.represent(q);
         Log.d(TAG, "Результат " + res);

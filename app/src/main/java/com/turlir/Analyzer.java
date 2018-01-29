@@ -2,8 +2,11 @@ package com.turlir;
 
 import com.turlir.converter.ExpressionExtractor;
 import com.turlir.converter.Member;
+import com.turlir.converter.Visual;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 /**
@@ -15,12 +18,10 @@ public class Analyzer {
     private final ExpressionExtractor mConverter;
 
     private Queue<Member> mSequence;
-    private final StringBuilder mPrinter;
 
     public Analyzer(ExpressionExtractor converter) {
         mConverter = converter;
         mSequence = new LinkedList<>();
-        mPrinter = new StringBuilder();
     }
 
     /**
@@ -34,16 +35,11 @@ public class Analyzer {
         return mSequence;
     }
 
-    /**
-     *
-     * @return строковое представление входного математического выражения
-     */
-    public String print() {
-        for (Member current : mSequence) {
-            current.print(mPrinter);
+    public List<Visual> display() {
+        List<Visual> views = new ArrayList<>(mSequence.size());
+        for (Member member : mSequence) {
+            views.add(member.view());
         }
-        String s = mPrinter.toString();
-        mPrinter.delete(0, mPrinter.length());
-        return s;
+        return views;
     }
 }

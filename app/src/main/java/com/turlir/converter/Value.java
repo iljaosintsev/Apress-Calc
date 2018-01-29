@@ -1,5 +1,7 @@
 package com.turlir.converter;
 
+import android.widget.EditText;
+
 import com.turlir.interpreter.NotationInterpreter;
 
 import java.text.DecimalFormat;
@@ -25,8 +27,23 @@ public class Value implements Member {
     }
 
     @Override
-    public void print(StringBuilder chain) {
-        chain.append(DF.format(mValue));
+    public Visual view() {
+        return new Visual() {
+            @Override
+            public void print(Printer chain) {
+                chain.append(DF.format(mValue));
+            }
+
+            @Override
+            public boolean selectionConstraint(int selEnd) {
+                return false;
+            }
+
+            @Override
+            public void interceptSelection(EditText editor) {
+                //
+            }
+        };
     }
 
     @Override
