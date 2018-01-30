@@ -70,4 +70,17 @@ public class OperatorVisualTest {
         assertFalse(ov.selectionConstraint(0, 8, 9));
     }
 
+    @Test
+    public void singleCursor() {
+        Visual ov = new OperatorVisual(" + ");
+        Printer p = Mockito.mock(Printer.class);
+        Mockito.when(p.length()).thenReturn(1, 4);
+        ov.print(p);
+
+        assertFalse(ov.selectionConstraint(1, 1, 9));
+        assertTrue(ov.selectionConstraint(2, 2, 9));
+        assertTrue(ov.selectionConstraint(3, 3, 9));
+        assertFalse(ov.selectionConstraint(4, 4, 9));
+    }
+
 }

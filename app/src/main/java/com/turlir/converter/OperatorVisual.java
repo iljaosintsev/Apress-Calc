@@ -27,20 +27,25 @@ class OperatorVisual implements Visual {
             union = selStart <= mStart && selEnd < mEnd && selEnd > mStart;
             union = union || selEnd >= mEnd && selStart > mStart && selStart < mEnd;
         } else {
-            union = false;
+            union = belong(selStart, mStart, mEnd) || belong(selEnd, mStart, mEnd);
         }
         return safety && union;
     }
 
     @Override
     public void interceptSelection(EditText editor, int nowS, int nowE) {
-        if (belong(nowE, mStart, mEnd)) {
-            editor.setSelection(nowS, mStart);
-        } else if (belong(nowS, mStart, mEnd)) {
-            editor.setSelection(mEnd, nowE);
-        }
-        else {
-            //throw new RuntimeException();
+        if (nowS != nowE) {
+            if (belong(nowE, mStart, mEnd)) {
+                editor.setSelection(nowS, mStart);
+            } else if (belong(nowS, mStart, mEnd)) {
+                editor.setSelection(mEnd, nowE);
+            }
+        } else {
+            if (nowS > mStart) {
+                editor.setSelection(mEnd, mEnd);
+            } else {
+                editor.setSelection(mStart, mStart);
+            }
         }
     }
 
