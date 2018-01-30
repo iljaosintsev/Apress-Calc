@@ -1,5 +1,8 @@
 package com.turlir.converter;
 
+import android.support.annotation.NonNull;
+import android.widget.EditText;
+
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -10,10 +13,7 @@ public class OperatorVisualTest {
 
     @Test
     public void selectionTestBindingRight() {
-        Visual ov = new OperatorVisual(" + ");
-        Printer p = Mockito.mock(Printer.class);
-        Mockito.when(p.length()).thenReturn(1, 4);
-        ov.print(p);
+        Visual ov = range(1, 4);
 
         assertFalse(ov.selectionConstraint(1, 9, 9));
         assertTrue(ov.selectionConstraint(2, 9, 9));
@@ -23,10 +23,7 @@ public class OperatorVisualTest {
 
     @Test
     public void selectionTestBindingLeft() {
-        Visual ov = new OperatorVisual(" + ");
-        Printer p = Mockito.mock(Printer.class);
-        Mockito.when(p.length()).thenReturn(1, 4);
-        ov.print(p);
+        Visual ov = range(1, 4);
 
         assertFalse(ov.selectionConstraint(0, 4, 9));
         assertTrue(ov.selectionConstraint(0, 3, 9));
@@ -38,10 +35,7 @@ public class OperatorVisualTest {
 
     @Test
     public void cornerCaseTest() {
-        Visual ov = new OperatorVisual(" + ");
-        Printer p = Mockito.mock(Printer.class);
-        Mockito.when(p.length()).thenReturn(1, 4);
-        ov.print(p);
+        Visual ov = range(1, 4);
 
         assertFalse(ov.selectionConstraint(1, 4, 9));
 
@@ -54,10 +48,7 @@ public class OperatorVisualTest {
 
     @Test
     public void selectionAtTheEnd() {
-        Visual ov = new OperatorVisual(" + ");
-        Printer p = Mockito.mock(Printer.class);
-        Mockito.when(p.length()).thenReturn(5, 8);
-        ov.print(p);
+        Visual ov = range(5, 8);
         // binding right
         assertFalse(ov.selectionConstraint(5, 9, 9));
         assertTrue(ov.selectionConstraint(6, 9, 9));
@@ -72,15 +63,49 @@ public class OperatorVisualTest {
 
     @Test
     public void singleCursor() {
-        Visual ov = new OperatorVisual(" + ");
-        Printer p = Mockito.mock(Printer.class);
-        Mockito.when(p.length()).thenReturn(1, 4);
-        ov.print(p);
+        Visual ov = range(1, 4);
 
         assertFalse(ov.selectionConstraint(1, 1, 9));
         assertTrue(ov.selectionConstraint(2, 2, 9));
         assertTrue(ov.selectionConstraint(3, 3, 9));
         assertFalse(ov.selectionConstraint(4, 4, 9));
+    }
+
+    @Test
+    public void singleCursorIntercept() {
+        Visual ov = range(1, 4);
+        checkCursor(ov, 2, 2, 4, 4);
+        checkCursor(ov, 3, 3, 4, 4);
+        checkCursor(ov, 1, 1, 1, 1); // never called
+    }
+
+    @Test
+    public void multiplyCursorInterceptRightBinding() {
+        Visual ov = range(1, 4);
+        checkCursor(ov, 2, 9, 4, 9);
+        checkCursor(ov, 3, 9, 4, 9);
+    }
+
+    @Test
+    public void multiplyCursorInterceptLeftBinding() {
+        Visual ov = range(1, 4);
+        checkCursor(ov, 0, 3, 0, 1);
+        checkCursor(ov, 0, 2, 0, 1);
+    }
+
+    @NonNull
+    private static Visual range(int start, int end) {
+        Visual ov = new OperatorVisual(" + ");
+        Printer p = Mockito.mock(Printer.class);
+        Mockito.when(p.length()).thenReturn(start, end);
+        ov.print(p);
+        return ov;
+    }
+
+    private static void checkCursor(Visual ov, int userStart, int userEnd, int a, int b) {
+        EditText e = Mockito.mock(EditText.class);
+        ov.interceptSelection(e, userStart, userEnd);
+        Mockito.verify(e).setSelection(Mockito.eq(a), Mockito.eq(b));
     }
 
 }
