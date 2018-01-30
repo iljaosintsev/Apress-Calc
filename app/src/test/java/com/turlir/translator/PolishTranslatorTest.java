@@ -4,6 +4,7 @@ import com.turlir.converter.Member;
 import com.turlir.converter.Part;
 import com.turlir.converter.Parts;
 import com.turlir.converter.Value;
+import com.turlir.converter.Visual;
 import com.turlir.interpreter.NotationInterpreter;
 
 import org.hamcrest.CoreMatchers;
@@ -102,8 +103,8 @@ public class PolishTranslatorTest {
         }
 
         @Override
-        public void print(StringBuilder chain) {
-            throw new RuntimeException();
+        public Visual view() {
+            throw new IllegalStateException();
         }
     }
 
