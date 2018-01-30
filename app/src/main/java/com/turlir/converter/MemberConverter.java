@@ -52,9 +52,9 @@ public class MemberConverter implements ExpressionExtractor {
             } else {
                 String token = now.value;
                 if (token.equals("-") && (mPrev == null || !mPrev.operand())) {
-                    res = Parts.UNARY_MINUS;
+                    res = Operators.UNARY_MINUS;
                 } else {
-                    res = Parts.find(token);
+                    res = Operators.find(token);
                 }
             }
             mPrev = now;

@@ -28,14 +28,14 @@ public class MemberConverterTest extends CommonTest {
         IntervalExtractor mock = Mockito.mock(IntervalExtractor.class);
         Mockito.when(mock.iterator(Mockito.anyString())).thenReturn(seq);
         Queue<Member> conv = new MemberConverter(mock).iterator("");
-        or(conv, Parts.PLUS);
-        or(conv, Parts.UNARY_MINUS);
-        or(conv, Parts.MULTI);
-        or(conv, Parts.DIV);
-        or(conv, Parts.OS);
-        or(conv, Parts.CS);
+        or(conv, Operators.PLUS);
+        or(conv, Operators.UNARY_MINUS);
+        or(conv, Operators.MULTI);
+        or(conv, Operators.DIV);
+        or(conv, Operators.OS);
+        or(conv, Operators.CS);
         and(conv, new Value(3.0));
-        or(conv, Parts.MINUS);
+        or(conv, Operators.MINUS);
         org.junit.Assert.assertTrue(conv.isEmpty());
     }
 
@@ -50,9 +50,9 @@ public class MemberConverterTest extends CommonTest {
         IntervalExtractor mock = Mockito.mock(IntervalExtractor.class);
         Mockito.when(mock.iterator(Mockito.anyString())).thenReturn(seq);
         Queue<Member> conv = new MemberConverter(mock).iterator("");
-        or(conv, Parts.UNARY_MINUS);
+        or(conv, Operators.UNARY_MINUS);
         and(conv, new Value(4));
-        or(conv, Parts.PLUS);
+        or(conv, Operators.PLUS);
         and(conv, new Value(2));
         org.junit.Assert.assertTrue(conv.isEmpty());
     }
@@ -71,10 +71,10 @@ public class MemberConverterTest extends CommonTest {
         Mockito.when(mock.iterator(Mockito.anyString())).thenReturn(seq);
         Queue<Member> conv = new MemberConverter(mock).iterator("");
         and(conv, new Value(4));
-        or(conv, Parts.PLUS);
+        or(conv, Operators.PLUS);
         and(conv, new Value(2));
-        or(conv, Parts.MULTI);
-        or(conv, Parts.UNARY_MINUS);
+        or(conv, Operators.MULTI);
+        or(conv, Operators.UNARY_MINUS);
         and(conv, new Value(1));
         org.junit.Assert.assertTrue(conv.isEmpty());
     }

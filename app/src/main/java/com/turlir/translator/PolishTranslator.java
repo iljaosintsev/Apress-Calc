@@ -1,8 +1,8 @@
 package com.turlir.translator;
 
 import com.turlir.converter.Member;
-import com.turlir.converter.Part;
-import com.turlir.converter.Parts;
+import com.turlir.converter.Operator;
+import com.turlir.converter.Operators;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -14,7 +14,7 @@ public class PolishTranslator implements NotationTranslator {
 
     @Override
     public Queue<Member> translate(Queue<Member> parent) {
-        Deque<Part> operators = new ArrayDeque<>();
+        Deque<Operator> operators = new ArrayDeque<>();
         Queue<Member> converted = new LinkedList<>();
 
         for (Member now : parent) {
@@ -22,14 +22,14 @@ public class PolishTranslator implements NotationTranslator {
             if (isNumber) {
                 converted.add(now);
 
-            } else if (now == Parts.OS) {
-                operators.addLast(Parts.CS);
+            } else if (now == Operators.OS) {
+                operators.addLast(Operators.CS);
 
-            } else if (now == Parts.CS) {
+            } else if (now == Operators.CS) {
                 closedBracket(operators.descendingIterator(), converted);
 
             } else {
-                Part p = (Part) now;
+                Operator p = (Operator) now;
                 operator(p, operators.descendingIterator(), converted);
                 operators.addLast(p);
             }
@@ -37,7 +37,7 @@ public class PolishTranslator implements NotationTranslator {
 
         while (!operators.isEmpty()) { // дописываем остатки операторов
             Member op = operators.pollLast();
-            if (op == Parts.CS)
+            if (op == Operators.CS)
                 throw new RuntimeException("Неправильно расставлены скобки");
             converted.add(op);
         }
@@ -45,10 +45,10 @@ public class PolishTranslator implements NotationTranslator {
         return converted;
     }
 
-    private void operator(Part current, Iterator<Part> iter, Queue<Member> converted) {
+    private void operator(Operator current, Iterator<Operator> iter, Queue<Member> converted) {
         while (iter.hasNext()) {
-            Part prev = iter.next();
-            if (prev == Parts.CS) { // 4 * ( 1 + 2 )
+            Operator prev = iter.next();
+            if (prev == Operators.CS) { // 4 * ( 1 + 2 )
                 break;
             } else if (current.compareTo(prev) < 1) {
                 // для всех операторов из стека, приоритет которых больше текущего оператора
@@ -58,11 +58,11 @@ public class PolishTranslator implements NotationTranslator {
         }
     }
 
-    private void closedBracket(Iterator<Part> iter, Queue<Member> converted) {
+    private void closedBracket(Iterator<Operator> iter, Queue<Member> converted) {
         while (iter.hasNext()) {
             Member tmp = iter.next();
             iter.remove(); // poolLast() analog
-            if (tmp != Parts.CS) {
+            if (tmp != Operators.CS) {
                 converted.add(tmp);
             } else {
                 return;

@@ -1,8 +1,8 @@
 package com.turlir.translator;
 
 import com.turlir.converter.Member;
-import com.turlir.converter.Part;
-import com.turlir.converter.Parts;
+import com.turlir.converter.Operator;
+import com.turlir.converter.Operators;
 import com.turlir.converter.Value;
 import com.turlir.converter.Visual;
 import com.turlir.interpreter.NotationInterpreter;
@@ -21,19 +21,19 @@ import static org.junit.Assert.assertNotNull;
 
 public class PolishTranslatorTest {
 
-    private static final Member OS = Parts.OS;
+    private static final Member OS = Operators.OS;
 
-    private static final Part CS = Parts.CS;
+    private static final Operator CS = Operators.CS;
 
-    private static final Member PLUS = new StubPart("+", 2);
+    private static final Member PLUS = new StubOperator("+", 2);
 
-    private static final Member MINUS = new StubPart("-", 2);
+    private static final Member MINUS = new StubOperator("-", 2);
 
-    private static final Member MULTI = new StubPart("*", 3);
+    private static final Member MULTI = new StubOperator("*", 3);
 
-    private static final Member DIV = new StubPart("/", 3);
+    private static final Member DIV = new StubOperator("/", 3);
 
-    private static final Member UNARY = new StubPart("-", 4);
+    private static final Member UNARY = new StubOperator("-", 4);
 
     private NotationTranslator sor;
 
@@ -91,9 +91,9 @@ public class PolishTranslatorTest {
         return new LinkedList<>(Arrays.asList(member));
     }
 
-    private static class StubPart extends Part {
+    private static class StubOperator extends Operator {
 
-        private StubPart(String token, int priority) {
+        private StubOperator(String token, int priority) {
             super(token, priority);
         }
 
