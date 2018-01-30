@@ -20,21 +20,32 @@ class OperatorVisual implements Visual {
     }
 
     @Override
-    public boolean selectionConstraint(int selEnd, int length) {
-        return mToken.length() > 1 && length >= mEnd && selEnd > mStart && selEnd <= mEnd;
+    public boolean selectionConstraint(int selStart, int selEnd, int length) {
+        boolean safety = mToken.length() > 1 && length >= mEnd;
+        boolean union;
+        if (selStart != selEnd) {
+            union = selStart <= mStart && selEnd < mEnd && selEnd > mStart;
+            union = union || selEnd >= mEnd && selStart > mStart && selStart < mEnd;
+        } else {
+            union = false;
+        }
+        return safety && union;
     }
 
     @Override
-    public void interceptSelection(EditText editor) {
-        int selStart = editor.getSelectionStart();
-        int selEnd = editor.getSelectionEnd();
-        final int s;
-        if (selStart < mEnd)
-            s = Math.min(selStart, mStart);
-        else
-            s = selStart;
-        final int e = Math.max(selEnd, mEnd);
-        editor.setSelection(s, e);
+    public void interceptSelection(EditText editor, int nowS, int nowE) {
+        if (belong(nowE, mStart, mEnd)) {
+            editor.setSelection(nowS, mStart);
+        } else if (belong(nowS, mStart, mEnd)) {
+            editor.setSelection(mEnd, nowE);
+        }
+        else {
+            //throw new RuntimeException();
+        }
+    }
+
+    private static boolean belong(int i, int start, int end) {
+        return i > start && i < end;
     }
 
     @Override

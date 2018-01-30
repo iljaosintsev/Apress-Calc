@@ -6,9 +6,9 @@ public interface Visual {
 
     void print(Printer chain);
 
-    boolean selectionConstraint(int selEnd, int length);
+    boolean selectionConstraint(int selStart, int selEnd, int length);
 
-    void interceptSelection(EditText editor);
+    void interceptSelection(EditText editor, int nowS, int nowE);
 
     int constraintStart();
 

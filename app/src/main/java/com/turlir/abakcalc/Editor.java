@@ -42,8 +42,8 @@ public class Editor extends android.support.v7.widget.AppCompatEditText {
         if (mViews != null /*selStart != 0 || selStart != selEnd*/) {
             int l = getText().length();
             for (Visual item : mViews) {
-                if (item.selectionConstraint(selEnd, l)) {
-                    item.interceptSelection(this);
+                if (item.selectionConstraint(selStart, selEnd, l)) {
+                    item.interceptSelection(this, selStart, selEnd);
                     return;
                 }
             }
@@ -68,7 +68,7 @@ public class Editor extends android.support.v7.widget.AppCompatEditText {
         int length = getText().length();
         if (length > 0 && index > 0) {
             for (Visual item : mViews) {
-                if (item.selectionConstraint(index, length)) {
+                if (item.selectionConstraint(index, index, length)) {
                     int s = item.constraintStart();
                     int e = item.constraintEnd();
                     return getText().replace(s, e, "").toString();
