@@ -1,7 +1,6 @@
 package com.turlir.converter;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 public abstract class Operator implements Member, Comparable<Operator> {
 
@@ -10,7 +9,6 @@ public abstract class Operator implements Member, Comparable<Operator> {
 
     protected Operator(String token, int priority) {
         mPriority = priority;
-        Log.d("Operator", "create operator and visual");
         mVisual = new OperatorVisual(token);
     }
 
