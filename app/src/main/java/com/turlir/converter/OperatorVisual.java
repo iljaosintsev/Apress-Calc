@@ -20,8 +20,8 @@ class OperatorVisual implements Visual {
     }
 
     @Override
-    public boolean selectionConstraint(int selEnd) {
-        return mToken.length() > 1 && selEnd > mStart && selEnd < mEnd;
+    public boolean selectionConstraint(int selEnd, int length) {
+        return mToken.length() > 1 && length >= mEnd && selEnd > mStart && selEnd <= mEnd;
     }
 
     @Override
@@ -35,5 +35,15 @@ class OperatorVisual implements Visual {
             s = selStart;
         final int e = Math.max(selEnd, mEnd);
         editor.setSelection(s, e);
+    }
+
+    @Override
+    public int constraintStart() {
+        return mStart;
+    }
+
+    @Override
+    public int constraintEnd() {
+        return mEnd;
     }
 }

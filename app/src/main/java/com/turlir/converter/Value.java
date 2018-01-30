@@ -35,13 +35,23 @@ public class Value implements Member {
             }
 
             @Override
-            public boolean selectionConstraint(int selEnd) {
+            public boolean selectionConstraint(int selEnd, int length) {
                 return false;
             }
 
             @Override
             public void interceptSelection(EditText editor) {
                 //
+            }
+
+            @Override
+            public int constraintStart() {
+                return 0;
+            }
+
+            @Override
+            public int constraintEnd() {
+                return 0;
             }
         };
     }

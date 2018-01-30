@@ -1,6 +1,7 @@
 package com.turlir.abakcalc;
 
 import android.content.Context;
+import android.text.Editable;
 import android.util.AttributeSet;
 import android.util.Log;
 
@@ -31,8 +32,9 @@ public class Editor extends android.support.v7.widget.AppCompatEditText {
         super.onSelectionChanged(selStart, selEnd);
         Log.d("Editor", "onSelectionChanged " + selStart + " " + selEnd);
         if (mViews != null /*selStart != 0 || selStart != selEnd*/) {
+            int l = getText().length();
             for (Visual item : mViews) {
-                if (item.selectionConstraint(selEnd)) {
+                if (item.selectionConstraint(selEnd, l)) {
                     item.interceptSelection(this);
                     return;
                 }
@@ -40,7 +42,7 @@ public class Editor extends android.support.v7.widget.AppCompatEditText {
         }
     }
 
-    public String setRepresentation(List<Visual> views) {
+    public void setRepresentation(List<Visual> views) {
         for (Visual view : views) {
             view.print(mPrinter);
         }
@@ -51,7 +53,29 @@ public class Editor extends android.support.v7.widget.AppCompatEditText {
         int oldLength = getText().length();
         setText(s);
         setSelection(ss + (s.length() - oldLength));
-        return s;
+        //return s;
     }
 
+    public String removeSymbol(int index) {
+        int length = getText().length();
+        if (length > 0 && index > 0) {
+            for (Visual item : mViews) {
+                if (item.selectionConstraint(index, length)) {
+                    int s = item.constraintStart();
+                    int e = item.constraintEnd();
+                    return getText().replace(s, e, "").toString();
+                }
+            }
+            return getText().replace(index - 1, index, "").toString();
+        }
+        return "";
+    }
+
+    public String insertSymbol(int index, String s) {
+        Editable txt = getEditableText();
+        CharSequence copy = txt.subSequence(0, txt.length());
+        String maybe = txt.insert(index, s).toString();
+        txt.replace(0, txt.length(), copy);
+        return maybe;
+    }
 }

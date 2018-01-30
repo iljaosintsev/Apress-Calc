@@ -39,8 +39,6 @@ public class MainActivity extends AppCompatActivity {
     private Calculator mCalc;
     private Analyzer mAnalyze;
 
-    private final StringBuilder mInputCopy = new StringBuilder();
-
     @Override
     protected void onCreate(Bundle save) {
         super.onCreate(save);
@@ -164,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
         int start = editText.getSelectionStart();
         int end = editText.getSelectionEnd();
         if (start != end) throw new RuntimeException();
-        String now = mInputCopy.insert(start, s).toString();
+        String now = editText.insertSymbol(start, s);
         recalculate(now);
     }
 
@@ -185,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
         int start = editText.getSelectionStart();
         int end = editText.getSelectionEnd();
         if (start != end) throw new RuntimeException();
-        String str = editText.getText().replace(start - 1, start, "").toString();
+        String str = editText.removeSymbol(start);
         recalculate(str);
     }
 
@@ -201,8 +199,7 @@ public class MainActivity extends AppCompatActivity {
         Queue<Member> q = mAnalyze.analyze(str);
 
         List<Visual> v = mAnalyze.display();
-        String now = editText.setRepresentation(v);
-        mInputCopy.replace(0, mInputCopy.length(), now);
+        editText.setRepresentation(v);
 
         String res = mCalc.represent(q);
         Log.d(TAG, "Результат " + res);
