@@ -1,7 +1,6 @@
 package com.turlir.abakcalc;
 
 import android.content.Context;
-import android.text.Editable;
 import android.util.AttributeSet;
 import android.util.Log;
 
@@ -16,6 +15,7 @@ public class Editor extends android.support.v7.widget.AppCompatEditText {
     private List<Visual> mViews;
 
     private final Printer mPrinter = new DirectPrinter();
+    private final StringBuilder mCopy = new StringBuilder();
 
     public Editor(Context context) {
         this(context, null);
@@ -25,6 +25,14 @@ public class Editor extends android.support.v7.widget.AppCompatEditText {
         super(context, attrs);
         setShowSoftInputOnFocus(false);
         mViews = Collections.emptyList();
+    }
+
+    @Override
+    public void setText(CharSequence text, BufferType type) {
+        super.setText(text, type);
+        if (mCopy != null) {
+            mCopy.replace(0, mCopy.length(), text.toString());
+        }
     }
 
     @Override
@@ -72,10 +80,7 @@ public class Editor extends android.support.v7.widget.AppCompatEditText {
     }
 
     public String insertSymbol(int index, String s) {
-        Editable txt = getEditableText();
-        CharSequence copy = txt.subSequence(0, txt.length());
-        String maybe = txt.insert(index, s).toString();
-        txt.replace(0, txt.length(), copy);
-        return maybe;
+        mCopy.insert(index, s);
+        return mCopy.toString();
     }
 }
