@@ -40,7 +40,7 @@ public class Editor extends android.support.v7.widget.AppCompatEditText {
         }
     }
 
-    public void setRepresentation(List<Visual> views) {
+    public String setRepresentation(List<Visual> views) {
         for (Visual view : views) {
             view.print(mPrinter);
         }
@@ -51,6 +51,7 @@ public class Editor extends android.support.v7.widget.AppCompatEditText {
         int oldLength = getText().length();
         setText(s);
         setSelection(ss + (s.length() - oldLength));
+        return s;
     }
 
 }
