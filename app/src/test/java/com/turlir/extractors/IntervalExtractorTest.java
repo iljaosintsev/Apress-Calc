@@ -80,4 +80,13 @@ public class IntervalExtractorTest extends CommonTest {
         and(extractor, "3");
     }
 
+    @Test
+    public void floatingNumber() {
+        Iterator<Interval> extractor = new ExpressionPartExtractor().iterator("2,2");
+        and(extractor, "2.2");
+
+        extractor = new ExpressionPartExtractor().iterator("1 234");
+        and(extractor, "1234");
+    }
+
 }

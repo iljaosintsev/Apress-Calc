@@ -48,7 +48,7 @@ public class MemberConverter implements ExpressionExtractor {
             Interval now = mIntervals.next();
             Member res;
             if (now.operand()) {
-                res = new Value(Double.parseDouble(now.value));
+                res = new Value(Double.parseDouble(now.value), now.value.contains("."));
             } else {
                 String token = now.value;
                 if (token.equals("-") && (mPrev == null || !mPrev.operand())) {

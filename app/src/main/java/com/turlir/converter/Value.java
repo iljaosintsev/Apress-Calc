@@ -8,12 +8,20 @@ import java.text.DecimalFormat;
 
 public class Value implements Member {
 
-    private static final DecimalFormat DF = new DecimalFormat("#.###"); // формат результата
+    private static final DecimalFormat DF = new DecimalFormat("###,###,###.###");
+    private static final String SEPARATOR = String.valueOf(DF.getDecimalFormatSymbols().getDecimalSeparator());
 
     private final double mValue;
+    private final boolean isFloat;
 
     public Value(double value) {
         mValue = value;
+        isFloat = false;
+    }
+
+    Value(double value, boolean contains) {
+        mValue = value;
+        isFloat = contains;
     }
 
     @Override
@@ -31,7 +39,15 @@ public class Value implements Member {
         return new Visual() {
             @Override
             public void print(Printer chain) {
-                chain.append(DF.format(mValue));
+                if (isFloat) {
+                    String tmp = DF.format(mValue);
+                    if (!tmp.contains(SEPARATOR)) {
+                        tmp += SEPARATOR;
+                    }
+                    chain.append(tmp);
+                } else {
+                    chain.append(DF.format(mValue));
+                }
             }
 
             @Override

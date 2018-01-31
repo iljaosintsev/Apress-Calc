@@ -1,7 +1,7 @@
 package com.turlir;
 
-import com.turlir.converter.MemberConverter;
 import com.turlir.converter.ExpressionExtractor;
+import com.turlir.converter.MemberConverter;
 import com.turlir.extractors.ExpressionPartExtractor;
 import com.turlir.extractors.MultiOperatorExtractor;
 import com.turlir.interpreter.NotationInterpreter;
@@ -48,6 +48,12 @@ public class IntegrationTest {
     public void priorityTest() throws Exception {
         Double res = calc.calc(mAnalyzer.analyze("2 + 2 * 2"));
         assertEquals(6, res, 0.1);
+    }
+
+    @Test
+    public void floatingNumberTest() throws Exception {
+        Double res = calc.calc(mAnalyzer.analyze("2,2 + 3"));
+        assertEquals(5.2, res, 0.1);
     }
 
     @Test

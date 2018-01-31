@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.turlir.Analyzer;
@@ -18,8 +19,10 @@ import com.turlir.interpreter.PolishInterpreter;
 import com.turlir.translator.NotationTranslator;
 import com.turlir.translator.PolishTranslator;
 
+import java.text.DecimalFormatSymbols;
 import java.util.EmptyStackException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Queue;
 
 import butterknife.BindView;
@@ -29,6 +32,11 @@ import butterknife.OnClick;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+    private static final DecimalFormatSymbols FORMAT  = new DecimalFormatSymbols(Locale.getDefault());
+    private static final String SEPARATOR = String.valueOf(FORMAT.getDecimalSeparator());
+
+    @BindView(R.id.btn_dot)
+    Button dot;
 
     @BindView(R.id.edit_text)
     Editor editText;
@@ -44,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(save);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        dot.setText(SEPARATOR);
 
         NotationTranslator conv = new PolishTranslator();
         NotationInterpreter inter = new PolishInterpreter();
@@ -140,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
                 append("0");
                 break;
             case R.id.btn_dot:
-                append(".");
+                append(SEPARATOR);
                 break;
             case R.id.btn_cs:
                 append("(");
@@ -196,6 +205,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void calculate(String str) throws Exception {
+        str = str.replaceAll("\\s+", "").replaceAll(SEPARATOR, ".");
         Queue<Member> q = mAnalyze.analyze(str);
 
         List<Visual> v = mAnalyze.display();

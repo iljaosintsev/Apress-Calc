@@ -15,7 +15,7 @@ public class ExpressionPartExtractor implements IntervalExtractor {
         private int mLength;
 
         private IntervalIterator(String str) {
-            mStr = str.replaceAll(" ", "");
+            mStr = str.replaceAll("\\s+", "").replaceAll(",", ".");
         }
 
         @Override
