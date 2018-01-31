@@ -65,10 +65,10 @@ public class OperatorVisualTest {
     public void singleCursor() {
         Visual ov = range(1, 4);
 
-        assertFalse(ov.selectionConstraint(1, 1, 9));
+        assertTrue(ov.selectionConstraint(1, 1, 9));
         assertTrue(ov.selectionConstraint(2, 2, 9));
         assertTrue(ov.selectionConstraint(3, 3, 9));
-        assertFalse(ov.selectionConstraint(4, 4, 9));
+        assertTrue(ov.selectionConstraint(4, 4, 9));
     }
 
     @Test

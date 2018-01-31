@@ -200,7 +200,8 @@ public class MainActivity extends AppCompatActivity {
         try {
             calculate(str);
         } catch (Exception e) {
-            Log.w(TAG, "Ошибка при перерасчете " + e);
+            Log.w(TAG, "Ошибка " + e + " при перерасчете строки " + str);
+            e.printStackTrace();
         }
     }
 

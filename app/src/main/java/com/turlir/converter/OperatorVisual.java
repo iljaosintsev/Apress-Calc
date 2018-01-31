@@ -27,7 +27,7 @@ class OperatorVisual implements Visual {
             union = selStart <= mStart && selEnd < mEnd && selEnd > mStart;
             union = union || selEnd >= mEnd && selStart > mStart && selStart < mEnd;
         } else {
-            union = belong(selStart, mStart, mEnd) || belong(selEnd, mStart, mEnd);
+            union = strictBelong(selStart, mStart, mEnd) || strictBelong(selEnd, mStart, mEnd);
         }
         return safety && union;
     }
@@ -51,6 +51,10 @@ class OperatorVisual implements Visual {
 
     private static boolean belong(int i, int start, int end) {
         return i > start && i < end;
+    }
+
+    private static boolean strictBelong(int i, int start, int end) {
+        return i >= start && i <= end;
     }
 
     @Override

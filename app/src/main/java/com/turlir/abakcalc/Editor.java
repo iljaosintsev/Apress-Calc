@@ -2,7 +2,6 @@ package com.turlir.abakcalc;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 
 import com.turlir.converter.Printer;
 import com.turlir.converter.Visual;
@@ -38,8 +37,7 @@ public class Editor extends android.support.v7.widget.AppCompatEditText {
     @Override
     protected void onSelectionChanged(int selStart, int selEnd) {
         super.onSelectionChanged(selStart, selEnd);
-        Log.d("Editor", "onSelectionChanged " + selStart + " " + selEnd);
-        if (mViews != null /*selStart != 0 || selStart != selEnd*/) {
+        if (mViews != null) {
             int l = getText().length();
             for (Visual item : mViews) {
                 if (item.selectionConstraint(selStart, selEnd, l)) {
@@ -61,7 +59,6 @@ public class Editor extends android.support.v7.widget.AppCompatEditText {
         int oldLength = getText().length();
         setText(s);
         setSelection(ss + (s.length() - oldLength));
-        //return s;
     }
 
     public String removeSymbol(int index) {
