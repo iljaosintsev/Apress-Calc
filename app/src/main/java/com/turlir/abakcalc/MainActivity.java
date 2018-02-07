@@ -7,7 +7,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.turlir.Analyzer;
+import com.turlir.Calculator;
+import com.turlir.converter.MemberConverter;
 import com.turlir.converter.Visual;
+import com.turlir.extractors.ExpressionPartExtractor;
+import com.turlir.extractors.MultiOperatorExtractor;
+import com.turlir.interpreter.NotationInterpreter;
+import com.turlir.interpreter.PolishInterpreter;
+import com.turlir.translator.NotationTranslator;
+import com.turlir.translator.PolishTranslator;
 
 import java.util.List;
 
@@ -35,7 +44,16 @@ public class MainActivity extends AppCompatActivity implements MainView {
         super.onCreate(save);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        mPresenter = new MainPresenter();
+        Analyzer analyzer = new Analyzer(
+                new MemberConverter(
+                        new MultiOperatorExtractor(
+                                new ExpressionPartExtractor()
+                        )
+                )
+        );
+        NotationTranslator translator = new PolishTranslator();
+        NotationInterpreter interpreter = new PolishInterpreter();
+        mPresenter = new MainPresenter(new Calculator(translator, interpreter), analyzer);
         mPresenter.attach(this);
         dot.setText(MainPresenter.SEPARATOR);
     }
