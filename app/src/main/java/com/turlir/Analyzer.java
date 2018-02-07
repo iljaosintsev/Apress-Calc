@@ -5,9 +5,9 @@ import com.turlir.converter.Member;
 import com.turlir.converter.Visual;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Queue;
 
 /**
  * Анализирует математическое выражение. Выражение может быть не полным, но должно содержать только известные
@@ -17,11 +17,8 @@ public class Analyzer {
 
     private final ExpressionExtractor mConverter;
 
-    private Queue<Member> mSequence;
-
     public Analyzer(ExpressionExtractor converter) {
         mConverter = converter;
-        mSequence = new LinkedList<>();
     }
 
     /**
@@ -30,14 +27,13 @@ public class Analyzer {
      * @return разобранное на токены выражение
      * @throws RuntimeException в случае ошибки разбора
      */
-    public Queue<Member> analyze(String exp) throws Exception {
-        mSequence = mConverter.iterator(exp);
-        return mSequence;
+    public Iterator<Member> analyze(String exp) throws Exception {
+        return mConverter.iterator(exp);
     }
 
-    public List<Visual> display() {
-        List<Visual> views = new ArrayList<>(mSequence.size());
-        for (Member member : mSequence) {
+    public List<Visual> display(Collection<Member> sequence) {
+        List<Visual> views = new ArrayList<>(sequence.size());
+        for (Member member : sequence) {
             views.add(member.view());
         }
         return views;

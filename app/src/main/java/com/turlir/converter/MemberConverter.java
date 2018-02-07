@@ -6,8 +6,6 @@ import com.turlir.extractors.Interval;
 import com.turlir.extractors.IntervalExtractor;
 
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Queue;
 
 public class MemberConverter implements ExpressionExtractor {
 
@@ -18,13 +16,8 @@ public class MemberConverter implements ExpressionExtractor {
     }
 
     @Override
-    public Queue<Member> iterator(String value) {
-        Queue<Member> collect = new LinkedList<>();
-        MemberIterator stream = new MemberIterator(mExtractor.iterator(value));
-        while (stream.hasNext()) {
-            collect.add(stream.next());
-        }
-        return collect;
+    public Iterator<Member> iterator(String value) {
+        return new MemberIterator(mExtractor.iterator(value));
     }
 
     private static class MemberIterator implements Iterator<Member> {

@@ -5,8 +5,11 @@ import com.turlir.Calculator;
 import com.turlir.converter.Member;
 import com.turlir.converter.Visual;
 
+import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.EmptyStackException;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.NoSuchElementException;
@@ -15,6 +18,8 @@ import java.util.Queue;
 class MainPresenter {
 
     //private static final String TAG = "Presenter";
+
+    private static final DecimalFormat DF = new DecimalFormat("#.###"); // формат результата
 
     private static final DecimalFormatSymbols FORMAT  = new DecimalFormatSymbols(Locale.getDefault());
     static final String SEPARATOR = String.valueOf(FORMAT.getDecimalSeparator());
@@ -62,12 +67,17 @@ class MainPresenter {
     private void calculate(String str) throws Exception {
         str = str.replaceAll("\\s+", "").replace(SEPARATOR, ".");
 
-        Queue<Member> q = mAnalyze.analyze(str);
-        List<Visual> visual = mAnalyze.display();
+        Iterator<Member> primaryQ = mAnalyze.analyze(str);
+        Queue<Member> copy = new LinkedList<>();
+        while (primaryQ.hasNext()) {
+            Member item = primaryQ.next();
+            copy.add(item);
+        }
+        List<Visual> visual = mAnalyze.display(copy);
         mView.setRepresentation(visual);
 
-        String digit = mCalc.represent(q);
-        mView.showResult(digit);
+        double digit = mCalc.calc(copy.iterator());
+        mView.showResult(DF.format(digit));
     }
 
 }

@@ -3,10 +3,8 @@ package com.turlir.extractors;
 import com.turlir.converter.Member;
 
 import java.util.Iterator;
-import java.util.Queue;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public abstract class CommonTest {
@@ -24,14 +22,14 @@ public abstract class CommonTest {
 
     //
 
-    protected static void and(Queue<Member> it, Member value) {
-        assertFalse(it.isEmpty());
-        assertEquals(it.poll(), value);
+    protected static void and(Iterator<Member> it, Member value) {
+        assertTrue(it.hasNext());
+        assertEquals(it.next(), value);
     }
 
-    protected static void or(Queue<Member> it, Member value) {
-        assertFalse(it.isEmpty());
-        assertTrue(it.poll() == value);
+    protected static void or(Iterator<Member> it, Member value) {
+        assertTrue(it.hasNext());
+        assertTrue(it.next() == value);
     }
 
     //
