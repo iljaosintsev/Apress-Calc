@@ -1,39 +1,23 @@
 package com.turlir.abakcalc;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.turlir.Analyzer;
-import com.turlir.Calculator;
-import com.turlir.converter.Member;
-import com.turlir.converter.MemberConverter;
 import com.turlir.converter.Visual;
-import com.turlir.extractors.ExpressionPartExtractor;
-import com.turlir.extractors.MultiOperatorExtractor;
-import com.turlir.interpreter.NotationInterpreter;
-import com.turlir.interpreter.PolishInterpreter;
-import com.turlir.translator.NotationTranslator;
-import com.turlir.translator.PolishTranslator;
 
-import java.text.DecimalFormatSymbols;
-import java.util.EmptyStackException;
 import java.util.List;
-import java.util.Locale;
-import java.util.Queue;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainView {
 
     private static final String TAG = "MainActivity";
-    private static final DecimalFormatSymbols FORMAT  = new DecimalFormatSymbols(Locale.getDefault());
-    private static final String SEPARATOR = String.valueOf(FORMAT.getDecimalSeparator());
 
     @BindView(R.id.btn_dot)
     Button dot;
@@ -44,26 +28,16 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.tv_result)
     TextView result;
 
-    private Calculator mCalc;
-    private Analyzer mAnalyze;
+    private MainPresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle save) {
         super.onCreate(save);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        dot.setText(SEPARATOR);
-
-        NotationTranslator conv = new PolishTranslator();
-        NotationInterpreter inter = new PolishInterpreter();
-        mCalc = new Calculator(conv, inter);
-        mAnalyze = new Analyzer(
-                new MemberConverter(
-                        new MultiOperatorExtractor(
-                                new ExpressionPartExtractor()
-                        )
-                )
-        );
+        mPresenter = new MainPresenter();
+        mPresenter.attach(this);
+        dot.setText(MainPresenter.SEPARATOR);
     }
 
     @Override
@@ -71,6 +45,12 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         editText.setText("");
         result.setText("");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mPresenter.detach();
     }
 
     @OnClick({
@@ -99,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
             R.id.btn_clear,
             R.id.btn_enter
     })
-    public void keyboardButtonClick(View view) {
+    void keyboardButtonClick(View view) {
         int id = view.getId();
         switch (id) {
             case R.id.btn_add:
@@ -149,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                 append("0");
                 break;
             case R.id.btn_dot:
-                append(SEPARATOR);
+                append(MainPresenter.SEPARATOR);
                 break;
             case R.id.btn_cs:
                 append("(");
@@ -167,25 +147,37 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void showResult(String digit) {
+        result.setText(digit);
+    }
+
+    @Override
+    public void setRepresentation(List<Visual> v) {
+        editText.setRepresentation(v);
+    }
+
+    @Override
+    public void showError(String error) {
+        result.setText(error);
+    }
+
+    @Override
+    public Context context() {
+        return getApplicationContext();
+    }
+
     private void append(String s) {
         int start = editText.getSelectionStart();
         int end = editText.getSelectionEnd();
         if (start != end) throw new RuntimeException();
         String now = editText.insertSymbol(start, s);
-        recalculate(now);
+        mPresenter.recalculate(now);
     }
 
     private void enter() {
         String str = editText.getText().toString();
-        try {
-            calculate(str);
-        } catch (EmptyStackException e) {
-            Log.e(TAG, "EmptyStackException при вычислении", e);
-            result.setText(R.string.error);
-        } catch (Exception e) {
-            Log.e(TAG, "Ошибка при вычислении", e);
-            result.setText(e.getMessage());
-        }
+        mPresenter.enter(str);
     }
 
     private void clear() {
@@ -193,29 +185,7 @@ public class MainActivity extends AppCompatActivity {
         int end = editText.getSelectionEnd();
         if (start != end) throw new RuntimeException();
         String str = editText.removeSymbol(start);
-        recalculate(str);
-    }
-
-    private void recalculate(String str) {
-        try {
-            calculate(str);
-        } catch (Exception e) {
-            Log.w(TAG, "Ошибка " + e + " при перерасчете строки " + str);
-            e.printStackTrace();
-        }
-    }
-
-    private void calculate(String str) throws Exception {
-        str = str.replaceAll("\\s+", "").replaceAll(SEPARATOR, ".");
-        Queue<Member> q = mAnalyze.analyze(str);
-
-        List<Visual> v = mAnalyze.display();
-        editText.setRepresentation(v);
-
-        String res = mCalc.represent(q);
-        Log.d(TAG, "Результат " + res);
-        String strRes = getString(R.string.result, res);
-        result.setText(strRes);
+        mPresenter.recalculate(str);
     }
 
 }
