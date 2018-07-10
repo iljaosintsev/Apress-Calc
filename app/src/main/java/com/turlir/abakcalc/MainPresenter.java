@@ -8,6 +8,7 @@ import com.turlir.converter.Visual;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.EmptyStackException;
 import java.util.List;
@@ -50,10 +51,7 @@ class MainPresenter {
 
         try {
             calculate(s);
-            Queue<Member> row = mCalc.translated();
-            List<Visual> now = new ArrayList<>(mCalc.size());
-            for (Member item : row) now.add(item.view());
-            mView.setNotation(now);
+            showNotation();
 
         } catch (EmptyStackException | NoSuchElementException e) {
             //Log.e(TAG, "EmptyStackException при вычислении", e);
@@ -67,6 +65,13 @@ class MainPresenter {
 
             mView.setNotation(Collections.<Visual>emptyList());
         }
+    }
+
+    private void showNotation() {
+        Queue<Member> row = mCalc.translated();
+        List<Visual> now = new ArrayList<>(mCalc.size());
+        for (Member item : row) now.add(item.view());
+        mView.setNotation(now);
     }
 
     void recalculate(String s) {
@@ -86,11 +91,19 @@ class MainPresenter {
     private void calculate(String str) throws Exception {
         str = str.replaceAll("\\s+", "").replace(SEPARATOR, ".");
         List<Member> copy = mAnalyze.slice(str);
-        List<Visual> visual = mAnalyze.display(copy);
+        List<Visual> visual = interceptPrimary(copy);
         mView.setRepresentation(visual);
 
         double digit = mCalc.calc(copy.iterator());
         mView.showResult(DF.format(digit));
+    }
+
+    private static List<Visual> interceptPrimary(Collection<Member> sequence) {
+        List<Visual> views = new ArrayList<>(sequence.size());
+        for (Member member : sequence) {
+            views.add(member.view());
+        }
+        return views;
     }
 
 }

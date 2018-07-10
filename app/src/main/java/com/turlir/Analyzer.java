@@ -2,10 +2,7 @@ package com.turlir;
 
 import com.turlir.converter.ExpressionExtractor;
 import com.turlir.converter.Member;
-import com.turlir.converter.Visual;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -48,11 +45,4 @@ public class Analyzer {
         return copy;
     }
 
-    public List<Visual> display(Collection<Member> sequence) {
-        List<Visual> views = new ArrayList<>(sequence.size());
-        for (Member member : sequence) {
-            views.add(member.view());
-        }
-        return views;
-    }
 }
