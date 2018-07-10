@@ -3,6 +3,8 @@ package com.turlir.abakcalc;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -18,11 +20,13 @@ import com.turlir.interpreter.PolishInterpreter;
 import com.turlir.translator.NotationTranslator;
 import com.turlir.translator.PolishTranslator;
 
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 
 public class MainActivity extends AppCompatActivity implements MainView {
 
@@ -37,13 +41,23 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @BindView(R.id.tv_result)
     TextView result;
 
+    @BindView(R.id.list_notation)
+    RecyclerView notation;
+
     private MainPresenter mPresenter;
+    private NotationRecyclerAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle save) {
         super.onCreate(save);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        dot.setText(MainPresenter.SEPARATOR);
+        notation.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        mAdapter = new NotationRecyclerAdapter(this);
+        notation.setAdapter(mAdapter);
+        notation.addItemDecoration(new SpaceDecorator(this, R.dimen.notation_item_padding, R.dimen.zero));
+
         Analyzer analyzer = new Analyzer(
                 new MemberConverter(
                         new MultiOperatorExtractor(
@@ -55,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
         NotationInterpreter interpreter = new PolishInterpreter();
         mPresenter = new MainPresenter(new Calculator(translator, interpreter), analyzer);
         mPresenter.attach(this);
-        dot.setText(MainPresenter.SEPARATOR);
     }
 
     @Override
@@ -165,14 +178,33 @@ public class MainActivity extends AppCompatActivity implements MainView {
         }
     }
 
+    @OnLongClick(R.id.btn_dot)
+    public boolean clearAll(View view) {
+        resetToEmpty();
+        return true;
+    }
+
     @Override
     public void showResult(String digit) {
         result.setText(digit);
     }
 
     @Override
+    public void resetToEmpty() {
+        editText.setText("");
+        showError("");
+        setNotation(Collections.<Visual>emptyList());
+    }
+
+    @Override
     public void setRepresentation(List<Visual> v) {
         editText.setRepresentation(v);
+    }
+
+    @Override
+    public void setNotation(List<Visual> v) {
+        mAdapter.setItems(v);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override

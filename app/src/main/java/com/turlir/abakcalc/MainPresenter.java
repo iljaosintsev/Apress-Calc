@@ -7,6 +7,8 @@ import com.turlir.converter.Visual;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EmptyStackException;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -43,19 +45,38 @@ class MainPresenter {
     }
 
     void enter(String s) {
+        if (s == null || s.isEmpty()) {
+            mView.resetToEmpty();
+            return;
+        }
+
         try {
             calculate(s);
+            Queue<Member> row = mCalc.translated();
+            List<Visual> now = new ArrayList<>(mCalc.size());
+            for (Member item : row) now.add(item.view());
+            mView.setNotation(now);
+
         } catch (EmptyStackException | NoSuchElementException e) {
             //Log.e(TAG, "EmptyStackException при вычислении", e);
             mView.showError(mView.context().getString(R.string.error));
 
+            mView.setNotation(Collections.<Visual>emptyList());
+
         } catch (Exception e) {
             //Log.e(TAG, "Ошибка при вычислении", e);
             mView.showError(e.getMessage());
+
+            mView.setNotation(Collections.<Visual>emptyList());
         }
     }
 
     void recalculate(String s) {
+        if (s == null || s.isEmpty()) {
+            mView.resetToEmpty();
+            return;
+        }
+
         try {
             calculate(s);
         } catch (Exception e) {
