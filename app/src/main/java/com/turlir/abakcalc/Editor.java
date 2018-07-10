@@ -72,8 +72,13 @@ public class Editor extends android.support.v7.widget.AppCompatEditText {
                 }
             }
             return getText().replace(index - 1, index, "").toString();
+
+        } else if (index == 0) {
+            return getText().toString();
+
+        } else {
+            return "";
         }
-        return "";
     }
 
     public String insertSymbol(int index, String s) {
