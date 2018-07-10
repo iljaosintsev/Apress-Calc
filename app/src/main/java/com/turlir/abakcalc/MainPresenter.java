@@ -10,8 +10,6 @@ import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EmptyStackException;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.NoSuchElementException;
@@ -87,13 +85,7 @@ class MainPresenter {
 
     private void calculate(String str) throws Exception {
         str = str.replaceAll("\\s+", "").replace(SEPARATOR, ".");
-
-        Iterator<Member> primaryQ = mAnalyze.analyze(str);
-        Queue<Member> copy = new LinkedList<>();
-        while (primaryQ.hasNext()) {
-            Member item = primaryQ.next();
-            copy.add(item);
-        }
+        List<Member> copy = mAnalyze.slice(str);
         List<Visual> visual = mAnalyze.display(copy);
         mView.setRepresentation(visual);
 
