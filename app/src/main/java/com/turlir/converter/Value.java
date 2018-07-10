@@ -69,6 +69,11 @@ public class Value implements Member {
             public int constraintEnd() {
                 return 0;
             }
+
+            @Override
+            public String toString() {
+                return DF.format(mValue);
+            }
         };
     }
 

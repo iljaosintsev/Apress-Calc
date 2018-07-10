@@ -66,4 +66,9 @@ class OperatorVisual implements Visual {
     public int constraintEnd() {
         return mEnd;
     }
+
+    @Override
+    public String toString() {
+        return mToken;
+    }
 }
