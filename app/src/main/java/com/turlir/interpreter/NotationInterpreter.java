@@ -1,13 +1,15 @@
 package com.turlir.interpreter;
 
 
+import java.math.BigDecimal;
+
 /**
  * Вычисляет выражение, записанное в определенной нотации
  */
 public interface NotationInterpreter {
 
-    double poolDigit();
+    BigDecimal poolDigit();
 
-    void pushDigit(double value);
+    void pushDigit(BigDecimal value);
 
 }

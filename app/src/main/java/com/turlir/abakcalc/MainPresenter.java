@@ -5,6 +5,7 @@ import com.turlir.Calculator;
 import com.turlir.converter.Member;
 import com.turlir.converter.Visual;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
@@ -20,9 +21,15 @@ class MainPresenter {
 
     //private static final String TAG = "Presenter";
 
-    private static final DecimalFormat DF = new DecimalFormat("#.###"); // формат результата
+    private static final DecimalFormat DF = new DecimalFormat(""); // формат результата
+    private static final DecimalFormatSymbols FORMAT = new DecimalFormatSymbols(Locale.getDefault());
 
-    private static final DecimalFormatSymbols FORMAT  = new DecimalFormatSymbols(Locale.getDefault());
+    static {
+        DF.setDecimalFormatSymbols(FORMAT);
+        DF.setMaximumFractionDigits(12);
+        DF.setMinimumIntegerDigits(1);
+    }
+
     static final String SEPARATOR = String.valueOf(FORMAT.getDecimalSeparator());
 
     private final Calculator mCalc;
@@ -94,7 +101,7 @@ class MainPresenter {
         List<Visual> visual = interceptPrimary(copy);
         mView.setRepresentation(visual);
 
-        double digit = mCalc.calc(copy.iterator());
+        BigDecimal digit = mCalc.calc(copy.iterator());
         mView.showResult(DF.format(digit));
     }
 

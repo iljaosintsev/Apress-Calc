@@ -4,23 +4,34 @@ import android.widget.EditText;
 
 import com.turlir.interpreter.NotationInterpreter;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 public class Value implements Member {
 
-    private static final DecimalFormat DF = new DecimalFormat("###,###,###.###");
-    private static final String SEPARATOR = String.valueOf(DF.getDecimalFormatSymbols().getDecimalSeparator());
+    private static final DecimalFormat DF = new DecimalFormat();
+    private static final DecimalFormatSymbols FORMAT = new DecimalFormatSymbols(Locale.getDefault());
+    private static final String SEPARATOR = String.valueOf(FORMAT.getDecimalSeparator());
 
-    private final double mValue;
+    static {
+        DF.setDecimalFormatSymbols(FORMAT);
+        DF.setMaximumFractionDigits(340); // see doc DecimalFormat
+        DF.setMinimumIntegerDigits(1);
+    }
+
+    private final BigDecimal mValue;
     private final boolean isFloat;
 
     public Value(double value) {
-        mValue = value;
+        mValue = new BigDecimal(value, MathContext.UNLIMITED);
         isFloat = false;
     }
 
-    Value(double value, boolean contains) {
-        mValue = value;
+    Value(String value, boolean contains) {
+        mValue = new BigDecimal(value, MathContext.UNLIMITED);
         isFloat = contains;
     }
 
@@ -39,15 +50,9 @@ public class Value implements Member {
         return new Visual() {
             @Override
             public void print(Printer chain) {
-                if (isFloat) {
-                    String tmp = DF.format(mValue);
-                    if (!tmp.contains(SEPARATOR)) {
-                        tmp += SEPARATOR;
-                    }
-                    chain.append(tmp);
-                } else {
-                    chain.append(DF.format(mValue));
-                }
+                String tmp = DF.format(mValue);
+                if (isFloat) tmp += SEPARATOR;
+                chain.append(tmp);
             }
 
             @Override
@@ -84,12 +89,12 @@ public class Value implements Member {
 
         Value value = (Value) o;
 
-        return Double.compare(value.mValue, mValue) == 0;
+        return value.mValue.compareTo(mValue) == 0;
     }
 
     @Override
     public int hashCode() {
-        long temp = Double.doubleToLongBits(mValue);
+        long temp = Double.doubleToLongBits(mValue.doubleValue());
         return (int) (temp ^ (temp >>> 32));
     }
 }

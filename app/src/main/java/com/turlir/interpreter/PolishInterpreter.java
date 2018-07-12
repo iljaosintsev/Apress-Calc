@@ -1,24 +1,25 @@
 package com.turlir.interpreter;
 
 
+import java.math.BigDecimal;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
 public class PolishInterpreter implements NotationInterpreter {
 
-    private final Deque<Double> mQueue;
+    private final Deque<BigDecimal> mQueue;
 
     public PolishInterpreter() {
         mQueue = new ArrayDeque<>();
     }
 
     @Override
-    public double poolDigit() {
+    public BigDecimal poolDigit() {
         return mQueue.pop();
     }
 
     @Override
-    public void pushDigit(double value) {
+    public void pushDigit(BigDecimal value) {
         mQueue.push(value);
     }
 

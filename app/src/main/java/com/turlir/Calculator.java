@@ -5,6 +5,7 @@ import com.turlir.converter.Member;
 import com.turlir.interpreter.NotationInterpreter;
 import com.turlir.translator.NotationTranslator;
 
+import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -31,7 +32,7 @@ public class Calculator {
      * @return результата вычисления
      * @throws RuntimeException в случае ошибки интерпретации
      */
-    public double calc(Iterator<Member> sequence) throws Exception {
+    public BigDecimal calc(Iterator<Member> sequence) throws Exception {
         mQueue = mTranslator.translate(sequence);
         mSize = 0;
         for (Member current : mQueue) {
