@@ -6,21 +6,16 @@ import com.turlir.interpreter.NotationInterpreter;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
 public class Value implements Member {
 
-    private static final DecimalFormat DF = new DecimalFormat();
-    private static final DecimalFormatSymbols FORMAT = new DecimalFormatSymbols(Locale.getDefault());
-    private static final String SEPARATOR = String.valueOf(FORMAT.getDecimalSeparator());
-
-    static {
-        DF.setDecimalFormatSymbols(FORMAT);
-        DF.setMaximumFractionDigits(340); // see doc DecimalFormat
-        DF.setMinimumIntegerDigits(1);
-    }
+    private static final String SEPARATOR = String.valueOf(
+            new DecimalFormatSymbols(
+                    Locale.getDefault()
+            ).getDecimalSeparator()
+    );
 
     private final BigDecimal mValue;
     private final boolean isFloat;
@@ -50,9 +45,8 @@ public class Value implements Member {
         return new Visual() {
             @Override
             public void print(Printer chain) {
-                String tmp = DF.format(mValue);
-                if (isFloat) tmp += SEPARATOR;
-                chain.append(tmp);
+                chain.append(mValue);
+                if (isFloat) chain.append(SEPARATOR);
             }
 
             @Override
@@ -77,7 +71,7 @@ public class Value implements Member {
 
             @Override
             public String toString() {
-                return DF.format(mValue);
+                return mValue.toString();
             }
         };
     }

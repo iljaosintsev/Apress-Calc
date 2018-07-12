@@ -1,5 +1,7 @@
 package com.turlir.converter;
 
+import com.turlir.abakcalc.DirectPrinter;
+
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -8,6 +10,8 @@ import java.math.MathContext;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
+
+import static org.junit.Assert.assertEquals;
 
 public class ValueTest {
 
@@ -23,25 +27,27 @@ public class ValueTest {
 
         String format = df.format(bd);
         System.out.println(format);
-        org.junit.Assert.assertEquals("1 234,1234567890123456789", format);
+        assertEquals("1 234,1234567890123456789", format);
     }
 
     @Test
     public void displayTest() {
         Value v = new Value("1234.123456", false);
         Visual view = v.view();
-        Printer printer = Mockito.mock(Printer.class);
+        Printer printer = Mockito.spy(new DirectPrinter());
         view.print(printer);
-        Mockito.verify(printer).append(Mockito.eq("1 234,123456"));
+        assertEquals("1 234,123456", printer.toString());
     }
 
     @Test
     public void lastSymbolSeparatorTest() {
         Value v = new Value("1234", true);
         Visual view = v.view();
-        Printer printer = Mockito.mock(Printer.class);
+        Printer printer = Mockito.spy(new DirectPrinter());
         view.print(printer);
-        Mockito.verify(printer).append(Mockito.eq("1 234,"));
+        Mockito.verify(printer).append(Mockito.eq(","));
+        Mockito.verify(printer).append(Mockito.eq("1 234"));
+        assertEquals("1 234,", printer.toString());
     }
 
 }
