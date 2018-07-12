@@ -1,67 +1,87 @@
 package com.turlir.abakcalc;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.TextView;
 
-import com.turlir.abakcalc.converter.Calculator;
-import com.turlir.abakcalc.converter.PolishConverter;
-import com.turlir.abakcalc.converter.PolishInterpreter;
-import com.turlir.abakcalc.converter.abs.NotationConverter;
-import com.turlir.abakcalc.converter.abs.NotationInterpreter;
+import com.turlir.Analyzer;
+import com.turlir.Calculator;
+import com.turlir.converter.MemberConverter;
+import com.turlir.converter.Visual;
+import com.turlir.extractors.ExpressionPartExtractor;
+import com.turlir.extractors.MultiOperatorExtractor;
+import com.turlir.interpreter.NotationInterpreter;
+import com.turlir.interpreter.PolishInterpreter;
+import com.turlir.translator.NotationTranslator;
+import com.turlir.translator.PolishTranslator;
 
-import java.text.DecimalFormat;
-import java.util.Arrays;
-import java.util.EmptyStackException;
-import java.util.LinkedList;
+import java.util.Collections;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainView {
 
     private static final String TAG = "MainActivity";
-    private static final DecimalFormat DF = new DecimalFormat("#.###"); // формат результата
-    private static final String BUNDLE_QUEUE = "BUNDLE_QUEUE";
+
+    @BindView(R.id.btn_dot)
+    Button dot;
 
     @BindView(R.id.edit_text)
-    EditText editText;
+    Editor editText;
 
     @BindView(R.id.tv_result)
     TextView result;
 
-    private Calculator mCalc;
-    private LinkedList<String> mInputQueue; // очередь вставок для удаления
+    @BindView(R.id.list_notation)
+    RecyclerView notation;
+
+    private MainPresenter mPresenter;
+    private NotationRecyclerAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle save) {
         super.onCreate(save);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        dot.setText(MainPresenter.SEPARATOR);
+        notation.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        mAdapter = new NotationRecyclerAdapter(this);
+        notation.setAdapter(mAdapter);
+        notation.addItemDecoration(new SpaceDecorator(this, R.dimen.notation_item_padding, R.dimen.zero));
 
-        NotationConverter conv = new PolishConverter();
-        NotationInterpreter inter = new PolishInterpreter();
-        mCalc = new Calculator(conv, inter);
-
-        // восстановление состояния
-        if (save != null) {
-            restore(save);
-        } else {
-            mInputQueue = new LinkedList<>();
-        }
+        Analyzer analyzer = new Analyzer(
+                new MemberConverter(
+                        new MultiOperatorExtractor(
+                                new ExpressionPartExtractor()
+                        )
+                )
+        );
+        NotationTranslator translator = new PolishTranslator();
+        NotationInterpreter interpreter = new PolishInterpreter();
+        mPresenter = new MainPresenter(new Calculator(translator, interpreter), analyzer);
+        mPresenter.attach(this);
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        String[] array = mInputQueue.toArray(new String[mInputQueue.size()]);
-        outState.putStringArray(BUNDLE_QUEUE, array);
+    protected void onResume() {
+        super.onResume();
+        editText.setText("");
+        result.setText("");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mPresenter.detach();
     }
 
     @OnClick({
@@ -90,24 +110,20 @@ public class MainActivity extends AppCompatActivity {
             R.id.btn_clear,
             R.id.btn_enter
     })
-    public void keyboardButtonClick(View view) {
+    void keyboardButtonClick(View view) {
         int id = view.getId();
         switch (id) {
             case R.id.btn_add:
-                append(" + ");
+                append("+");
                 break;
             case R.id.btn_minus:
-                if (isLastOperator()) {
-                    append("-"); // унарный минус
-                } else {
-                    append(" - ");
-                }
+                append("-"); // унарный минус
                 break;
             case R.id.btn_multi:
-                append(" * ");
+                append("*");
                 break;
             case R.id.btn_div:
-                append(" / ");
+                append("/");
                 break;
             //
             case R.id.btn_7:
@@ -144,17 +160,17 @@ public class MainActivity extends AppCompatActivity {
                 append("0");
                 break;
             case R.id.btn_dot:
-                append(".");
+                append(MainPresenter.SEPARATOR);
                 break;
             case R.id.btn_cs:
-                append("( ");
+                append("(");
                 break;
             case R.id.btn_os:
-                append(" )");
+                append(")");
                 break;
             //
             case R.id.btn_clear:
-                clearOne();
+                clear();
                 break;
             case R.id.btn_enter:
                 enter();
@@ -162,66 +178,64 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @OnLongClick(R.id.btn_clear)
-    public boolean clearAll() {
-        editText.setText("");
-        result.setText("");
-        mInputQueue.clear();
+    @OnLongClick(R.id.btn_dot)
+    public boolean clearAll(View view) {
+        resetToEmpty();
         return true;
     }
 
-    private void restore(Bundle save) {
-        String[] array = save.getStringArray(BUNDLE_QUEUE);
-        if (array != null) {
-            mInputQueue = new LinkedList<>(Arrays.asList(array));
-        }
+    @Override
+    public void showResult(String digit) {
+        result.setText(digit);
+    }
+
+    @Override
+    public void resetToEmpty() {
+        editText.setText("");
+        showError("");
+        setNotation(Collections.<Visual>emptyList());
+    }
+
+    @Override
+    public void setRepresentation(List<Visual> v) {
+        editText.setRepresentation(v);
+    }
+
+    @Override
+    public void setNotation(List<Visual> v) {
+        mAdapter.setItems(v);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showError(String error) {
+        result.setText(error);
+    }
+
+    @Override
+    public Context context() {
+        return getApplicationContext();
     }
 
     private void append(String s) {
-        String n = editText.getText() + s;
-        editText.setText(n);
-        mInputQueue.push(s);
-    }
-
-    private void clearOne() {
-        int l = editText.length();
-        if (l > 0) {
-            String lastInput = mInputQueue.pop();
-            int del = lastInput.length();
-            Editable origin = editText.getText();
-            CharSequence n = origin.subSequence(0, l - del);
-            editText.setText(n);
-            result.setText(""); // сбрасываем результат
-        }
+        int start = editText.getSelectionStart();
+        int end = editText.getSelectionEnd();
+        if (start != end) throw new RuntimeException();
+        String now = editText.insertSymbol(start, s);
+        mPresenter.recalculate(now);
     }
 
     private void enter() {
         String str = editText.getText().toString();
-        if (str.length() > 2) {
-            try {
-                Double calc = mCalc.calc(str);
-                Log.d(TAG, "Результат " + calc);
-                String strRes = getString(R.string.result, DF.format(calc));
-                result.setText(strRes);
-            } catch (EmptyStackException e) {
-                Log.e(TAG, "EmptyStackException при вычислении", e);
-                result.setText(R.string.error);
-            } catch (Exception e) {
-                Log.e(TAG, "Ошибка при вычислении", e);
-                result.setText(e.getMessage());
-            }
-        }
+        mPresenter.enter(str);
     }
 
-    // унарный минус может стоять в следующих позициях
-    private boolean isLastOperator() {
-        String lastInput = mInputQueue.peek();
-        return lastInput == null // в начале выражения
-                || lastInput.equals(" + ") // операции
-                || lastInput.equals(" - ")
-                || lastInput.equals(" * ")
-                || lastInput.equals(" / ")
-                || lastInput.equals("( "); // открывающаяся скобка
+    private void clear() {
+        int start = editText.getSelectionStart();
+        int end = editText.getSelectionEnd();
+        if (start != end) throw new RuntimeException();
+        String str = editText.removeSymbol(start);
+        mPresenter.recalculate(str);
     }
 
 }

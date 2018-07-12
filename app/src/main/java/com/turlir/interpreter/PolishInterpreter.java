@@ -1,7 +1,5 @@
-package com.turlir.abakcalc.converter;
+package com.turlir.interpreter;
 
-
-import com.turlir.abakcalc.converter.abs.NotationInterpreter;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -15,12 +13,12 @@ public class PolishInterpreter implements NotationInterpreter {
     }
 
     @Override
-    public Double poolDigit() {
+    public double poolDigit() {
         return mQueue.pop();
     }
 
     @Override
-    public void pushDigit(Double value) {
+    public void pushDigit(double value) {
         mQueue.push(value);
     }
 
