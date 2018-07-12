@@ -34,43 +34,44 @@ public class IntegrationTest {
 
     @Test
     public void plusMinusTest() throws Exception {
-        Double res = calc.calc(mAnalyzer.analyze("8 - 2 + 1"));
+        Double res = calc.calc(mAnalyzer.analyze("8 - 2 + 1")).doubleValue();
         assertEquals(7, res, 0.1);
     }
 
+
     @Test
     public void multiplyDivideTest() throws Exception {
-        Double res = calc.calc(mAnalyzer.analyze("4 * 4 / 8"));
+        Double res = calc.calc(mAnalyzer.analyze("4 * 4 / 8")).doubleValue();
         assertEquals(2, res, 0.1);
     }
 
     @Test
     public void priorityTest() throws Exception {
-        Double res = calc.calc(mAnalyzer.analyze("2 + 2 * 2"));
+        Double res = calc.calc(mAnalyzer.analyze("2 + 2 * 2")).doubleValue();
         assertEquals(6, res, 0.1);
     }
 
     @Test
     public void floatingNumberTest() throws Exception {
-        Double res = calc.calc(mAnalyzer.analyze("2,2 + 3"));
+        Double res = calc.calc(mAnalyzer.analyze("2,2 + 3")).doubleValue();
         assertEquals(5.2, res, 0.1);
     }
 
     @Test
     public void complexTest() throws Exception {
-        Double res = calc.calc(mAnalyzer.analyze("1 + 25 - 5 / 22"));
+        Double res = calc.calc(mAnalyzer.analyze("1 + 25 - 5 / 22")).doubleValue();
         assertEquals(25.8, res, 0.1);
 
-        res = calc.calc(mAnalyzer.analyze("1 + 25 - 5 / 22 + ( 45 + 34 )"));
+        res = calc.calc(mAnalyzer.analyze("1 + 25 - 5 / 22 + ( 45 + 34 )")).doubleValue();
         assertEquals(104.8, res, 0.1);
 
-        res = calc.calc(mAnalyzer.analyze("104.8 * -3"));
+        res = calc.calc(mAnalyzer.analyze("104.8 * -3")).doubleValue();
         assertEquals(-314.4, res, 0.1);
 
-        res = calc.calc(mAnalyzer.analyze("( 45 + 34 ) * -3"));
+        res = calc.calc(mAnalyzer.analyze("( 45 + 34 ) * -3")).doubleValue();
         assertEquals(-237, res, 0.1);
 
-        res = calc.calc(mAnalyzer.analyze("1 + 25 - 5 / 22 + ( 45 + 34 ) * -3"));
+        res = calc.calc(mAnalyzer.analyze("1 + 25 - 5 / 22 + ( 45 + 34 ) * -3")).doubleValue();
         assertEquals(-211.23, res, 0.1);
     }
 

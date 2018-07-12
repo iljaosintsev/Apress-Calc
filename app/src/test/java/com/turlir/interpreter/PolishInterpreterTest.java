@@ -3,7 +3,8 @@ package com.turlir.interpreter;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import java.math.BigDecimal;
+import static org.junit.Assert.*;
 
 public class PolishInterpreterTest {
 
@@ -17,28 +18,27 @@ public class PolishInterpreterTest {
     @Test
     public void singlePoolTest() {
         mInter = new PolishInterpreter();
-        mInter.pushDigit(2.0);
-        Double actual = mInter.poolDigit();
-        assertEquals(2.0, actual, 0.1);
+        mInter.pushDigit(new BigDecimal(2.0));
+        BigDecimal actual = mInter.poolDigit();
+        assertTrue(new BigDecimal(2.0).compareTo(actual) == 0);
     }
 
     @Test
     public void multiPollTest() {
-        double[] array = new double[5];
+        BigDecimal[] array = new BigDecimal[5];
         for (int i = 0; i < array.length; i++) {
-            array[i] = i;
+            array[i] = new BigDecimal(i);
         }
 
         mInter = new PolishInterpreter();
-        for (double digit : array) {
+        for (BigDecimal digit : array) {
             mInter.pushDigit(digit);
         }
 
         for (int i = 0; i < array.length; i++) {
-            double digit = array[array.length - i - 1];
-            Double actual = mInter.poolDigit();
-            Double expected = digit;
-            assertEquals(expected, actual, 0.1);
+            BigDecimal digit = array[array.length - i - 1];
+            BigDecimal actual = mInter.poolDigit();
+            assertTrue(digit.compareTo(actual) == 0);
         }
     }
 
