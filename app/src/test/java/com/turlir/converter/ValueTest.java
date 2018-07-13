@@ -54,8 +54,6 @@ public class ValueTest {
         Visual view = v.view();
         Printer printer = Mockito.spy(new DirectPrinter(mFormat));
         view.print(printer);
-        Mockito.verify(printer).append(Mockito.eq(","));
-        Mockito.verify(printer).append(Mockito.eq("1 234"));
         assertEquals("1 234,", printer.toString());
     }
 
