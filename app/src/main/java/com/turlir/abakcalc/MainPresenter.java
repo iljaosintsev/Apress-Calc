@@ -19,8 +19,6 @@ import java.util.Queue;
 
 class MainPresenter {
 
-    //private static final String TAG = "Presenter";
-
     private static final DecimalFormat DF = new DecimalFormat(""); // формат результата
     private static final DecimalFormatSymbols FORMAT = new DecimalFormatSymbols(Locale.getDefault());
 
@@ -61,13 +59,11 @@ class MainPresenter {
             showNotation();
 
         } catch (EmptyStackException | NoSuchElementException e) {
-            //Log.e(TAG, "EmptyStackException при вычислении", e);
             mView.showError(mView.context().getString(R.string.error));
 
             mView.setNotation(Collections.<Visual>emptyList());
 
         } catch (Exception e) {
-            //Log.e(TAG, "Ошибка при вычислении", e);
             mView.showError(e.getMessage());
 
             mView.setNotation(Collections.<Visual>emptyList());
@@ -89,9 +85,8 @@ class MainPresenter {
 
         try {
             calculate(s);
-        } catch (Exception e) {
-            //Log.w(TAG, "Ошибка " + e + " при перерасчете строки " + s);
-            //e.printStackTrace();
+        } catch (Exception ignored) {
+
         }
     }
 

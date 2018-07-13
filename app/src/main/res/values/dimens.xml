@@ -7,4 +7,5 @@
     <dimen name="zero">0dp</dimen>
     <dimen name="notation_item_padding">4dp</dimen>
     <dimen name="min_notation_item_width">25dp</dimen>
+    <dimen name="notation_list_height">30sp</dimen>
 </resources>

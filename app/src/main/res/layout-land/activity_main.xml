@@ -12,23 +12,23 @@
     <com.turlir.abakcalc.Editor
         android:id="@+id/edit_text"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
+        android:minHeight="50sp"
         android:layout_marginBottom="4dp"
         android:layout_toLeftOf="@+id/btn_enter"
         android:gravity="right"
         android:inputType="phone"
-        android:textColor="@android:color/white"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         tools:text="2 + 2" />
 
     <Button
         android:id="@+id/btn_enter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/edit_text"
-        android:layout_marginLeft="16dp"
-        android:layout_alignBottom="@+id/edit_text"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="11dp"
         android:text="@string/en" />
 
     <LinearLayout
@@ -44,17 +44,28 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/list_notation"
             android:layout_width="0dp"
-            android:layout_height="30dp"
+            android:layout_height="@dimen/notation_list_height"
             android:layout_weight="1" />
 
-        <TextView
-            android:id="@+id/tv_result"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            android:gravity="right"
-            tools:text="= 4" />
+        <Space
+            android:layout_width="8dp"
+            android:layout_height="wrap_content" />
+
+        <HorizontalScrollView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_result"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                tools:text="= 4" />
+
+        </HorizontalScrollView>
 
         <Button
             android:id="@+id/btn_clear"

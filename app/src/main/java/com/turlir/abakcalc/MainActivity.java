@@ -30,8 +30,6 @@ import butterknife.OnLongClick;
 
 public class MainActivity extends AppCompatActivity implements MainView {
 
-    private static final String TAG = "MainActivity";
-
     @BindView(R.id.btn_dot)
     Button dot;
 
@@ -76,6 +74,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
         super.onResume();
         editText.setText("");
         result.setText("");
+        mAdapter.setItems(Collections.emptyList());
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
