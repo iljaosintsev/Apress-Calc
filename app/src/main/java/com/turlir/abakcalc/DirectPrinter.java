@@ -4,23 +4,14 @@ import com.turlir.converter.Printer;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.Locale;
 
 public class DirectPrinter implements Printer {
 
-    private static final DecimalFormat DF = new DecimalFormat();
-    private static final DecimalFormatSymbols FORMAT = new DecimalFormatSymbols(Locale.getDefault());
-
-    static {
-        DF.setDecimalFormatSymbols(FORMAT);
-        DF.setMaximumFractionDigits(340); // see doc DecimalFormat
-        DF.setMinimumIntegerDigits(1);
-    }
-
     private final StringBuilder mBuilder;
+    private final DecimalFormat mFormat;
 
-    public DirectPrinter() {
+    public DirectPrinter(DecimalFormat format) {
+        mFormat = format;
         mBuilder = new StringBuilder();
     }
 
@@ -31,7 +22,7 @@ public class DirectPrinter implements Printer {
 
     @Override
     public void append(BigDecimal part) {
-        String str = DF.format(part);
+        String str = mFormat.format(part);
         append(str);
     }
 

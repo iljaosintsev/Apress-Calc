@@ -15,6 +15,16 @@ import static org.junit.Assert.assertEquals;
 
 public class ValueTest {
 
+    private final DecimalFormat mFormat;
+
+    public ValueTest() {
+        mFormat = new DecimalFormat();
+        DecimalFormatSymbols settings = new DecimalFormatSymbols(new Locale("ru"));
+        mFormat.setDecimalFormatSymbols(settings);
+        mFormat.setMaximumFractionDigits(340); // see doc DecimalFormat
+        mFormat.setMinimumIntegerDigits(1);
+    }
+
     @Test
     public void findFormatPath() {
         String t = "1234.1234567890123456789";
@@ -26,7 +36,6 @@ public class ValueTest {
         df.setMaximumFractionDigits(340);
 
         String format = df.format(bd);
-        System.out.println(format);
         assertEquals("1 234,1234567890123456789", format);
     }
 
@@ -34,7 +43,7 @@ public class ValueTest {
     public void displayTest() {
         Value v = new Value("1234.123456", false);
         Visual view = v.view();
-        Printer printer = Mockito.spy(new DirectPrinter());
+        Printer printer = Mockito.spy(new DirectPrinter(mFormat));
         view.print(printer);
         assertEquals("1 234,123456", printer.toString());
     }
@@ -43,7 +52,7 @@ public class ValueTest {
     public void lastSymbolSeparatorTest() {
         Value v = new Value("1234", true);
         Visual view = v.view();
-        Printer printer = Mockito.spy(new DirectPrinter());
+        Printer printer = Mockito.spy(new DirectPrinter(mFormat));
         view.print(printer);
         Mockito.verify(printer).append(Mockito.eq(","));
         Mockito.verify(printer).append(Mockito.eq("1 234"));

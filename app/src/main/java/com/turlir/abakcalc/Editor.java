@@ -6,14 +6,17 @@ import android.util.AttributeSet;
 import com.turlir.converter.Printer;
 import com.turlir.converter.Visual;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class Editor extends android.support.v7.widget.AppCompatEditText {
 
     private List<Visual> mViews;
 
-    private final Printer mPrinter = new DirectPrinter();
+    private final Printer mPrinter;
     private final StringBuilder mCopy = new StringBuilder();
 
     public Editor(Context context) {
@@ -24,6 +27,14 @@ public class Editor extends android.support.v7.widget.AppCompatEditText {
         super(context, attrs);
         setShowSoftInputOnFocus(false);
         mViews = Collections.emptyList();
+
+        DecimalFormat format = new DecimalFormat();
+        DecimalFormatSymbols settings = new DecimalFormatSymbols(Locale.getDefault());
+        format.setDecimalFormatSymbols(settings);
+        format.setMaximumFractionDigits(340); // see doc DecimalFormat
+        format.setMinimumIntegerDigits(1);
+
+        mPrinter = new DirectPrinter(format);
     }
 
     @Override
