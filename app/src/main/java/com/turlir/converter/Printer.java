@@ -8,6 +8,8 @@ public interface Printer {
 
     void append(BigDecimal part);
 
+    void appendSeparator();
+
     int length();
 
     void reset();

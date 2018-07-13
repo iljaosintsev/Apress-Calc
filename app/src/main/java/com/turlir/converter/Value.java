@@ -6,16 +6,8 @@ import com.turlir.interpreter.NotationInterpreter;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.text.DecimalFormatSymbols;
-import java.util.Locale;
 
 public class Value implements Member {
-
-    private static final String SEPARATOR = String.valueOf(
-            new DecimalFormatSymbols(
-                    Locale.getDefault()
-            ).getDecimalSeparator()
-    );
 
     private final BigDecimal mValue;
     private final boolean isFloat;
@@ -46,7 +38,7 @@ public class Value implements Member {
             @Override
             public void print(Printer chain) {
                 chain.append(mValue);
-                if (isFloat) chain.append(SEPARATOR);
+                if (isFloat) chain.appendSeparator();
             }
 
             @Override

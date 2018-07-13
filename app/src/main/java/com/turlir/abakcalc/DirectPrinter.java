@@ -27,6 +27,11 @@ public class DirectPrinter implements Printer {
     }
 
     @Override
+    public void appendSeparator() {
+        append(String.valueOf(mFormat.getDecimalFormatSymbols().getDecimalSeparator()));
+    }
+
+    @Override
     public int length() {
         return mBuilder.length();
     }
