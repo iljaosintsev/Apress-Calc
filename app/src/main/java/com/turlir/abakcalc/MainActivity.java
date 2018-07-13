@@ -70,12 +70,9 @@ public class MainActivity extends AppCompatActivity implements MainView {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        editText.setText("");
-        result.setText("");
-        mAdapter.setItems(Collections.emptyList());
-        mAdapter.notifyDataSetChanged();
+    protected void onRestoreInstanceState(Bundle saved) {
+        super.onRestoreInstanceState(saved);
+        if (saved != null) enter();
     }
 
     @Override
