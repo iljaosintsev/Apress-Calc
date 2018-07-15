@@ -3,8 +3,8 @@ package com.turlir.abakcalc;
 import android.content.Context;
 import android.util.AttributeSet;
 
-import com.turlir.converter.Printer;
-import com.turlir.converter.Visual;
+import com.turlir.calculator.converter.Printer;
+import com.turlir.calculator.converter.Visual;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -52,7 +52,8 @@ public class Editor extends android.support.v7.widget.AppCompatEditText {
             int l = getText().length();
             for (Visual item : mViews) {
                 if (item.selectionConstraint(selStart, selEnd, l)) {
-                    item.interceptSelection(this, selStart, selEnd);
+                    int[] ab = item.interceptSelection(/*this, */selStart, selEnd);
+                    setSelection(ab[0], ab[1]);
                     return;
                 }
             }

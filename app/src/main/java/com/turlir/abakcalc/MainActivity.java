@@ -9,16 +9,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.turlir.Analyzer;
-import com.turlir.Calculator;
-import com.turlir.converter.MemberConverter;
-import com.turlir.converter.Visual;
-import com.turlir.extractors.ExpressionPartExtractor;
-import com.turlir.extractors.MultiOperatorExtractor;
-import com.turlir.interpreter.NotationInterpreter;
-import com.turlir.interpreter.PolishInterpreter;
-import com.turlir.translator.NotationTranslator;
-import com.turlir.translator.PolishTranslator;
+import com.turlir.calculator.Analyzer;
+import com.turlir.calculator.Calculator;
+import com.turlir.calculator.converter.MemberConverter;
+import com.turlir.calculator.converter.Visual;
+import com.turlir.calculator.extractors.ExpressionPartExtractor;
+import com.turlir.calculator.extractors.MultiOperatorExtractor;
+import com.turlir.calculator.interpreter.NotationInterpreter;
+import com.turlir.calculator.interpreter.PolishInterpreter;
+import com.turlir.calculator.translator.NotationTranslator;
+import com.turlir.calculator.translator.PolishTranslator;
 
 import java.util.Collections;
 import java.util.List;

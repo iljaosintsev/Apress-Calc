@@ -2,7 +2,7 @@ package com.turlir.abakcalc;
 
 import android.content.Context;
 
-import com.turlir.converter.Visual;
+import com.turlir.calculator.converter.Visual;
 
 import java.util.List;
 

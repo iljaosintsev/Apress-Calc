@@ -1,9 +1,9 @@
 package com.turlir.abakcalc;
 
-import com.turlir.Analyzer;
-import com.turlir.Calculator;
-import com.turlir.converter.Member;
-import com.turlir.converter.Visual;
+import com.turlir.calculator.Analyzer;
+import com.turlir.calculator.Calculator;
+import com.turlir.calculator.converter.Member;
+import com.turlir.calculator.converter.Visual;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
