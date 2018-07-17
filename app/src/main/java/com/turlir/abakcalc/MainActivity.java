@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     }
 
     @Override
-    public void setRepresentation(List<Visual> v) {
+    public void setRepresentation(List<CalculatorVisual> v) {
         editText.setRepresentation(v);
     }
 

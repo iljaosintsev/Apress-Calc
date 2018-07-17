@@ -14,7 +14,7 @@ import java.util.Locale;
 
 public class Editor extends android.support.v7.widget.AppCompatEditText {
 
-    private List<Visual> mViews;
+    private List<CalculatorVisual> mViews;
 
     private final Printer mPrinter;
     private final StringBuilder mCopy = new StringBuilder();
@@ -50,7 +50,7 @@ public class Editor extends android.support.v7.widget.AppCompatEditText {
         super.onSelectionChanged(selStart, selEnd);
         if (mViews != null) {
             int l = getText().length();
-            for (Visual item : mViews) {
+            for (CalculatorVisual item : mViews) {
                 if (item.selectionConstraint(selStart, selEnd, l)) {
                     int[] ab = item.interceptSelection(/*this, */selStart, selEnd);
                     setSelection(ab[0], ab[1]);
@@ -60,7 +60,7 @@ public class Editor extends android.support.v7.widget.AppCompatEditText {
         }
     }
 
-    public void setRepresentation(List<Visual> views) {
+    public void setRepresentation(List<CalculatorVisual> views) {
         for (Visual view : views) {
             view.print(mPrinter);
         }
@@ -76,7 +76,7 @@ public class Editor extends android.support.v7.widget.AppCompatEditText {
     public String removeSymbol(int index) {
         int length = getText().length();
         if (length > 0 && index > 0) {
-            for (Visual item : mViews) {
+            for (CalculatorVisual item : mViews) {
                 if (item.selectionConstraint(index, index, length)) {
                     int s = item.constraintStart();
                     int e = item.constraintEnd();

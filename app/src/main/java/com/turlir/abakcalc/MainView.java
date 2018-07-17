@@ -14,7 +14,7 @@ public interface MainView {
 
     Context context();
 
-    void setRepresentation(List<Visual> v);
+    void setRepresentation(List<CalculatorVisual> v);
 
     void setNotation(List<Visual> v);
 

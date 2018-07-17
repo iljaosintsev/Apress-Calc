@@ -93,17 +93,22 @@ class MainPresenter {
     private void calculate(String str) throws Exception {
         str = str.replaceAll("\\s+", "").replace(SEPARATOR, ".");
         List<Member> copy = mAnalyze.slice(str);
-        List<Visual> visual = interceptPrimary(copy);
+        List<CalculatorVisual> visual = interceptPrimary(copy);
         mView.setRepresentation(visual);
 
         BigDecimal digit = mCalc.calc(copy.iterator());
         mView.showResult(DF.format(digit));
     }
 
-    private static List<Visual> interceptPrimary(Collection<Member> sequence) {
-        List<Visual> views = new ArrayList<>(sequence.size());
+    private static List<CalculatorVisual> interceptPrimary(Collection<Member> sequence) {
+        List<CalculatorVisual> views = new ArrayList<>(sequence.size());
         for (Member member : sequence) {
-            views.add(member.view());
+            Visual view = member.view();
+            if (member.operand()) {
+                views.add(new ValueVisualizer(view));
+            } else {
+                views.add(new OperatorVisualizer(view));
+            }
         }
         return views;
     }
