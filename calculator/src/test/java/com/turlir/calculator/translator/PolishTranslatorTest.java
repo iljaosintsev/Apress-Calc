@@ -1,9 +1,9 @@
 package com.turlir.calculator.translator;
 
 import com.turlir.calculator.converter.Member;
-import com.turlir.calculator.converter.Operator;
-import com.turlir.calculator.converter.Operators;
-import com.turlir.calculator.converter.Value;
+import com.turlir.calculator.member.Operator;
+import com.turlir.calculator.member.Operators;
+import com.turlir.calculator.member.Value;
 import com.turlir.calculator.converter.Visual;
 import com.turlir.calculator.interpreter.NotationInterpreter;
 

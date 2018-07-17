@@ -1,6 +1,6 @@
 package com.turlir.abakcalc;
 
-import com.turlir.calculator.converter.Operators;
+import com.turlir.calculator.member.Operators;
 import com.turlir.calculator.converter.Printer;
 
 import org.junit.Test;

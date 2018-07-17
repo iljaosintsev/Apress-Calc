@@ -1,5 +1,7 @@
 package com.turlir.calculator.converter;
 
+import com.turlir.calculator.member.Value;
+
 import org.junit.Test;
 import org.mockito.Mockito;
 

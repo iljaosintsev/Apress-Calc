@@ -1,4 +1,7 @@
-package com.turlir.calculator.converter;
+package com.turlir.calculator.member;
+
+import com.turlir.calculator.converter.Member;
+import com.turlir.calculator.converter.Visual;
 
 public abstract class Operator implements Member, Comparable<Operator> {
 

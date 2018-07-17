@@ -1,5 +1,7 @@
-package com.turlir.calculator.converter;
+package com.turlir.calculator.member;
 
+import com.turlir.calculator.converter.Member;
+import com.turlir.calculator.converter.Visual;
 import com.turlir.calculator.interpreter.NotationInterpreter;
 
 import java.math.BigDecimal;
@@ -15,7 +17,7 @@ public class Value implements Member {
         isFloat = false;
     }
 
-    Value(String value, boolean contains) {
+    public Value(String value, boolean contains) {
         mValue = new BigDecimal(value, MathContext.UNLIMITED);
         isFloat = contains;
     }

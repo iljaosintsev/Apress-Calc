@@ -1,8 +1,8 @@
 package com.turlir.calculator.translator;
 
 import com.turlir.calculator.converter.Member;
-import com.turlir.calculator.converter.Operator;
-import com.turlir.calculator.converter.Operators;
+import com.turlir.calculator.member.Operator;
+import com.turlir.calculator.member.Operators;
 
 import java.util.ArrayDeque;
 import java.util.Deque;

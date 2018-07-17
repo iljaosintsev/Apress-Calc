@@ -2,6 +2,8 @@ package com.turlir.calculator.converter;
 
 import com.turlir.calculator.extractors.Interval;
 import com.turlir.calculator.extractors.IntervalExtractor;
+import com.turlir.calculator.member.Operators;
+import com.turlir.calculator.member.Value;
 
 import java.util.Iterator;
 

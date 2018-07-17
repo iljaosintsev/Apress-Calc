@@ -1,5 +1,6 @@
-package com.turlir.calculator.converter;
+package com.turlir.calculator.member;
 
+import com.turlir.calculator.converter.Member;
 import com.turlir.calculator.interpreter.NotationInterpreter;
 
 import java.math.BigDecimal;
@@ -23,7 +24,7 @@ public abstract class Operators {
         }
     };
 
-    static final Member PLUS = new Operator(" + ", 2) {
+    public static final Member PLUS = new Operator(" + ", 2) {
 
         @Override
         public void process(NotationInterpreter interpreter) {
@@ -33,7 +34,7 @@ public abstract class Operators {
         }
     };
 
-    static final Member MINUS = new Operator(" - ", 2) {
+    public static final Member MINUS = new Operator(" - ", 2) {
 
         @Override
         public void process(NotationInterpreter interpreter) {
@@ -43,7 +44,7 @@ public abstract class Operators {
         }
     };
 
-    static final Member MULTI = new Operator(" * ", 3) {
+    public static final Member MULTI = new Operator(" * ", 3) {
 
         @Override
         public void process(NotationInterpreter interpreter) {
@@ -53,7 +54,7 @@ public abstract class Operators {
         }
     };
 
-    static final Member DIV = new Operator(" / ", 3) {
+    public static final Member DIV = new Operator(" / ", 3) {
 
         @Override
         public void process(NotationInterpreter interpreter) {
@@ -63,7 +64,7 @@ public abstract class Operators {
         }
     };
 
-    static final Member UNARY_MINUS = new Operator("-", 4) {
+    public static final Member UNARY_MINUS = new Operator("-", 4) {
 
         private final BigDecimal MULTIPLICAND = new BigDecimal(-1);
 
@@ -84,6 +85,8 @@ public abstract class Operators {
                 return PLUS;
             case "-":
                 return MINUS;
+            case "u-":
+                return UNARY_MINUS;
             case "(":
                 return OS;
             case ")":
