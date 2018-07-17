@@ -1,4 +1,7 @@
-package com.turlir.calculator.converter;
+package com.turlir.abakcalc;
+
+import com.turlir.calculator.converter.Operators;
+import com.turlir.calculator.converter.Printer;
 
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -7,11 +10,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class OperatorPrintTest {
+public class OperatorVisualizerTest {
+
+    private CalculatorVisual ov;
 
     @Test
     public void selectionTestBindingRight() {
-        Visual ov = range(1, 4);
+        ov = range(1, 4);
 
         assertFalse(ov.selectionConstraint(1, 9, 9));
         assertTrue(ov.selectionConstraint(2, 9, 9));
@@ -21,7 +26,7 @@ public class OperatorPrintTest {
 
     @Test
     public void selectionTestBindingLeft() {
-        Visual ov = range(1, 4);
+        ov = range(1, 4);
 
         assertFalse(ov.selectionConstraint(0, 4, 9));
         assertTrue(ov.selectionConstraint(0, 3, 9));
@@ -33,7 +38,7 @@ public class OperatorPrintTest {
 
     @Test
     public void cornerCaseTest() {
-        Visual ov = range(1, 4);
+        ov = range(1, 4);
 
         assertFalse(ov.selectionConstraint(1, 4, 9));
 
@@ -46,7 +51,7 @@ public class OperatorPrintTest {
 
     @Test
     public void selectionAtTheEnd() {
-        Visual ov = range(5, 8);
+        ov = range(5, 8);
         // binding right
         assertFalse(ov.selectionConstraint(5, 9, 9));
         assertTrue(ov.selectionConstraint(6, 9, 9));
@@ -61,7 +66,7 @@ public class OperatorPrintTest {
 
     @Test
     public void singleCursor() {
-        Visual ov = range(1, 4);
+        ov = range(1, 4);
 
         assertTrue(ov.selectionConstraint(1, 1, 9));
         assertTrue(ov.selectionConstraint(2, 2, 9));
@@ -71,7 +76,7 @@ public class OperatorPrintTest {
 
     @Test
     public void singleCursorIntercept() {
-        Visual ov = range(1, 4);
+        ov = range(1, 4);
         checkCursor(ov, 2, 2, 4, 4);
         checkCursor(ov, 3, 3, 4, 4);
         checkCursor(ov, 1, 1, 1, 1); // never called
@@ -79,27 +84,27 @@ public class OperatorPrintTest {
 
     @Test
     public void multiplyCursorInterceptRightBinding() {
-        Visual ov = range(1, 4);
+        ov = range(1, 4);
         checkCursor(ov, 2, 9, 4, 9);
         checkCursor(ov, 3, 9, 4, 9);
     }
 
     @Test
     public void multiplyCursorInterceptLeftBinding() {
-        Visual ov = range(1, 4);
+        ov = range(1, 4);
         checkCursor(ov, 0, 3, 0, 1);
         checkCursor(ov, 0, 2, 0, 1);
     }
 
-    private static Visual range(int start, int end) {
-        Visual ov = new OperatorPrint(" + ");
+    private static OperatorVisualizer range(int start, int end) {
+        OperatorVisualizer ov = new OperatorVisualizer(Operators.find("+").view());
         Printer p = Mockito.mock(Printer.class);
         Mockito.when(p.length()).thenReturn(start, end);
         ov.print(p);
         return ov;
     }
 
-    private static void checkCursor(Visual ov, int userStart, int userEnd, int a, int b) {
+    private static void checkCursor(CalculatorVisual ov, int userStart, int userEnd, int a, int b) {
         int[] ab = ov.interceptSelection(userStart, userEnd);
         assertEquals(ab[0], a);
         assertEquals(ab[1], b);

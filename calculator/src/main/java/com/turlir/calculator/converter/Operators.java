@@ -74,7 +74,7 @@ public abstract class Operators {
         }
     };
 
-    static Member find(String token) {
+    public static Member find(String token) {
         switch (token) {
             case "*":
                 return MULTI;

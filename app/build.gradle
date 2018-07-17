@@ -36,4 +36,7 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.7.0'
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
+
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.19.1'
 }
