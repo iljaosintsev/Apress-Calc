@@ -32,38 +32,7 @@ public class Value implements Member {
 
     @Override
     public Visual view() {
-        return new Visual() {
-            @Override
-            public void print(Printer chain) {
-                chain.append(mValue);
-                if (isFloat) chain.appendSeparator();
-            }
-
-            @Override
-            public boolean selectionConstraint(int selStart, int selEnd, int length) {
-                return false;
-            }
-
-            @Override
-            public int[] interceptSelection(int a, int b) {
-                return new int[0];
-            }
-
-            @Override
-            public int constraintStart() {
-                return 0;
-            }
-
-            @Override
-            public int constraintEnd() {
-                return 0;
-            }
-
-            @Override
-            public String toString() {
-                return mValue.toString();
-            }
-        };
+        return new ValuePrint(mValue, isFloat);
     }
 
     @Override
@@ -81,4 +50,5 @@ public class Value implements Member {
         long temp = Double.doubleToLongBits(mValue.doubleValue());
         return (int) (temp ^ (temp >>> 32));
     }
+
 }
