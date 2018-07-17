@@ -1,12 +1,12 @@
 package com.turlir.calculator.converter;
 
 
-class OperatorVisual implements Visual {
+class OperatorPrint implements Visual {
 
     private final String mToken;
     private int mStart, mEnd;
 
-    OperatorVisual(String token) {
+    OperatorPrint(String token) {
         mToken = token;
     }
 

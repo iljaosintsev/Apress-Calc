@@ -7,7 +7,7 @@ public abstract class Operator implements Member, Comparable<Operator> {
 
     protected Operator(String token, int priority) {
         mPriority = priority;
-        mVisual = new OperatorVisual(token);
+        mVisual = new OperatorPrint(token);
     }
 
     @Override

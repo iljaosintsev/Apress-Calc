@@ -7,7 +7,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class OperatorVisualTest {
+public class OperatorPrintTest {
 
     @Test
     public void selectionTestBindingRight() {
@@ -92,7 +92,7 @@ public class OperatorVisualTest {
     }
 
     private static Visual range(int start, int end) {
-        Visual ov = new OperatorVisual(" + ");
+        Visual ov = new OperatorPrint(" + ");
         Printer p = Mockito.mock(Printer.class);
         Mockito.when(p.length()).thenReturn(start, end);
         ov.print(p);
