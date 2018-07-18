@@ -2,17 +2,31 @@ package com.turlir.calculator.converter;
 
 import com.turlir.calculator.extractors.CommonTest;
 import com.turlir.calculator.extractors.Interval;
-import com.turlir.calculator.extractors.IntervalExtractor;
+import com.turlir.calculator.extractors.MultiOperatorExtractor;
 import com.turlir.calculator.member.Operators;
 import com.turlir.calculator.member.Value;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Arrays;
 import java.util.Iterator;
 
+@RunWith(MockitoJUnitRunner.class)
 public class MemberConverterTest extends CommonTest {
+
+    @Mock
+    MultiOperatorExtractor extractor;
+
+    @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+    }
 
     @Test
     public void testAllMembers() {
@@ -26,9 +40,8 @@ public class MemberConverterTest extends CommonTest {
                 and("3"),
                 or("-")
         ).iterator();
-        IntervalExtractor mock = Mockito.mock(IntervalExtractor.class);
-        Mockito.when(mock.iterator(Mockito.anyString())).thenReturn(seq);
-        Iterator<Member> conv = new MemberConverter(mock).iterator("");
+        Mockito.when(extractor.iterator(Mockito.anyString())).thenReturn(seq);
+        Iterator<Member> conv = new MemberConverter(extractor).iterator("");
         or(conv, Operators.PLUS);
         or(conv, Operators.UNARY_MINUS);
         or(conv, Operators.MULTI);
@@ -48,9 +61,8 @@ public class MemberConverterTest extends CommonTest {
                 or("+"),
                 and("2")
         ).iterator();
-        IntervalExtractor mock = Mockito.mock(IntervalExtractor.class);
-        Mockito.when(mock.iterator(Mockito.anyString())).thenReturn(seq);
-        Iterator<Member> conv = new MemberConverter(mock).iterator("");
+        Mockito.when(extractor.iterator(Mockito.anyString())).thenReturn(seq);
+        Iterator<Member> conv = new MemberConverter(extractor).iterator("");
         or(conv, Operators.UNARY_MINUS);
         and(conv, new Value(4));
         or(conv, Operators.PLUS);
@@ -68,9 +80,8 @@ public class MemberConverterTest extends CommonTest {
                 or("-"),
                 and("1")
         ).iterator();
-        IntervalExtractor mock = Mockito.mock(IntervalExtractor.class);
-        Mockito.when(mock.iterator(Mockito.anyString())).thenReturn(seq);
-        Iterator<Member> conv = new MemberConverter(mock).iterator("");
+        Mockito.when(extractor.iterator(Mockito.anyString())).thenReturn(seq);
+        Iterator<Member> conv = new MemberConverter(extractor).iterator("");
         and(conv, new Value(4));
         or(conv, Operators.PLUS);
         and(conv, new Value(2));

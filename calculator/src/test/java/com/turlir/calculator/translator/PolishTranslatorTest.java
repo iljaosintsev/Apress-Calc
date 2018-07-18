@@ -43,21 +43,21 @@ public class PolishTranslatorTest {
     }
 
     @Test
-    public void plusTest() {
+    public void plusTest() throws Exception {
         Iterator<Member> sequence = seq(new Value(2), PLUS, new Value(3));
         Queue<Member> lst = sor.translate(sequence);
         check(lst, new Value(2), new Value(3), PLUS);
     }
 
     @Test
-    public void priorityTest() {
+    public void priorityTest() throws Exception  {
         Iterator<Member> sequence = seq(new Value(2), PLUS, new Value(3), MULTI, new Value(7), MINUS, new Value(4), DIV, new Value(2));
         Queue<Member> lst = sor.translate(sequence);
         check(lst, new Value(2), new Value(3), new Value(7), MULTI, PLUS, new Value(4), new Value(2), DIV, MINUS);
     }
 
     @Test
-    public void bracketTest() {
+    public void bracketTest() throws Exception  {
         Iterator<Member> sequence = seq(new Value(2), PLUS, OS, new Value(6), MINUS, new Value(5), CS);
         Queue<Member> lst = sor.translate(sequence);
         check(lst, new Value(2), new Value(6),  new Value(5), MINUS, PLUS);
@@ -68,14 +68,14 @@ public class PolishTranslatorTest {
     }
 
     @Test
-    public void unaryMinus() {
+    public void unaryMinus() throws Exception  {
         Iterator<Member> sequence = seq(UNARY, new Value(4), PLUS, new Value(2));
         Queue<Member> lst = sor.translate(sequence);
         check(lst, new Value(4), UNARY, new Value(2), PLUS);
     }
 
     @Test
-    public void unaryMinusInsideExp() {
+    public void unaryMinusInsideExp() throws Exception  {
         Iterator<Member> sequence = seq(new Value(4), PLUS, new Value(2), MULTI, UNARY, new Value(1));
         Queue<Member> lst = sor.translate(sequence);
         check(lst, new Value(4), new Value(2), MULTI, PLUS, new Value(1), UNARY);
