@@ -8,8 +8,16 @@ import java.math.BigDecimal;
  */
 public interface NotationInterpreter {
 
+    /**
+     *
+     * @return промужеточный результат
+     */
     BigDecimal poolDigit();
 
+    /**
+     * Записывает промежуточный результат
+     * @param value результат
+     */
     void pushDigit(BigDecimal value);
 
 }

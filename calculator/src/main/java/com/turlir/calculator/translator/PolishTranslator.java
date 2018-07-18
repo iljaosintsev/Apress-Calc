@@ -10,10 +10,19 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
+/**
+ * Алгоритм обратной польской записи
+ */
 public class PolishTranslator implements NotationTranslator {
 
+    /**
+     * Сортирует выражение согласно алгоритму обратной польской записи
+     * @param parent математическое выражение
+     * @return очередь токенов выражения в инфиксной форме
+     * @throws Exception в случае ошибки разрабора
+     */
     @Override
-    public Queue<Member> translate(Iterator<Member> parent) {
+    public Queue<Member> translate(Iterator<Member> parent) throws Exception {
         Deque<Operator> operators = new ArrayDeque<>();
         Queue<Member> converted = new LinkedList<>();
 
@@ -38,8 +47,7 @@ public class PolishTranslator implements NotationTranslator {
 
         while (!operators.isEmpty()) { // дописываем остатки операторов
             Member op = operators.pollLast();
-            if (op == Operators.CS)
-                throw new RuntimeException("Неправильно расставлены скобки");
+            if (op == Operators.CS) throw new Exception("Неправильно расставлены скобки");
             converted.add(op);
         }
 
@@ -59,7 +67,7 @@ public class PolishTranslator implements NotationTranslator {
         }
     }
 
-    private void closedBracket(Iterator<Operator> iter, Queue<Member> converted) {
+    private void closedBracket(Iterator<Operator> iter, Queue<Member> converted) throws Exception {
         while (iter.hasNext()) {
             Member tmp = iter.next();
             iter.remove(); // poolLast() analog
@@ -70,7 +78,7 @@ public class PolishTranslator implements NotationTranslator {
             }
         }
         // не нашлось ни одной закрывающейся скобки
-        throw new RuntimeException("Неправильно расставлены скобки");
+        throw new Exception("Неправильно расставлены скобки");
     }
 
 }

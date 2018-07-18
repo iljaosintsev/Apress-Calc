@@ -10,6 +10,11 @@ import java.util.Queue;
  */
 public interface NotationTranslator {
 
-    Queue<Member> translate(Iterator<Member> parent);
+    /**
+     *
+     * @param parent математическое выражение
+     * @return очередь из токенов того же выражения в другой нотации
+     */
+    Queue<Member> translate(Iterator<Member> parent) throws Exception;
 
 }

@@ -5,6 +5,9 @@ import java.math.BigDecimal;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+/**
+ * Очередь промежуточных результатов {@link BigDecimal} для вычисления значения математического выражения
+ */
 public class PolishInterpreter implements NotationInterpreter {
 
     private final Deque<BigDecimal> mQueue;

@@ -11,7 +11,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 /**
- * Организует взаимодействие между  {@link NotationTranslator} и {@link NotationInterpreter}
+ * Организует взаимодействие между {@link NotationTranslator} и {@link NotationInterpreter}
  */
 public class Calculator {
 
@@ -30,7 +30,7 @@ public class Calculator {
     /**
      * Вычисляет значение математического выражения
      * @return результата вычисления
-     * @throws RuntimeException в случае ошибки интерпретации
+     * @throws Exception в случае ошибки трансляции
      */
     public BigDecimal calc(Iterator<Member> sequence) throws Exception {
         mQueue = mTranslator.translate(sequence);
@@ -42,10 +42,18 @@ public class Calculator {
         return mInter.poolDigit();
     }
 
+    /**
+     *
+     * @return токены выражения в порядке вычисления
+     */
     public Queue<Member> translated() {
         return mQueue;
     }
 
+    /**
+     *
+     * @return количество токенов в выражении
+     */
     public int size() {
         return mSize;
     }
