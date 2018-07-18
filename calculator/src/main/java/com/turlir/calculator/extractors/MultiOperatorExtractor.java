@@ -6,11 +6,20 @@ import java.util.Queue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Доразделяет выражение на операторы (синус, консинус, тангенс, умножить, разделить, сложить, вычесть) и операнды
+ * <br>
+ * В процессе работы интератора при ошибке разрабока может быть вызвано {@link IllegalArgumentException}
+ */
 public class MultiOperatorExtractor implements IntervalExtractor {
 
     private final IntervalExtractor mParent;
 
-    public MultiOperatorExtractor(IntervalExtractor parent) {
+    /**
+     *
+     * @param parent делегат – алгоритм упрощенного разделения выражения
+     */
+    public MultiOperatorExtractor(ExpressionPartExtractor parent) {
         mParent = parent;
     }
 
@@ -32,7 +41,7 @@ public class MultiOperatorExtractor implements IntervalExtractor {
         }
 
         @Override
-        public Interval next() {
+        public Interval next() throws IllegalArgumentException {
             if (!mSplit.isEmpty()) {
                 return mSplit.poll();
             }

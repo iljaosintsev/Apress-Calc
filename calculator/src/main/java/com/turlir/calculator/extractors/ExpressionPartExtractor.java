@@ -2,6 +2,10 @@ package com.turlir.calculator.extractors;
 
 import java.util.Iterator;
 
+/**
+ * Простое выделение из математического выражения операторов и операндов <br>
+ * Выполняет чистку строкового представления выражения
+ */
 public class ExpressionPartExtractor implements IntervalExtractor {
 
     @Override

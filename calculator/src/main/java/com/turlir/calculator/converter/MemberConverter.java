@@ -2,16 +2,20 @@ package com.turlir.calculator.converter;
 
 import com.turlir.calculator.extractors.Interval;
 import com.turlir.calculator.extractors.IntervalExtractor;
+import com.turlir.calculator.extractors.MultiOperatorExtractor;
 import com.turlir.calculator.member.Operators;
 import com.turlir.calculator.member.Value;
 
 import java.util.Iterator;
 
+/**
+ * Окончательно разделяет выражение на выскороуровневые части {@link Member}
+ */
 public class MemberConverter implements ExpressionExtractor {
 
     private final IntervalExtractor mExtractor;
 
-    public MemberConverter(IntervalExtractor parent) {
+    public MemberConverter(MultiOperatorExtractor parent) {
         mExtractor = parent;
     }
 
@@ -37,7 +41,7 @@ public class MemberConverter implements ExpressionExtractor {
         }
 
         @Override
-        public Member next() {
+        public Member next() throws IllegalArgumentException {
             Interval now = mIntervals.next();
             Member res;
             if (now.operand()) {

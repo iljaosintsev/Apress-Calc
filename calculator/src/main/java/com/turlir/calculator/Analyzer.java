@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * Анализирует математическое выражение. Выражение может быть не полным, но должно содержать только известные
- * операторы и {@link Double} операнды
+ * операторы и {@link Double} операнды, представленные в виде {@link Member}
  */
 public class Analyzer {
 
@@ -22,20 +22,20 @@ public class Analyzer {
     /**
      * Анализирует математическое выражение
      * @param exp выражение
-     * @return разобранное на токены выражение
-     * @throws RuntimeException в случае ошибки разбора
+     * @return последовательность токенов выражения
+     * @throws IllegalArgumentException при работе итератора в случае ошибки разбора
      */
-    public Iterator<Member> analyze(String exp) throws Exception {
+    public Iterator<Member> analyze(String exp) {
         return mConverter.iterator(exp);
     }
 
     /**
      * Анализирует математическое выражение
      * @param exp выражение
-     * @return разобранное на токены выражение
-     * @throws RuntimeException в случае ошибки разбора
+     * @return список из токенов выражения
+     * @throws IllegalArgumentException в случае ошибки разбора
      */
-    public List<Member> slice(String exp) throws Exception {
+    public List<Member> slice(String exp) throws IllegalArgumentException {
         Iterator<Member> primaryQ = analyze(exp);
         List<Member> copy = new LinkedList<>();
         while (primaryQ.hasNext()) {

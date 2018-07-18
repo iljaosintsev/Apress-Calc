@@ -1,6 +1,9 @@
 package com.turlir.calculator.extractors;
 
 
+/**
+ * Подстрока матетимаческого выражения, соответствующая или оператору или операнду (числу)
+ */
 public class Interval {
 
     public final String value;
@@ -11,6 +14,12 @@ public class Interval {
         this.type = operand;
     }
 
+    /**
+     * Выделение из строки {@param origin} начиная с позиции {@param index} следующего куска <br>
+     * от оператора - до операнда и наоборот
+     * @param origin математическое выражение
+     * @param index начальная позиция
+     */
     Interval(String origin, int index) {
         boolean l;
         char c = origin.charAt(index);
@@ -34,6 +43,10 @@ public class Interval {
         value = origin.substring(index, index + offset);
     }
 
+    /**
+     *
+     * @return является ли этот участок выражения операндом
+     */
     public boolean operand() {
         return type;
     }
