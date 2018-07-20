@@ -1,18 +1,10 @@
 package com.turlir.calculator.converter
 
 import com.turlir.calculator.extractors.CommonTest
-import com.turlir.calculator.extractors.MultiOperatorExtractor
 import com.turlir.calculator.member.Operators
 import com.turlir.calculator.member.Value
 import org.junit.Assert.assertFalse
-import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
-import org.mockito.junit.MockitoJUnitRunner
-import java.util.*
 
 class MemberConverterTest : CommonTest() {
 
