@@ -7,9 +7,7 @@ class IntervalExtractorTest : CommonTest() {
 
     @Test
     fun bracketExtractTest() {
-        val extractor = MultiOperatorExtractor(
-                ExpressionPartExtractor()
-        ).iterator("-2*(3+(16-9))")
+        val extractor = MultiOperatorExtractor(ExpressionPartExtractor("-2*(3+(16-9))"))
 
         or(extractor, "-")
 
@@ -40,9 +38,7 @@ class IntervalExtractorTest : CommonTest() {
 
     @Test
     operator fun unaryMinus() {
-        val extractor = MultiOperatorExtractor(
-                ExpressionPartExtractor()
-        ).iterator("-4 + 2")
+        val extractor = MultiOperatorExtractor(ExpressionPartExtractor("-4 + 2"))
         or(extractor, "-")
         and(extractor, "4")
         or(extractor, "+")
@@ -51,9 +47,7 @@ class IntervalExtractorTest : CommonTest() {
 
     @Test
     fun unaryMinusInsideExp() {
-        val extractor = MultiOperatorExtractor(
-                ExpressionPartExtractor()
-        ).iterator("4 + 2 * -1")
+        val extractor = MultiOperatorExtractor(ExpressionPartExtractor("4 + 2 * -1"))
         and(extractor, "4")
         or(extractor, "+")
         and(extractor, "2")
@@ -64,9 +58,7 @@ class IntervalExtractorTest : CommonTest() {
 
     @Test
     fun bracketMultiplyUnaryValue() {
-        val extractor = MultiOperatorExtractor(
-                ExpressionPartExtractor()
-        ).iterator("( 2 + 4) * -3")
+        val extractor = MultiOperatorExtractor(ExpressionPartExtractor("( 2 + 4) * -3"))
         or(extractor, "(")
         and(extractor, "2")
         or(extractor, "+")
@@ -79,10 +71,10 @@ class IntervalExtractorTest : CommonTest() {
 
     @Test
     fun floatingNumber() {
-        var extractor = ExpressionPartExtractor().iterator("2,2")
+        var extractor = ExpressionPartExtractor("2,2")
         and(extractor, "2.2")
 
-        extractor = ExpressionPartExtractor().iterator("1 234")
+        extractor = ExpressionPartExtractor("1 234")
         and(extractor, "1234")
     }
 

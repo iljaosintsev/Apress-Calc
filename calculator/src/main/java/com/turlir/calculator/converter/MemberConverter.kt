@@ -1,5 +1,6 @@
 package com.turlir.calculator.converter
 
+import com.turlir.calculator.extractors.ExpressionPartExtractor
 import com.turlir.calculator.extractors.Interval
 import com.turlir.calculator.extractors.MultiOperatorExtractor
 import com.turlir.calculator.member.Operators
@@ -8,15 +9,17 @@ import com.turlir.calculator.member.Value
 /**
  * Окончательно разделяет выражение на выскороуровневые части [Member]
  */
-class MemberConverter
-    constructor(private val parent: MultiOperatorExtractor) : ExpressionExtractor {
+class MemberConverter : ExpressionExtractor {
 
     override fun iterator(value: String): Iterator<Member> {
-        return MemberIterator(parent.iterator(value))
+        return MemberIterator(
+                MultiOperatorExtractor(
+                        ExpressionPartExtractor(value)
+                )
+        )
     }
 
-    private class MemberIterator
-        constructor(private val mIntervals: Iterator<Interval>) : Iterator<Member> {
+    private class MemberIterator(private val mIntervals: Iterator<Interval>) : Iterator<Member> {
 
         private var mPrev: Interval? = null
 
@@ -40,6 +43,5 @@ class MemberConverter
         }
 
         override fun hasNext(): Boolean = mIntervals.hasNext()
-
     }
 }

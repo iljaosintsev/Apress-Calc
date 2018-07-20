@@ -16,11 +16,7 @@ class IntegrationTest {
 
     @Before
     fun setup() {
-        val conv = MemberConverter(
-                MultiOperatorExtractor(
-                        ExpressionPartExtractor()
-                )
-        )
+        val conv = MemberConverter()
         val trans = PolishTranslator()
         val inter = PolishInterpreter()
         calc = Calculator(trans, inter)

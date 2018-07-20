@@ -14,31 +14,11 @@ import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 import java.util.*
 
-@RunWith(MockitoJUnitRunner::class)
 class MemberConverterTest : CommonTest() {
-
-    @Mock
-    lateinit var extractor: MultiOperatorExtractor
-
-    @Before
-    fun setup() {
-        MockitoAnnotations.initMocks(this)
-    }
 
     @Test
     fun testAllMembers() {
-        val seq = Arrays.asList(
-                or("+"),
-                or("-"),
-                or("*"),
-                or("/"),
-                or("("),
-                or(")"),
-                and("3"),
-                or("-")
-        ).iterator()
-        Mockito.`when`(extractor.iterator(Mockito.anyString())).thenReturn(seq)
-        val conv = MemberConverter(extractor).iterator("")
+        val conv = MemberConverter().iterator("+-*/()3-")
         or(conv, Operators.PLUS)
         or(conv, Operators.UNARY_MINUS)
         or(conv, Operators.MULTI)
@@ -52,14 +32,7 @@ class MemberConverterTest : CommonTest() {
 
     @Test
     operator fun unaryMinus() {
-        val seq = Arrays.asList(
-                or("-"),
-                and("4"),
-                or("+"),
-                and("2")
-        ).iterator()
-        Mockito.`when`(extractor.iterator(Mockito.anyString())).thenReturn(seq)
-        val conv = MemberConverter(extractor).iterator("")
+        val conv = MemberConverter().iterator("-4+2")
         or(conv, Operators.UNARY_MINUS)
         and(conv, Value(4.0))
         or(conv, Operators.PLUS)
@@ -69,16 +42,7 @@ class MemberConverterTest : CommonTest() {
 
     @Test
     fun unaryMinusInsideExp() {
-        val seq = Arrays.asList(
-                and("4"),
-                or("+"),
-                and("2"),
-                or("*"),
-                or("-"),
-                and("1")
-        ).iterator()
-        Mockito.`when`(extractor.iterator(Mockito.anyString())).thenReturn(seq)
-        val conv = MemberConverter(extractor).iterator("")
+        val conv = MemberConverter().iterator("4+2*-1")
         and(conv, Value(4.0))
         or(conv, Operators.PLUS)
         and(conv, Value(2.0))
