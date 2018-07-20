@@ -1,10 +1,8 @@
 package com.turlir.calculator.converter
 
-import com.turlir.calculator.converter.Printer
 import com.turlir.calculator.member.Value
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.mockito.Mockito
 import java.math.BigDecimal
 import java.math.MathContext
 import java.text.DecimalFormat
@@ -26,12 +24,6 @@ class ValueTest {
     fun findFormatPath() {
         val t = "1234.1234567890123456789"
         val bd = BigDecimal(t, MathContext.UNLIMITED)
-
-        /*val fs = DecimalFormatSymbols(Locale("ru"))
-        val df = DecimalFormat()
-        df.decimalFormatSymbols = fs
-        df.maximumFractionDigits = 340*/
-
         val format = mFormat.format(bd)
         assertEquals("1 234,1234567890123456789", format)
     }
@@ -40,7 +32,7 @@ class ValueTest {
     fun displayTest() {
         val v = Value("1234.123456", false)
         val view = v.view()
-        val printer = Mockito.spy(SimplePrinter(mFormat))
+        val printer = SimplePrinter(mFormat)
         view.print(printer)
         assertEquals("1 234,123456", printer.toString())
     }
@@ -49,7 +41,7 @@ class ValueTest {
     fun lastSymbolSeparatorTest() {
         val v = Value("1234", true)
         val view = v.view()
-        val printer = Mockito.spy(SimplePrinter(mFormat))
+        val printer = SimplePrinter(mFormat)
         view.print(printer)
         assertEquals("1 234,", printer.toString())
     }

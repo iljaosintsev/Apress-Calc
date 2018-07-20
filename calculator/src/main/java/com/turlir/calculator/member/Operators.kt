@@ -4,77 +4,81 @@ import com.turlir.calculator.interpreter.NotationInterpreter
 import java.math.BigDecimal
 import java.math.MathContext
 
-object Operators {
+abstract class Operators {
 
-    val OS = object : Operator("(", 1) {
+    companion object {
 
-        override fun process(interpreter: NotationInterpreter) {
-            //
+        val OS = object : Operator("(", 1) {
+
+            override fun process(interpreter: NotationInterpreter) {
+                //
+            }
         }
-    }
 
-    val CS = object : Operator(")", 1) {
+        val CS = object : Operator(")", 1) {
 
-        override fun process(interpreter: NotationInterpreter) {
-            //
+            override fun process(interpreter: NotationInterpreter) {
+                //
+            }
         }
-    }
 
-    val PLUS = object : Operator(" + ", 2) {
+        val PLUS = object : Operator(" + ", 2) {
 
-        override fun process(interpreter: NotationInterpreter) {
-            val a = interpreter.poolDigit()
-            val b = interpreter.poolDigit()
-            interpreter.pushDigit(a.add(b))
+            override fun process(interpreter: NotationInterpreter) {
+                val a = interpreter.poolDigit()
+                val b = interpreter.poolDigit()
+                interpreter.pushDigit(a.add(b))
+            }
         }
-    }
 
-    val MINUS = object : Operator(" - ", 2) {
+        val MINUS = object : Operator(" - ", 2) {
 
-        override fun process(interpreter: NotationInterpreter) {
-            val a = interpreter.poolDigit()
-            val b = interpreter.poolDigit()
-            interpreter.pushDigit(b.subtract(a))
+            override fun process(interpreter: NotationInterpreter) {
+                val a = interpreter.poolDigit()
+                val b = interpreter.poolDigit()
+                interpreter.pushDigit(b.subtract(a))
+            }
         }
-    }
 
-    val MULTI = object : Operator(" * ", 3) {
+        val MULTI = object : Operator(" * ", 3) {
 
-        override fun process(interpreter: NotationInterpreter) {
-            val a = interpreter.poolDigit()
-            val b = interpreter.poolDigit()
-            interpreter.pushDigit(a.multiply(b))
+            override fun process(interpreter: NotationInterpreter) {
+                val a = interpreter.poolDigit()
+                val b = interpreter.poolDigit()
+                interpreter.pushDigit(a.multiply(b))
+            }
         }
-    }
 
-    val DIV = object : Operator(" / ", 3) {
+        val DIV = object : Operator(" / ", 3) {
 
-        override fun process(interpreter: NotationInterpreter) {
-            val a = interpreter.poolDigit()
-            val b = interpreter.poolDigit()
-            interpreter.pushDigit(b.divide(a, MathContext.DECIMAL64))
+            override fun process(interpreter: NotationInterpreter) {
+                val a = interpreter.poolDigit()
+                val b = interpreter.poolDigit()
+                interpreter.pushDigit(b.divide(a, MathContext.DECIMAL64))
+            }
         }
-    }
 
-    val UNARY_MINUS = object : Operator("-", 4) {
+        val UNARY_MINUS = object : Operator("-", 4) {
 
-        private val MULTIPLICAND = BigDecimal(-1)
+            private val MULTIPLICAND = BigDecimal(-1)
 
-        override fun process(interpreter: NotationInterpreter) {
-            val a = interpreter.poolDigit()
-            interpreter.pushDigit(a.multiply(MULTIPLICAND))
+            override fun process(interpreter: NotationInterpreter) {
+                val a = interpreter.poolDigit()
+                interpreter.pushDigit(a.multiply(MULTIPLICAND))
+            }
         }
-    }
 
-    fun find(token: String) = when (token) {
-        "*" -> MULTI
-        "/" -> DIV
-        "+" -> PLUS
-        "-" -> MINUS
-        "u-" -> UNARY_MINUS
-        "(" -> OS
-        ")" -> CS
-        else -> throw IllegalArgumentException("Операция не доступна")
+        fun find(token: String) = when (token) {
+            "*" -> MULTI
+            "/" -> DIV
+            "+" -> PLUS
+            "-" -> MINUS
+            "u-" -> UNARY_MINUS
+            "(" -> OS
+            ")" -> CS
+            else -> throw IllegalArgumentException("Операция не доступна")
+        }
+
     }
 
 }

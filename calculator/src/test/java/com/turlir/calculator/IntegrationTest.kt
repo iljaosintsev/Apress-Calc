@@ -28,36 +28,30 @@ class IntegrationTest {
     }
 
     @Test
-    //@Throws(Exception::class)
     fun plusMinusTest() {
         val res = calc.calc(mAnalyzer.analyze("8 - 2 + 1")).toDouble()
         assertEquals(7.0, res, 0.1)
     }
 
-    /*
     @Test
-    //@Throws(Exception::class)
     fun multiplyDivideTest() {
         val res = calc.calc(mAnalyzer.analyze("4 * 4 / 8")).toDouble()
         assertEquals(2.0, res, 0.1)
     }
 
     @Test
-    //@Throws(Exception::class)
     fun priorityTest() {
         val res = calc.calc(mAnalyzer.analyze("2 + 2 * 2")).toDouble()
         assertEquals(6.0, res, 0.1)
     }
 
     @Test
-    //@Throws(Exception::class)
     fun floatingNumberTest() {
         val res = calc.calc(mAnalyzer.analyze("2,2 + 3")).toDouble()
         assertEquals(5.2, res, 0.1)
     }
 
     @Test
-    //@Throws(Exception::class)
     fun complexTest() {
         var res: Double? = calc.calc(mAnalyzer.analyze("1 + 25 - 5 / 22")).toDouble()
         assertEquals(25.8, res!!, 0.1)
@@ -73,6 +67,6 @@ class IntegrationTest {
 
         res = calc.calc(mAnalyzer.analyze("1 + 25 - 5 / 22 + ( 45 + 34 ) * -3")).toDouble()
         assertEquals(-211.23, res, 0.1)
-    }*/
+    }
 
 }

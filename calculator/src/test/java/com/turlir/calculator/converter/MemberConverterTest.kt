@@ -1,11 +1,10 @@
 package com.turlir.calculator.converter
 
-import com.turlir.calculator.converter.MemberConverter
 import com.turlir.calculator.extractors.CommonTest
 import com.turlir.calculator.extractors.MultiOperatorExtractor
 import com.turlir.calculator.member.Operators
 import com.turlir.calculator.member.Value
-import org.junit.Assert.*
+import org.junit.Assert.assertFalse
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

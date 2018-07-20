@@ -97,7 +97,7 @@ public class OperatorVisualizerTest {
     }
 
     private static OperatorVisualizer range(int start, int end) {
-        OperatorVisualizer ov = new OperatorVisualizer(Operators.find("+").view());
+        OperatorVisualizer ov = new OperatorVisualizer(Operators.Companion.find("+").view());
         Printer p = Mockito.mock(Printer.class);
         Mockito.when(p.length()).thenReturn(start, end);
         ov.print(p);

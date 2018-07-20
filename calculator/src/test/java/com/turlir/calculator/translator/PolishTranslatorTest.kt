@@ -6,8 +6,6 @@ import com.turlir.calculator.interpreter.NotationInterpreter
 import com.turlir.calculator.member.Operator
 import com.turlir.calculator.member.Operators
 import com.turlir.calculator.member.Value
-import com.turlir.calculator.translator.NotationTranslator
-import com.turlir.calculator.translator.PolishTranslator
 import org.hamcrest.CoreMatchers
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Assert.assertEquals
