@@ -11,21 +11,21 @@ public class IntervalTest {
     @Test
     public void firstOperatorTest() {
         Interval p = new Interval("23.54+45.67", 0);
-        assertEquals("23.54", p.value);
+        assertEquals("23.54", p.getValue());
         assertTrue(p.operand());
     }
 
     @Test
     public void operandTest() {
         Interval p = new Interval("23.54+45.67", 5);
-        assertEquals("+", p.value);
+        assertEquals("+", p.getValue());
         assertFalse(p.operand());
     }
 
     @Test
     public void secondOperatorTest() {
         Interval p = new Interval("23.54+45.67", 6);
-        assertEquals("45.67", p.value);
+        assertEquals("45.67", p.getValue());
         assertTrue(p.operand());
     }
 

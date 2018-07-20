@@ -1,23 +1,14 @@
-package com.turlir.calculator;
+package com.turlir.calculator
 
-import com.turlir.calculator.converter.ExpressionExtractor;
-import com.turlir.calculator.converter.Member;
-
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import com.turlir.calculator.converter.ExpressionExtractor
+import com.turlir.calculator.converter.Member
+import java.util.*
 
 /**
  * Анализирует математическое выражение. Выражение может быть не полным, но должно содержать только известные
- * операторы и {@link Double} операнды, представленные в виде {@link Member}
+ * операторы и [Double] операнды, представленные в виде [Member]
  */
-public class Analyzer {
-
-    private final ExpressionExtractor mConverter;
-
-    public Analyzer(ExpressionExtractor converter) {
-        mConverter = converter;
-    }
+class Analyzer(private val mConverter: ExpressionExtractor) {
 
     /**
      * Анализирует математическое выражение
@@ -25,9 +16,7 @@ public class Analyzer {
      * @return последовательность токенов выражения
      * @throws IllegalArgumentException при работе итератора в случае ошибки разбора
      */
-    public Iterator<Member> analyze(String exp) {
-        return mConverter.iterator(exp);
-    }
+    fun analyze(exp: String): Iterator<Member> = mConverter.iterator(exp)
 
     /**
      * Анализирует математическое выражение
@@ -35,14 +24,15 @@ public class Analyzer {
      * @return список из токенов выражения
      * @throws IllegalArgumentException в случае ошибки разбора
      */
-    public List<Member> slice(String exp) throws IllegalArgumentException {
-        Iterator<Member> primaryQ = analyze(exp);
-        List<Member> copy = new LinkedList<>();
+    @Throws(IllegalArgumentException::class)
+    fun slice(exp: String): List<Member> {
+        val primaryQ = analyze(exp)
+        val copy = LinkedList<Member>()
         while (primaryQ.hasNext()) {
-            Member item = primaryQ.next();
-            copy.add(item);
+            val item = primaryQ.next()
+            copy.add(item)
         }
-        return copy;
+        return copy
     }
 
 }

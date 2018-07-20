@@ -1,23 +1,23 @@
-package com.turlir.calculator.interpreter;
+package com.turlir.calculator.interpreter
 
 
-import java.math.BigDecimal;
+import java.math.BigDecimal
 
 /**
  * Вычисляет выражение, записанное в определенной нотации
  */
-public interface NotationInterpreter {
+interface NotationInterpreter {
 
     /**
      *
      * @return промужеточный результат
      */
-    BigDecimal poolDigit();
+    fun poolDigit(): BigDecimal
 
     /**
      * Записывает промежуточный результат
      * @param value результат
      */
-    void pushDigit(BigDecimal value);
+    fun pushDigit(value: BigDecimal)
 
 }
