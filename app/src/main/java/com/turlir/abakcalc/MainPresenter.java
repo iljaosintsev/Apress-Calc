@@ -70,6 +70,10 @@ class MainPresenter {
 
     private void showRepresentation(BigDecimal result) {
         mView.showResult(DF.format(result));
+        showRepresentation();
+    }
+
+    private void showRepresentation() {
         List<Member> copy = mCalc.direct();
         List<CalculatorVisual> visual = interceptDirect(copy);
         mView.setRepresentation(visual);
@@ -89,9 +93,10 @@ class MainPresenter {
         }
 
         try {
-            calculate(s);
+            BigDecimal result = calculate(s);
+            showRepresentation(result);
         } catch (Exception ignored) {
-
+            showRepresentation();
         }
     }
 

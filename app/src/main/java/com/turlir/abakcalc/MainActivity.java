@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         }
     }
 
-    @OnLongClick(R.id.btn_dot)
+    @OnLongClick(R.id.btn_clear)
     public boolean clearAll(View view) {
         resetToEmpty();
         return true;
