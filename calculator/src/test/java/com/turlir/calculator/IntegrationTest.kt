@@ -17,7 +17,7 @@ class IntegrationTest {
         val analyzer = Analyzer(conv)
         val trans = PolishTranslator()
         val inter = PolishInterpreter()
-        calc = Calculator(trans, inter, analyzer)
+        calc = Calculator(analyzer, trans, inter)
     }
 
     @Test

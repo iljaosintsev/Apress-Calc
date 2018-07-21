@@ -10,9 +10,13 @@ import java.util.*
 /**
  * Организует взаимодействие между [NotationTranslator] и [NotationInterpreter]
  */
-class Calculator
-    constructor(private val mTranslator: NotationTranslator, private val mInter: NotationInterpreter) {
+class Calculator (
+            private val mAnalyzer: Analyzer,
+            private val mTranslator: NotationTranslator,
+            private val mInter: NotationInterpreter
+    ) {
 
+    private lateinit var mDirect: List<Member>
     private lateinit var mQueue: Queue<Member>
 
     /**
@@ -21,8 +25,9 @@ class Calculator
      * @throws Exception в случае ошибки трансляции
      */
     @Throws(Exception::class)
-    fun calc(sequence: Iterator<Member>): BigDecimal {
-        mQueue = mTranslator.translate(sequence)
+    fun calc(math: String): BigDecimal {
+        mDirect = mAnalyzer.slice(math)
+        mQueue = mTranslator.translate(mDirect.iterator())
         for (current in mQueue) {
             current.process(mInter)
         }
@@ -34,6 +39,12 @@ class Calculator
      * @return токены выражения в порядке вычисления
      */
     fun translated() = mQueue
+
+
+    /**
+     * @return токены выражения в прямом порядке (как в исходной строке)
+     */
+    fun direct() = mDirect
 
     /**
      *

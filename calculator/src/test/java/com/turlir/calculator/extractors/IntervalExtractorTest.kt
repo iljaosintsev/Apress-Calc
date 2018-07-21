@@ -1,5 +1,7 @@
 package com.turlir.calculator.extractors
 
+import com.turlir.calculator.converter.ExpressionPartExtractor
+import com.turlir.calculator.converter.MultiOperatorExtractor
 import org.junit.Assert.assertFalse
 import org.junit.Test
 

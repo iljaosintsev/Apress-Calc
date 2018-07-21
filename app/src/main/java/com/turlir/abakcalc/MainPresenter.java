@@ -1,6 +1,5 @@
 package com.turlir.abakcalc;
 
-import com.turlir.calculator.Analyzer;
 import com.turlir.calculator.Calculator;
 import com.turlir.calculator.converter.Member;
 import com.turlir.calculator.converter.Visual;
@@ -31,13 +30,11 @@ class MainPresenter {
     static final String SEPARATOR = String.valueOf(FORMAT.getDecimalSeparator());
 
     private final Calculator mCalc;
-    private final Analyzer mAnalyze;
 
     private MainView mView;
 
-    MainPresenter(Calculator calc, Analyzer analyze) {
+    MainPresenter(Calculator calc) {
         mCalc = calc;
-        mAnalyze = analyze;
     }
 
     void attach(MainView view) {
@@ -55,7 +52,8 @@ class MainPresenter {
         }
 
         try {
-            calculate(s);
+            BigDecimal result = calculate(s);
+            showRepresentation(result);
             showNotation();
 
         } catch (EmptyStackException | NoSuchElementException e) {
@@ -68,6 +66,13 @@ class MainPresenter {
 
             mView.setNotation(Collections.<Visual>emptyList());
         }
+    }
+
+    private void showRepresentation(BigDecimal result) {
+        mView.showResult(DF.format(result));
+        List<Member> copy = mCalc.direct();
+        List<CalculatorVisual> visual = interceptDirect(copy);
+        mView.setRepresentation(visual);
     }
 
     private void showNotation() {
@@ -90,17 +95,13 @@ class MainPresenter {
         }
     }
 
-    private void calculate(String str) throws Exception {
-        str = str.replaceAll("\\s+", "").replace(SEPARATOR, ".");
-        List<Member> copy = mAnalyze.slice(str);
-        List<CalculatorVisual> visual = interceptPrimary(copy);
-        mView.setRepresentation(visual);
-
-        BigDecimal digit = mCalc.calc(copy.iterator());
-        mView.showResult(DF.format(digit));
+    private  BigDecimal calculate(String str) throws Exception {
+        str = str.replace(SEPARATOR, ".");
+        BigDecimal digit = mCalc.calc(str);
+        return digit;
     }
 
-    private static List<CalculatorVisual> interceptPrimary(Collection<Member> sequence) {
+    private static List<CalculatorVisual> interceptDirect(Collection<Member> sequence) {
         List<CalculatorVisual> views = new ArrayList<>(sequence.size());
         for (Member member : sequence) {
             Visual view = member.view();

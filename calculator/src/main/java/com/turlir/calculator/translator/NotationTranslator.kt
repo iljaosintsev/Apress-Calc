@@ -12,6 +12,7 @@ interface NotationTranslator {
      *
      * @param parent математическое выражение
      * @return очередь из токенов того же выражения в другой нотации
+     * @throws Exception в случае ошибки разрабора
      */
     @Throws(Exception::class)
     fun translate(parent: Iterator<Member>): Queue<Member>

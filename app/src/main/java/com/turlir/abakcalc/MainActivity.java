@@ -13,8 +13,6 @@ import com.turlir.calculator.Analyzer;
 import com.turlir.calculator.Calculator;
 import com.turlir.calculator.converter.MemberConverter;
 import com.turlir.calculator.converter.Visual;
-import com.turlir.calculator.extractors.ExpressionPartExtractor;
-import com.turlir.calculator.extractors.MultiOperatorExtractor;
 import com.turlir.calculator.interpreter.NotationInterpreter;
 import com.turlir.calculator.interpreter.PolishInterpreter;
 import com.turlir.calculator.translator.NotationTranslator;
@@ -56,16 +54,11 @@ public class MainActivity extends AppCompatActivity implements MainView {
         notation.setAdapter(mAdapter);
         notation.addItemDecoration(new SpaceDecorator(this, R.dimen.notation_item_padding, R.dimen.zero));
 
-        Analyzer analyzer = new Analyzer(
-                new MemberConverter(
-                        new MultiOperatorExtractor(
-                                new ExpressionPartExtractor()
-                        )
-                )
-        );
+        Analyzer analyzer = new Analyzer(new MemberConverter());
         NotationTranslator translator = new PolishTranslator();
         NotationInterpreter interpreter = new PolishInterpreter();
-        mPresenter = new MainPresenter(new Calculator(translator, interpreter), analyzer);
+        Calculator calculator = new Calculator(analyzer, translator, interpreter);
+        mPresenter = new MainPresenter(calculator);
         mPresenter.attach(this);
     }
 
