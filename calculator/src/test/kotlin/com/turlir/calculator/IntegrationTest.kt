@@ -3,7 +3,7 @@ package com.turlir.calculator
 import com.turlir.calculator.converter.MemberConverter
 import com.turlir.calculator.interpreter.PolishInterpreter
 import com.turlir.calculator.translator.PolishTranslator
-import org.junit.Assert.assertEquals
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 
@@ -49,16 +49,16 @@ class IntegrationTest {
         var res: Double? = calc.calc("1 + 25 - 5 / 22").toDouble()
         assertEquals(25.8, res!!, 0.1)
 
-        res = calc.calc("1 + 25 - 5 / 22 +  45 + 34 )").toDouble()
+        res = calc.calc("1 + 25 - 5 / 22 +  45 + 34").toDouble()
         assertEquals(104.8, res, 0.1)
 
         res = calc.calc("104.8 * -3").toDouble()
         assertEquals(-314.4, res, 0.1)
 
-        res = calc.calc("( 45 + 34 ) * -").toDouble()
-        assertEquals(-237.0, res, 0.1)
+        res = calc.calc("( 45 + 34 ) * -1").toDouble()
+        assertEquals(-79.0, res, 0.1)
 
-        res = calc.calc("1 + 25 - 5 / 22 +  45 + 34 ) * -3").toDouble()
+        res = calc.calc("1 + 25 - 5 / 22 + ( 45 + 34 ) * -3").toDouble()
         assertEquals(-211.23, res, 0.1)
     }
 
