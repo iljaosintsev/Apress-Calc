@@ -2,6 +2,7 @@ package com.turlir.abakcalc;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,8 @@ import com.turlir.calculator.interpreter.NotationInterpreter;
 import com.turlir.calculator.interpreter.PolishInterpreter;
 import com.turlir.calculator.translator.NotationTranslator;
 import com.turlir.calculator.translator.PolishTranslator;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
@@ -48,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
         super.onCreate(save);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        dot.setText(MainPresenter.SEPARATOR);
         notation.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         mAdapter = new NotationRecyclerAdapter(this);
         notation.setAdapter(mAdapter);
@@ -60,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
         Calculator calculator = new Calculator(analyzer, translator, interpreter);
         mPresenter = new MainPresenter(calculator);
         mPresenter.attach(this);
+
+        dot.setText(mPresenter.getSeparator());
     }
 
     @Override
@@ -150,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
                 append("0");
                 break;
             case R.id.btn_dot:
-                append(MainPresenter.SEPARATOR);
+                append(mPresenter.getSeparator());
                 break;
             case R.id.btn_cs:
                 append("(");
@@ -175,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     }
 
     @Override
-    public void showResult(String digit) {
+    public void showResult(@NonNull String digit) {
         result.setText(digit);
     }
 
@@ -187,21 +191,22 @@ public class MainActivity extends AppCompatActivity implements MainView {
     }
 
     @Override
-    public void setRepresentation(List<CalculatorVisual> v) {
+    public void setRepresentation(@NotNull List<? extends CalculatorVisual> v) {
         editText.setRepresentation(v);
     }
 
     @Override
-    public void setNotation(List<Visual> v) {
+    public void setNotation(@NotNull List<? extends Visual> v) {
         mAdapter.setItems(v);
         mAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void showError(String error) {
+    public void showError(@NonNull String error) {
         result.setText(error);
     }
 
+    @NonNull
     @Override
     public Context context() {
         return getApplicationContext();
