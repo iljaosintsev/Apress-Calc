@@ -10,7 +10,7 @@ interface MainView {
 
     fun showError(error: String)
 
-    fun context(): Context
+    val context: Context
 
     fun setRepresentation(v: List<CalculatorVisual>)
 

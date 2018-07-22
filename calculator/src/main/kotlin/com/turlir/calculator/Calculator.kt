@@ -25,13 +25,17 @@ class Calculator (
      * @throws Exception в случае ошибки трансляции
      */
     @Throws(Exception::class)
-    fun calc(math: String): BigDecimal {
-        mDirect = mAnalyzer.slice(math)
-        mQueue = mTranslator.translate(mDirect.iterator())
+    fun calc(direct: List<Member>): BigDecimal {
+        mQueue = mTranslator.translate(direct.iterator())
         for (current in mQueue) {
             current.process(mInter)
         }
         return mInter.poolDigit()
+    }
+
+    fun direct(math: String): List<Member> {
+        mDirect = mAnalyzer.slice(math)
+        return mDirect
     }
 
     /**
@@ -39,17 +43,5 @@ class Calculator (
      * @return токены выражения в порядке вычисления
      */
     fun translated() = mQueue
-
-
-    /**
-     * @return токены выражения в прямом порядке (как в исходной строке)
-     */
-    fun direct() = mDirect
-
-    /**
-     *
-     * @return количество токенов в выражении
-     */
-    fun size() = mQueue.size
 
 }

@@ -3,12 +3,11 @@ package com.turlir.abakcalc
 import com.turlir.calculator.Calculator
 import com.turlir.calculator.converter.Member
 import com.turlir.calculator.converter.Visual
-import java.math.BigDecimal
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
 
-internal class MainPresenter(private val mCalc: Calculator) {
+class MainPresenter(private val mCalc: Calculator) {
 
     val separator: String
 
@@ -35,68 +34,56 @@ internal class MainPresenter(private val mCalc: Calculator) {
     }
 
     fun enter(s: String?) {
-        if (s == null || s.isEmpty()) {
-            mView!!.resetToEmpty()
-            return
+
+        fun enter_(it: MainView) {
+            if (s == null || s.isEmpty()) {
+                it.resetToEmpty()
+                return
+            }
+
+            try {
+                calculate(s, true)
+
+            } catch (e: EmptyStackException) {
+                it.showError(it.context.getString(R.string.error))
+
+            } catch (e: NoSuchElementException) {
+                it.showError(it.context.getString(R.string.error))
+
+            } catch (e: Exception) {
+                it.showError(e.message!!)
+
+            } finally {
+                it.setNotation(emptyList())
+            }
         }
 
-        try {
-            val result = calculate(s)
-            showRepresentation(result)
-            showNotation()
-
-        } catch (e: EmptyStackException) {
-            mView!!.showError(mView!!.context().getString(R.string.error))
-            mView!!.setNotation(emptyList())
-
-        } catch (e: NoSuchElementException) {
-            mView!!.showError(mView!!.context().getString(R.string.error))
-            mView!!.setNotation(emptyList())
-
-        } catch (e: Exception) {
-            mView!!.showError(e.message!!)
-            mView!!.setNotation(emptyList())
-        }
+        mView?.let { enter_(it) }
     }
 
     fun recalculate(s: String?) {
         if (s == null || s.isEmpty()) {
-            mView!!.resetToEmpty()
+            mView?.resetToEmpty()
             return
         }
         try {
-            val result = calculate(s)
-            showRepresentation(result)
-        } catch (e: Exception) {
-            showRepresentation()
+            calculate(s, false)
+        } catch (ignored: Exception) {
+            //
         }
     }
 
-    private fun showRepresentation(result: BigDecimal) {
-        mView!!.showResult(mFormat.format(result))
-        showRepresentation()
-    }
-
-    private fun showRepresentation() {
-        val copy = mCalc.direct()
-        val visual = interceptDirect(copy)
-        mView!!.setRepresentation(visual)
-    }
-
-    private fun showNotation() {
-        val row = mCalc.translated()
-        val now = ArrayList<Visual>(mCalc.size())
-        for (item in row) now.add(item.view())
-        mView!!.setNotation(now)
-    }
-
     @Throws(Exception::class)
-    private fun calculate(str: String): BigDecimal {
-        val copy = str.replace(separator, ".")
-        return mCalc.calc(copy)
+    private fun calculate(str: String, shouldTranslated: Boolean) {
+        val correct = str.replace(separator, ".")
+        val row = mCalc.direct(correct)
+        interceptDirect(row)
+        val result = mCalc.calc(row)
+        mView?.showResult(mFormat.format(result))
+        if (shouldTranslated) interceptTranslated(mCalc.translated(), row.size)
     }
 
-    private fun interceptDirect(sequence: Collection<Member>): List<CalculatorVisual> {
+    private fun interceptDirect(sequence: List<Member>) {
         val views = ArrayList<CalculatorVisual>(sequence.size)
         moveTo(views, sequence) { it: Member ->
             if (it.operand()) {
@@ -105,10 +92,16 @@ internal class MainPresenter(private val mCalc: Calculator) {
                 OperatorVisualizer(it.view())
             }
         }
-        return views
+        mView?.setRepresentation(views)
     }
 
-    private fun <T, V> moveTo(destination: MutableCollection<T>, origin: Collection<V>, map: (V)-> T) =
+    private fun interceptTranslated(translated: Queue<Member>, size: Int) {
+        val now = ArrayList<Visual>(size)
+        moveTo(now, translated) { it.view() }
+        mView?.setNotation(now)
+    }
+
+    private fun <T, V> moveTo(destination: MutableList<T>, origin: Iterable<V>, map: (V)-> T) =
         origin.map { map(it) }
                 .forEach { destination.add(it) }
 }

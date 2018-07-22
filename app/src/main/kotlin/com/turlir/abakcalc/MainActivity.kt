@@ -137,7 +137,8 @@ class MainActivity : AppCompatActivity(), MainView {
         result.text = error
     }
 
-    override fun context(): Context = applicationContext
+    override val context: Context
+        get() = applicationContext
 
     private fun append(s: String) {
         val start = editText.selectionStart
