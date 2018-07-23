@@ -48,6 +48,10 @@ class Calculator (
         return mAnalyzer.expression(math)
     }
 
+    fun sequenceExpression(math: String): MathExpression? {
+        return mAnalyzer.sequenceExpression(math)
+    }
+
     /**
      *
      * @return токены выражения в порядке вычисления

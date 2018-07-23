@@ -57,4 +57,18 @@ class Analyzer {
         return first
     }
 
+    /**
+     * Анализирует математическое выражение
+     * @param exp выражение
+     * @return связный список из токенов математического выражения или {@code null} если выражение пустое.
+     * В отличие от метода expression(String) возвращает контейнер с лениво вычисляемыми токенами
+     * @throws IllegalArgumentException в случае ошибки разбора
+     */
+    @Throws(IllegalArgumentException::class)
+    fun sequenceExpression(exp: String): MathExpression? {
+        val primaryQ = analyze(exp)
+        if(!primaryQ.hasNext()) return null
+        return SequenceExpression(primaryQ)
+    }
+
 }
