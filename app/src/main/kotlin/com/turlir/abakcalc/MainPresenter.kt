@@ -76,11 +76,17 @@ class MainPresenter(private val mCalc: Calculator) {
     @Throws(Exception::class)
     private fun calculate(str: String, shouldTranslated: Boolean) {
         val correct = str.replace(separator, ".")
-        val row = mCalc.direct(correct)
-        interceptDirect(row)
-        val result = mCalc.calc(row)
-        mView?.showResult(mFormat.format(result))
-        if (shouldTranslated) interceptTranslated(mCalc.translated())
+        val row = mCalc.sequenceExpression(correct)
+        if (row != null) {
+            val inline = row.inline() // calculate
+            interceptDirect(inline)
+            val result = mCalc.calc(inline)
+            mView?.showResult(mFormat.format(result))
+            if (shouldTranslated) {
+                val translated = mCalc.translated()
+                interceptTranslated(translated)
+            }
+        }
     }
 
     private fun interceptDirect(sequence: List<Member>) {
