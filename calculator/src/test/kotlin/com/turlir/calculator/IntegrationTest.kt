@@ -1,6 +1,5 @@
 package com.turlir.calculator
 
-import com.turlir.calculator.converter.MemberConverter
 import com.turlir.calculator.interpreter.PolishInterpreter
 import com.turlir.calculator.translator.PolishTranslator
 import org.junit.Assert.assertEquals
@@ -13,8 +12,7 @@ class IntegrationTest {
 
     @Before
     fun setup() {
-        val conv = MemberConverter()
-        val analyzer = Analyzer(conv)
+        val analyzer = Analyzer()
         val trans = PolishTranslator()
         val inter = PolishInterpreter()
         calc = Calculator(analyzer, trans, inter)

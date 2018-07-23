@@ -1,14 +1,18 @@
 package com.turlir.calculator
 
+import com.turlir.calculator.converter.Expression
 import com.turlir.calculator.converter.ExpressionExtractor
 import com.turlir.calculator.converter.Member
+import com.turlir.calculator.converter.MemberConverter
 import java.util.*
 
 /**
  * Анализирует математическое выражение. Выражение может быть не полным, но должно содержать только известные
  * операторы и [Double] операнды, представленные в виде [Member]
  */
-class Analyzer(private val mConverter: ExpressionExtractor) {
+class Analyzer {
+
+    private val mConverter: ExpressionExtractor = MemberConverter()
 
     /**
      * Анализирует математическое выражение
@@ -33,6 +37,27 @@ class Analyzer(private val mConverter: ExpressionExtractor) {
             copy.add(item)
         }
         return copy
+    }
+
+    /**
+     * Анализирует математическое выражение
+     * @param exp выражение
+     * @return связный список из токенов математического выражения или null если выражение пустое
+     * @throws IllegalArgumentException в случае ошибки разбора
+     */
+    @Throws(IllegalArgumentException::class)
+    fun expression(exp: String): Expression? {
+        val primaryQ = analyze(exp)
+
+        if(!primaryQ.hasNext()) return null
+        val first = Expression(primaryQ.next())
+        var current = first
+
+        while (primaryQ.hasNext()) {
+            val item = primaryQ.next()
+            current = current.next(item)
+        }
+        return first
     }
 
 }

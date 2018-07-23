@@ -1,6 +1,7 @@
 package com.turlir.calculator
 
 
+import com.turlir.calculator.converter.Expression
 import com.turlir.calculator.converter.Member
 import com.turlir.calculator.interpreter.NotationInterpreter
 import com.turlir.calculator.translator.NotationTranslator
@@ -33,9 +34,18 @@ class Calculator (
         return mInter.poolDigit()
     }
 
+    @Throws(Exception::class)
+    fun calcExpression(direct: Expression): BigDecimal {
+        return calc(direct.inline())
+    }
+
     fun direct(math: String): List<Member> {
         mDirect = mAnalyzer.slice(math)
         return mDirect
+    }
+
+    fun directExpression(math: String): Expression? {
+        return mAnalyzer.expression(math)
     }
 
     /**

@@ -14,7 +14,6 @@ import butterknife.OnClick
 import butterknife.OnLongClick
 import com.turlir.calculator.Analyzer
 import com.turlir.calculator.Calculator
-import com.turlir.calculator.converter.MemberConverter
 import com.turlir.calculator.converter.Visual
 import com.turlir.calculator.interpreter.PolishInterpreter
 import com.turlir.calculator.translator.PolishTranslator
@@ -48,7 +47,7 @@ class MainActivity : AppCompatActivity(), MainView {
             adapter = mAdapter
         }
 
-        val analyzer = Analyzer(MemberConverter())
+        val analyzer = Analyzer()
         val translator = PolishTranslator()
         val interpreter = PolishInterpreter()
         val calculator = Calculator(analyzer, translator, interpreter)
