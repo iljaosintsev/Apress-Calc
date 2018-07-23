@@ -2,6 +2,9 @@ package com.turlir.calculator.converter
 
 import java.util.*
 
+/**
+ * Ленивое вычисление очередного токена
+ */
 class SequenceExpression
     internal constructor(private val link: Iterator<Member>) : MathExpression {
 
