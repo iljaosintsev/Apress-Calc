@@ -2,12 +2,11 @@ package com.turlir.calculator.converter
 
 import java.util.*
 
-class Expression(val value: Member) {
+class Expression
+    internal constructor (override val value: Member) : MathExpression {
 
-    var next: Expression? = null
-        private set(value) {
-            field = value
-        }
+    override var next: MathExpression? = null
+        private set(value) { field = value }
 
     internal fun next(value: Member): Expression {
         val next = Expression(value)
@@ -15,9 +14,9 @@ class Expression(val value: Member) {
         return next
     }
 
-    fun inline(): List<Member> {
+    override fun inline(): List<Member> {
         val copy = LinkedList<Member>()
-        var now: Expression = this
+        var now: MathExpression = this
         while (true) {
             copy.add(now.value)
             now = if (now.isLast()) {
@@ -29,6 +28,6 @@ class Expression(val value: Member) {
         return copy
     }
 
-    fun isLast() = next == null
+    override fun isLast() = next == null
 
 }

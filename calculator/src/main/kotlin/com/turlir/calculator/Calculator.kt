@@ -1,7 +1,7 @@
 package com.turlir.calculator
 
 
-import com.turlir.calculator.converter.Expression
+import com.turlir.calculator.converter.MathExpression
 import com.turlir.calculator.converter.Member
 import com.turlir.calculator.interpreter.NotationInterpreter
 import com.turlir.calculator.translator.NotationTranslator
@@ -35,7 +35,7 @@ class Calculator (
     }
 
     @Throws(Exception::class)
-    fun calcExpression(direct: Expression): BigDecimal {
+    fun calcExpression(direct: MathExpression): BigDecimal {
         return calc(direct.inline())
     }
 
@@ -44,7 +44,7 @@ class Calculator (
         return mDirect
     }
 
-    fun directExpression(math: String): Expression? {
+    fun directExpression(math: String): MathExpression? {
         return mAnalyzer.expression(math)
     }
 

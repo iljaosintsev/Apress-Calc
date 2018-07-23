@@ -1,9 +1,6 @@
 package com.turlir.calculator
 
-import com.turlir.calculator.converter.Expression
-import com.turlir.calculator.converter.ExpressionExtractor
-import com.turlir.calculator.converter.Member
-import com.turlir.calculator.converter.MemberConverter
+import com.turlir.calculator.converter.*
 import java.util.*
 
 /**
@@ -46,7 +43,7 @@ class Analyzer {
      * @throws IllegalArgumentException в случае ошибки разбора
      */
     @Throws(IllegalArgumentException::class)
-    fun expression(exp: String): Expression? {
+    fun expression(exp: String): MathExpression? {
         val primaryQ = analyze(exp)
 
         if(!primaryQ.hasNext()) return null
