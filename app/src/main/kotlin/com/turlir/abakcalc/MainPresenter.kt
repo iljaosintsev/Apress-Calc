@@ -80,7 +80,7 @@ class MainPresenter(private val mCalc: Calculator) {
         interceptDirect(row)
         val result = mCalc.calc(row)
         mView?.showResult(mFormat.format(result))
-        if (shouldTranslated) interceptTranslated(mCalc.translated(), row.size)
+        if (shouldTranslated) interceptTranslated(mCalc.translated())
     }
 
     private fun interceptDirect(sequence: List<Member>) {
@@ -95,13 +95,15 @@ class MainPresenter(private val mCalc: Calculator) {
         mView?.setRepresentation(views)
     }
 
-    private fun interceptTranslated(translated: Queue<Member>, size: Int) {
-        val now = ArrayList<Visual>(size)
+    private fun interceptTranslated(translated: Queue<Member>) {
+        val now = ArrayList<Visual>(translated.size)
         moveTo(now, translated) { it.view() }
         mView?.setNotation(now)
     }
 
-    private fun <T, V> moveTo(destination: MutableList<T>, origin: Iterable<V>, map: (V)-> T) =
-        origin.map { map(it) }
+    private fun <T, V> moveTo(destination: MutableList<T>, origin: Collection<V>, map: (V)-> T) {
+        origin.asSequence()
+                .map { map(it) }
                 .forEach { destination.add(it) }
+    }
 }
