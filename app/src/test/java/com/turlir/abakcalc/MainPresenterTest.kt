@@ -80,10 +80,6 @@ class MainPresenterTest {
 
     @Test
     fun bracketErrorTest() {
-        val contextMock = Mockito.mock(Context::class.java)
-        whenever(contextMock.getString(ArgumentMatchers.anyInt())).thenReturn("Неправильно расставлены скобки")
-        whenever(mView.context).thenReturn(contextMock)
-
         mPresenter.attach(mView)
         mPresenter.enter("(5 - 3 * 2")
 
