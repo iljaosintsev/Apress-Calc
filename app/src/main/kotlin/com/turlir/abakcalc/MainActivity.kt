@@ -1,7 +1,11 @@
 package com.turlir.abakcalc
 
 import android.content.Context
+import android.content.Intent
+import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
+import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -17,11 +21,16 @@ import com.turlir.calculator.Calculator
 import com.turlir.calculator.converter.Visual
 import com.turlir.calculator.interpreter.PolishInterpreter
 import com.turlir.calculator.translator.PolishTranslator
+import java.net.URLEncoder
+
 
 class MainActivity : AppCompatActivity(), MainView {
 
     @BindView(R.id.btn_dot)
     lateinit var dot: Button
+
+    @BindView(R.id.btn_enter)
+    lateinit var en: Button
 
     @BindView(R.id.edit_text)
     lateinit var editText: Editor
@@ -55,6 +64,12 @@ class MainActivity : AppCompatActivity(), MainView {
         mPresenter.attach(this)
 
         dot.text = mPresenter.separator
+
+        val drawables = en.compoundDrawablesRelative
+        if (drawables[0] != null) {
+            val wrap = DrawableCompat.wrap(drawables[0])
+            DrawableCompat.setTint(wrap, Color.WHITE)
+        }
     }
 
     override fun onRestoreInstanceState(saved: Bundle?) {
@@ -110,6 +125,16 @@ class MainActivity : AppCompatActivity(), MainView {
     @OnLongClick(R.id.btn_clear)
     fun clearAll(view: View): Boolean {
         resetToEmpty()
+        return true
+    }
+
+    @OnLongClick(R.id.btn_enter)
+    fun openWolfram(view: View): Boolean {
+        val i = Intent(Intent.ACTION_VIEW)
+        val param = URLEncoder.encode(editText.text.toString(), "UTF-8")
+        val url = "http://m.wolframalpha.com/input/?i=$param"
+        i.data = Uri.parse(url)
+        startActivity(i)
         return true
     }
 
