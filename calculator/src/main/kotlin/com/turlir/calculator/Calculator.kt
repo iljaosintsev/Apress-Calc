@@ -44,11 +44,11 @@ class Calculator (
         return mDirect
     }
 
-    fun directExpression(math: String): MathExpression? {
+    fun directExpression(math: String): MathExpression {
         return mAnalyzer.expression(math)
     }
 
-    fun sequenceExpression(math: String): MathExpression? {
+    fun sequenceExpression(math: String): MathExpression {
         return mAnalyzer.sequenceExpression(math)
     }
 

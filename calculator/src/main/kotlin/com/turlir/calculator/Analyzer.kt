@@ -43,10 +43,10 @@ class Analyzer {
      * @throws IllegalArgumentException в случае ошибки разбора
      */
     @Throws(IllegalArgumentException::class)
-    fun expression(exp: String): MathExpression? {
+    fun expression(exp: String): MathExpression {
         val primaryQ = analyze(exp)
 
-        if(!primaryQ.hasNext()) return null
+        if(!primaryQ.hasNext()) throw EmptyExpressionException()
         val first = Expression(primaryQ.next())
         var current = first
 
@@ -65,9 +65,9 @@ class Analyzer {
      * @throws IllegalArgumentException в случае ошибки разбора
      */
     @Throws(IllegalArgumentException::class)
-    fun sequenceExpression(exp: String): MathExpression? {
+    fun sequenceExpression(exp: String): MathExpression {
         val primaryQ = analyze(exp)
-        if(!primaryQ.hasNext()) return null
+        if(!primaryQ.hasNext()) throw EmptyExpressionException()
         return SequenceExpression(primaryQ)
     }
 

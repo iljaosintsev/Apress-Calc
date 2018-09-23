@@ -22,28 +22,27 @@ class AnalyzerTest {
 
     @Test
     fun expressionTest() {
-        val act = analyzer.expression("2+3*4")!!
+        val act = analyzer.expression("2+3*4")
         val exp = analyzer.slice("2+3*4")
         val inline = act.inline()
         assertEquals(exp, inline)
     }
 
-    @Test
-    fun nullExpressionTest() {
-        val act = analyzer.expression("")
-        assertNull(act)
+    @Test(expected = EmptyExpressionException::class)
+    fun emptyExpressionTest() {
+        analyzer.expression("")
     }
 
     @Test
     fun sequenceExpressionTest() {
-        val act = analyzer.sequenceExpression("2+3*4")!!
+        val act = analyzer.sequenceExpression("2+3*4")
         val list = act.inline()
         assertEquals(5, list.size)
     }
 
     @Test(expected = java.util.NoSuchElementException::class)
     fun outOfSequenceExpressionTest() {
-        var act: MathExpression = analyzer.sequenceExpression("2+3*4")!!
+        var act: MathExpression = analyzer.sequenceExpression("2+3*4")
         for (i in 0..4) {
             println(act.value)
             act = act.next!!
@@ -53,9 +52,8 @@ class AnalyzerTest {
         assertFalse(act.isLast())
     }
 
-    @Test
-    fun nullSequenceExpressionTest() {
-        val act = analyzer.sequenceExpression("")
-        assertNull(act)
+    @Test(expected = EmptyExpressionException::class)
+    fun emptySequenceExpressionTest() {
+        analyzer.sequenceExpression("")
     }
 }

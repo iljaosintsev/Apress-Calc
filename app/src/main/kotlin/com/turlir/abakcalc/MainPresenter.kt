@@ -1,6 +1,7 @@
 package com.turlir.abakcalc
 
 import com.turlir.calculator.Calculator
+import com.turlir.calculator.EmptyExpressionException
 import com.turlir.calculator.converter.Member
 import com.turlir.calculator.converter.Visual
 import java.text.DecimalFormat
@@ -50,6 +51,9 @@ class MainPresenter(private val mCalc: Calculator) {
             } catch (e: NoSuchElementException) {
                 it.showError(it.context.getString(R.string.error))
 
+            } catch (e: EmptyExpressionException) {
+                // ignore with empty expression
+
             } catch (e: Exception) {
                 it.showError(e.message!!)
 
@@ -77,15 +81,13 @@ class MainPresenter(private val mCalc: Calculator) {
     private fun calculate(str: String, shouldTranslated: Boolean) {
         val correct = str.replace(separator, ".")
         val row = mCalc.sequenceExpression(correct)
-        if (row != null) {
-            val inline = row.inline() // calculate
-            interceptDirect(inline)
-            val result = mCalc.calc(inline)
-            mView?.showResult(mFormat.format(result))
-            if (shouldTranslated) {
-                val translated = mCalc.translated()
-                interceptTranslated(translated)
-            }
+        val inline = row.inline() // calculate
+        interceptDirect(inline)
+        val result = mCalc.calc(inline)
+        mView?.showResult(mFormat.format(result))
+        if (shouldTranslated) {
+            val translated = mCalc.translated()
+            interceptTranslated(translated)
         }
     }
 
