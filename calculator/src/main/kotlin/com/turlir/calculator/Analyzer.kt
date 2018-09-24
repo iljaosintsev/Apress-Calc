@@ -39,28 +39,20 @@ class Analyzer {
     /**
      * Анализирует математическое выражение
      * @param exp выражение
-     * @return связный список из токенов математического выражения или null если выражение пустое
+     * @return связный список из токенов математического выражения или {@link MathExpression} если выражение пустое
      * @throws IllegalArgumentException в случае ошибки разбора
      */
     @Throws(IllegalArgumentException::class)
     fun expression(exp: String): MathExpression {
         val primaryQ = analyze(exp)
-
         if(!primaryQ.hasNext()) throw EmptyExpressionException()
-        val first = Expression(primaryQ.next())
-        var current = first
-
-        while (primaryQ.hasNext()) {
-            val item = primaryQ.next()
-            current = current.next(item)
-        }
-        return first
+        return Expression(primaryQ)
     }
 
     /**
      * Анализирует математическое выражение
      * @param exp выражение
-     * @return связный список из токенов математического выражения или {@code null} если выражение пустое.
+     * @return связный список из токенов математического выражения или {@link MathExpression} если выражение пустое.
      * В отличие от метода expression(String) возвращает контейнер с лениво вычисляемыми токенами
      * @throws IllegalArgumentException в случае ошибки разбора
      */

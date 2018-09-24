@@ -28,8 +28,7 @@ class PolishTranslatorTest {
         sor = PolishTranslator()
     }
 
-    @Test
-    @Throws(Exception::class)
+    @Test(expected = Exception::class)
     fun plusTest() {
         val sequence = seq(Value(2.0), FOS, Value(3.0))
         val lst = sor.translate(sequence)

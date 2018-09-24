@@ -1,39 +1,31 @@
 package com.turlir.calculator.converter
 
-import java.util.*
-
 /**
  * Прямая реализация связного списка {@link Member}
  */
 class Expression
-    internal constructor (override val value: Member) : MathExpression {
+    internal constructor (source: Iterator<Member>) : MathExpression {
 
-    override var next: MathExpression? = null
-        private set(value) { field = value }
+    private val items: List<Member>
+    private var index: Int = 0
 
-    /**
-     * Создает контейнер для получения очередного токена
-     */
-    internal fun next(value: Member): Expression {
-        val next = Expression(value)
-        this.next = next
-        return next
+    init {
+        val data = mutableListOf<Member>()
+        while (source.hasNext()) {
+            data.add(source.next())
+        }
+        items = ArrayList(data)
     }
+
+    override val value: Member
+        get() {
+            return items[index++]
+        }
 
     override fun inline(): List<Member> {
-        val copy = LinkedList<Member>()
-        var now: MathExpression = this
-        while (true) {
-            copy.add(now.value)
-            now = if (now.isLast()) {
-                break
-            } else {
-                now.next!!
-            }
-        }
-        return copy
+        return items
     }
 
-    override fun isLast() = next == null
+    override fun isLast() = index == items.size
 
 }

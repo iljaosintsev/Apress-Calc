@@ -40,16 +40,14 @@ class AnalyzerTest {
         assertEquals(5, list.size)
     }
 
-    @Test(expected = java.util.NoSuchElementException::class)
+    @Test
     fun outOfSequenceExpressionTest() {
-        var act: MathExpression = analyzer.sequenceExpression("2+3*4")
-        for (i in 0..4) {
-            println(act.value)
-            act = act.next!!
+        val act: MathExpression = analyzer.sequenceExpression("2+3*4")
+        for (i in 0 until 4) {
+            assertNotNull(act.value)
         }
-        val d = act.next
-        assertNotNull(d)
-        assertFalse(act.isLast())
+        val d = act.value
+        println(d)
     }
 
     @Test(expected = EmptyExpressionException::class)

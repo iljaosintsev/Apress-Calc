@@ -11,11 +11,6 @@ interface MathExpression {
     val value: Member
 
     /**
-     * Следующий контейнер
-     */
-    val next: MathExpression?
-
-    /**
      * Преобразование в связный список
      */
     fun inline(): List<Member>
