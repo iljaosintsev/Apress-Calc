@@ -44,4 +44,6 @@ class Value : Member {
         return (temp xor temp.ushr(32)).toInt()
     }
 
+    override fun toString(): String = "Value(mValue=$mValue, isFloat=$isFloat)"
+
 }
