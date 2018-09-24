@@ -1,5 +1,7 @@
 package com.turlir.calculator.converter
 
+import java.util.*
+
 /**
  * Прямая реализация связного списка {@link Member}
  */
@@ -14,7 +16,7 @@ class Expression
         while (source.hasNext()) {
             data.add(source.next())
         }
-        items = ArrayList(data)
+        items = LinkedList(data)
     }
 
     override val value: Member
