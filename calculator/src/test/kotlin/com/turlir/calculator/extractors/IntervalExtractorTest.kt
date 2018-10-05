@@ -39,7 +39,7 @@ class IntervalExtractorTest : CommonTest() {
     }
 
     @Test
-    operator fun unaryMinus() {
+    fun unaryMinus() {
         val extractor = MultiOperatorExtractor(ExpressionPartExtractor("-4 + 2"))
         or(extractor, "-")
         and(extractor, "4")

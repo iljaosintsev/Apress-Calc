@@ -23,7 +23,7 @@ class MemberConverterTest : CommonTest() {
     }
 
     @Test
-    operator fun unaryMinus() {
+    fun unaryMinus() {
         val conv = MemberConverter().iterator("-4+2")
         or(conv, Operators.UNARY_MINUS)
         and(conv, Value(4.0))

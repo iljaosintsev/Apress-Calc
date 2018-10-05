@@ -57,7 +57,7 @@ class PolishTranslatorTest {
 
     @Test
     @Throws(Exception::class)
-    operator fun unaryMinus() {
+    fun unaryMinus() {
         val sequence = seq(FUNARY, Value(4.0), FPLUS, Value(2.0))
         val lst = sor.translate(sequence)
         check(lst, Value(4.0), FUNARY, Value(2.0), FPLUS)
